@@ -6,5 +6,12 @@
   "Common": {
     "switchToEnglish": "English",
     "switchToSpanish": "Español"
+  },
+  "Portal": {
+    "loginTitle": "Acceso a clientes",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "submitButton": "Entrar",
+    "errorInvalid": "Credenciales inválidas. Verifica tu email y contraseña."
   }
 }

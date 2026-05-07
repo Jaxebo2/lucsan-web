@@ -6,5 +6,12 @@
   "Common": {
     "switchToEnglish": "English",
     "switchToSpanish": "Español"
+  },
+  "Portal": {
+    "loginTitle": "Client access",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "submitButton": "Sign in",
+    "errorInvalid": "Invalid credentials. Check your email and password."
   }
 }
