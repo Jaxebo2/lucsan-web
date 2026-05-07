@@ -1,10 +1,14 @@
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
+import { LocaleSwitcher } from '@/components/locale-switcher'
 
 export default function Home() {
   const t = useTranslations('Home')
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-8 p-12">
+    <main className="min-h-screen flex flex-col items-center justify-center gap-8 p-12 relative">
+      <div className="absolute top-6 right-6">
+        <LocaleSwitcher />
+      </div>
       <img src="/brand/Simbolo-coral.svg" alt="Lucsan Design" className="h-12" />
       <h1 className="text-6xl font-display">{t('title')}</h1>
       <p className="text-lg text-muted-foreground">{t('subtitle')}</p>
