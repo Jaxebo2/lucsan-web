@@ -90,7 +90,9 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/en/portal/login)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/admin)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/es)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/en)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/en)",
+      "Bash(curl -s -o /dev/null -w \"\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"\" http://localhost:3001/)"
     ]
   }
 }
