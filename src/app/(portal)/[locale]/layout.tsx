@@ -1,6 +1,7 @@
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { PostHogProvider } from '@/components/posthog-provider'
 
 export default async function PortalLocaleLayout({
   children,
@@ -14,7 +15,9 @@ export default async function PortalLocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale}>
-      <div className="min-h-screen bg-muted/30">{children}</div>
+      <PostHogProvider>
+        <div className="min-h-screen bg-muted/30">{children}</div>
+      </PostHogProvider>
     </NextIntlClientProvider>
   )
 }

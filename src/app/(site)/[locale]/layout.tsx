@@ -1,6 +1,7 @@
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { PostHogProvider } from '@/components/posthog-provider'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -18,7 +19,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale}>
-      {children}
+      <PostHogProvider>{children}</PostHogProvider>
     </NextIntlClientProvider>
   )
 }
