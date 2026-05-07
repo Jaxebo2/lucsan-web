@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//e/Claude Code/**)",
+      "Bash(npx --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string \"postgres://user:pass@localhost:5432/db\" --no-deps)",
+      "PowerShell(Set-Location \"E:/Claude Code\"; $env:CI=\"true\"; npx --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string \"postgres://user:pass@localhost:5432/db\" --no-deps 2>&1 | Select-Object -Last 60)",
+      "Bash(cmd //c \"npx --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string postgres://user:pass@localhost:5432/db --no-deps < nul\")",
+      "Bash(command -v winpty)",
+      "Bash(npm --version)",
+      "Bash(winpty -Xallow-non-tty -Xplain npx --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string \"postgres://user:pass@localhost:5432/db\" --no-deps)",
+      "Bash(winpty \"/c/Program Files/nodejs/npx.cmd\" --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string \"postgres://user:pass@localhost:5432/db\" --no-deps)",
+      "Bash(winpty -Xallow-non-tty \"/c/Program Files/nodejs/npx.cmd\" --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string \"postgres://user:pass@localhost:5432/db\" --no-deps)",
+      "Bash(winpty -Xallow-non-tty -Xcols=120 -Xrows=40 \"/c/Program Files/nodejs/npx.cmd\" --yes create-payload-app@latest lucsan-web-tmp --template blank --db postgres --db-connection-string \"postgres://user:pass@localhost:5432/db\" --no-deps)",
+      "Bash(winpty --help)",
+      "Bash(npm view *)",
+      "Bash(git init *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s -o /tmp/health.json -w \"HTTP_STATUS:%{http_code}\\\\n\" http://localhost:3000/api/health)",
+      "Read(//tmp/**)",
+      "Bash(git add *)"
+    ]
+  }
+}
