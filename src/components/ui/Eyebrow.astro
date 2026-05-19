@@ -1,0 +1,35 @@
+---
+/**
+ * Eyebrow — small uppercase label above a heading.
+ * Used in every section as a category indicator ("Qué hacemos", "Proyectos recientes", etc.)
+ */
+
+type Tone = 'auto' | 'muted' | 'accent' | 'inverse';
+
+interface Props {
+  /** Color variant — auto uses currentColor with reduced opacity. */
+  tone?: Tone;
+  as?: 'p' | 'span' | 'div';
+  class?: string;
+}
+
+const { tone = 'muted', as: Tag = 'p', class: className = '' } = Astro.props as Props;
+
+const toneMap: Record<Tone, string> = {
+  auto: 'opacity-70',
+  muted: 'text-text-muted',
+  accent: 'text-text-accent',
+  inverse: 'text-text-inverse-secondary',
+};
+const toneClass = toneMap[tone];
+---
+
+<Tag
+  class:list={[
+    'font-sans text-xs font-medium uppercase tracking-[0.18em] md:text-sm',
+    toneClass,
+    className,
+  ]}
+>
+  <slot />
+</Tag>

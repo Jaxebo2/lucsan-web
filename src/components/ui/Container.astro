@@ -1,0 +1,35 @@
+---
+/**
+ * Container — max-width centered with consistent horizontal padding.
+ *
+ * Sizes:
+ * - sm: 768px  (text-heavy pages)
+ * - md: 1024px (forms, narrow layouts)
+ * - lg: 1280px (default — most pages)
+ * - xl: 1440px (wide hero/gallery)
+ * - full: no max-width
+ */
+
+type Size = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
+interface Props {
+  size?: Size;
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+
+const { size = 'lg', as: Tag = 'div', class: className = '' } = Astro.props as Props;
+
+const sizeMap: Record<Size, string> = {
+  sm: 'max-w-3xl',
+  md: 'max-w-5xl',
+  lg: 'max-w-7xl',
+  xl: 'max-w-[1440px]',
+  full: 'max-w-none',
+};
+const sizeClass = sizeMap[size];
+---
+
+<Tag class:list={['mx-auto px-6 md:px-16', sizeClass, className]}>
+  <slot />
+</Tag>

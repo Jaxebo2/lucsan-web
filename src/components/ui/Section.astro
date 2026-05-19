@@ -1,0 +1,70 @@
+---
+/**
+ * Section — vertical padding section with surface variant + theme attr for navbar.
+ *
+ * Surfaces:
+ * - page:     fondo neutro principal (neutral-50)
+ * - muted:    fondo gris suave para diferenciar bloques (neutral-100)
+ * - elevated: fondo blanco (#fff) para tarjetas/contenedores
+ * - inverse:  fondo negro de marca (brand-black) → texto claro
+ * - accent:   fondo coral (brand-coral) → texto negro
+ *
+ * Spacing:
+ * - tight:  py-12 / py-16 desktop
+ * - base:   py-section-mobile (56px) / py-section (96px) desktop  — default
+ * - loose:  py-20 / py-32 desktop
+ *
+ * Theme attr (auto-derived from surface):
+ * - light surfaces (page/muted/elevated/accent) → data-theme="light" → navbar dark text
+ * - inverse surface → data-theme="dark" → navbar light text
+ *
+ * Override with theme prop if you have a custom mix.
+ */
+
+type Surface = 'page' | 'muted' | 'elevated' | 'inverse' | 'accent';
+type Spacing = 'tight' | 'base' | 'loose' | 'none';
+
+interface Props {
+  surface?: Surface;
+  spacing?: Spacing;
+  theme?: 'light' | 'dark';
+  /** Optional id for anchor links. */
+  id?: string;
+  class?: string;
+}
+
+const {
+  surface = 'page',
+  spacing = 'base',
+  theme,
+  id,
+  class: className = '',
+} = Astro.props as Props;
+
+const surfaceMap: Record<Surface, string> = {
+  page: 'bg-surface-page text-text-primary',
+  muted: 'bg-surface-muted text-text-primary',
+  elevated: 'bg-surface-elevated text-text-primary',
+  inverse: 'bg-surface-inverse text-text-inverse',
+  accent: 'bg-surface-accent text-text-primary',
+};
+const surfaceClass = surfaceMap[surface];
+
+const spacingMap: Record<Spacing, string> = {
+  tight: 'py-12 md:py-16',
+  base: 'py-14 md:py-24',
+  loose: 'py-20 md:py-32',
+  none: '',
+};
+const spacingClass = spacingMap[spacing];
+
+const resolvedTheme: 'light' | 'dark' = theme ?? (surface === 'inverse' ? 'dark' : 'light');
+---
+
+<section
+  id={id}
+  data-theme={resolvedTheme}
+  class:list={[surfaceClass, spacingClass, className]}
+>
+  <slot />
+</section>

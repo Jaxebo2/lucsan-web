@@ -1,0 +1,103 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Button — Primary CTA component (renders <a> or <button>).
+ *
+ * Variants:
+ * - primary:   coral fill, black text (CTA principal)
+ * - secondary: black fill, white text (CTA alternativo)
+ * - outline:   border only, transparent fill (sobre fondo oscuro)
+ * - ghost:     no border/fill, just text + arrow (CTAs terciarios)
+ *
+ * Sizes: sm | md (default) | lg
+ *
+ * Icons: pass `iconRight` o `iconLeft` con nombre Phosphor (ej. "ph:arrow-right-bold").
+ *
+ * Rendered as <a> if `href` provided, else <button>.
+ */
+
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props {
+  variant?: Variant;
+  size?: Size;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  target?: '_blank' | '_self';
+  iconLeft?: string;
+  iconRight?: string;
+  fullWidth?: boolean;
+  disabled?: boolean;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  target,
+  iconLeft,
+  iconRight,
+  fullWidth = false,
+  disabled = false,
+  ariaLabel,
+  class: className = '',
+} = Astro.props as Props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+
+const variantMap: Record<Variant, string> = {
+  primary:
+    'bg-interactive-primary text-interactive-primary-text hover:bg-interactive-primary-hover hover:scale-[1.02] focus-visible:outline-interactive-primary',
+  secondary:
+    'bg-interactive-secondary text-interactive-secondary-text hover:scale-[1.02] focus-visible:outline-interactive-secondary',
+  outline:
+    'border border-current bg-transparent hover:border-interactive-primary hover:text-interactive-primary',
+  ghost: 'bg-transparent text-interactive-ghost-text hover:text-interactive-primary',
+};
+const variantClass = variantMap[variant];
+
+const sizeMap: Record<Size, string> = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-5 py-2.5 text-sm md:px-6 md:py-3 md:text-base',
+  lg: 'px-7 py-4 text-base md:text-lg',
+};
+const sizeClass = sizeMap[size];
+
+const iconSizeMap: Record<Size, string> = {
+  sm: 'h-4 w-4',
+  md: 'h-4 w-4 md:h-5 md:w-5',
+  lg: 'h-5 w-5',
+};
+const iconSize = iconSizeMap[size];
+
+const allClass = [base, variantClass, sizeClass, fullWidth && 'w-full', className];
+const isLink = !!href;
+const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
+---
+
+{
+  isLink ? (
+    <a href={href} target={target} rel={rel} aria-label={ariaLabel} class:list={allClass}>
+      {iconLeft && <Icon name={iconLeft} class={iconSize} />}
+      <slot />
+      {iconRight && <Icon name={iconRight} class={iconSize} />}
+    </a>
+  ) : (
+    <button
+      type={type}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      class:list={allClass}
+    >
+      {iconLeft && <Icon name={iconLeft} class={iconSize} />}
+      <slot />
+      {iconRight && <Icon name={iconRight} class={iconSize} />}
+    </button>
+  )
+}

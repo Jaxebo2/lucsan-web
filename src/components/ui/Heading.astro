@@ -1,0 +1,80 @@
+---
+/**
+ * Heading — display-family heading with semantic level + visual size.
+ *
+ * Level (semantic): h1 | h2 | h3 | h4
+ * Size (visual):    xs | sm | md | lg | xl | 2xl | 3xl
+ *
+ * Defaults:
+ * - h1 → 3xl (hero)
+ * - h2 → 2xl (section)
+ * - h3 → lg  (subsection / card)
+ * - h4 → md
+ *
+ * Use `weight` to switch between Bold (700, default) and Medium (500, subtle).
+ */
+
+type Level = 1 | 2 | 3 | 4;
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+type Weight = 'medium' | 'bold';
+type Tone = 'primary' | 'inverse' | 'accent' | 'inherit';
+
+interface Props {
+  level?: Level;
+  size?: Size;
+  weight?: Weight;
+  tone?: Tone;
+  /** Whether to balance line breaks via CSS `text-wrap: balance`. */
+  balance?: boolean;
+  class?: string;
+}
+
+const {
+  level = 2,
+  size,
+  weight = 'bold',
+  tone = 'inherit',
+  balance = true,
+  class: className = '',
+} = Astro.props as Props;
+
+const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4';
+
+const defaultSizeByLevel: Record<Level, Size> = { 1: '3xl', 2: '2xl', 3: 'lg', 4: 'md' };
+const resolvedSize: Size = size ?? defaultSizeByLevel[level];
+
+const sizeMap: Record<Size, string> = {
+  xs: 'text-xl md:text-2xl',
+  sm: 'text-2xl md:text-3xl',
+  md: 'text-3xl md:text-4xl',
+  lg: 'text-4xl md:text-5xl',
+  xl: 'text-5xl md:text-6xl',
+  '2xl': 'text-5xl leading-[1.05] md:text-6xl',
+  '3xl': 'text-5xl leading-[1.05] md:text-7xl lg:text-8xl',
+};
+const sizeClass = sizeMap[resolvedSize];
+
+const weightMap: Record<Weight, string> = { medium: 'font-medium', bold: 'font-bold' };
+const weightClass = weightMap[weight];
+
+const toneMap: Record<Tone, string> = {
+  primary: 'text-text-primary',
+  inverse: 'text-text-inverse',
+  accent: 'text-text-accent',
+  inherit: '',
+};
+const toneClass = toneMap[tone];
+---
+
+<Tag
+  class:list={[
+    'font-display tracking-tight',
+    sizeClass,
+    weightClass,
+    toneClass,
+    balance && 'text-balance',
+    className,
+  ]}
+>
+  <slot />
+</Tag>

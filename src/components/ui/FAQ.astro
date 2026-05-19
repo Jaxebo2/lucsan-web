@@ -1,0 +1,15 @@
+---
+/**
+ * FAQ — wrapper for FAQItem children. Uses native <details>/<summary>.
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['flex flex-col divide-y divide-border-subtle', className]}>
+  <slot />
+</div>

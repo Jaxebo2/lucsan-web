@@ -1,0 +1,275 @@
+---
+/**
+ * Style Guide — development-only reference for the design system.
+ * NOT included in production builds.
+ */
+export const prerender = false;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Heading from '../components/ui/Heading.astro';
+import Prose from '../components/ui/Prose.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Badge from '../components/ui/Badge.astro';
+import MetricBadge from '../components/ui/MetricBadge.astro';
+import FAQ from '../components/ui/FAQ.astro';
+import FAQItem from '../components/ui/FAQItem.astro';
+import CTABlock from '../components/ui/CTABlock.astro';
+
+// 404 in production builds
+if (!import.meta.env.DEV) {
+  return Astro.redirect('/404');
+}
+
+const tokens = [
+  { name: 'brand-black', class: 'bg-brand-black text-neutral-50' },
+  { name: 'brand-coral', class: 'bg-brand-coral text-brand-black' },
+  { name: 'brand-blue', class: 'bg-brand-blue text-neutral-50' },
+  { name: 'brand-green', class: 'bg-brand-green text-brand-black' },
+  { name: 'brand-yellow', class: 'bg-brand-yellow text-brand-black' },
+  { name: 'neutral-50', class: 'bg-neutral-50 text-neutral-900 border border-neutral-300' },
+  { name: 'neutral-100', class: 'bg-neutral-100 text-neutral-900' },
+  { name: 'neutral-200', class: 'bg-neutral-200 text-neutral-900' },
+  { name: 'neutral-300', class: 'bg-neutral-300 text-neutral-900' },
+  { name: 'neutral-400', class: 'bg-neutral-400 text-neutral-900' },
+  { name: 'neutral-500', class: 'bg-neutral-500 text-neutral-50' },
+  { name: 'neutral-600', class: 'bg-neutral-600 text-neutral-50' },
+  { name: 'neutral-700', class: 'bg-neutral-700 text-neutral-50' },
+  { name: 'neutral-800', class: 'bg-neutral-800 text-neutral-50' },
+  { name: 'neutral-900', class: 'bg-neutral-900 text-neutral-50' },
+  { name: 'success', class: 'bg-success text-neutral-50' },
+  { name: 'warning', class: 'bg-warning text-neutral-50' },
+  { name: 'error', class: 'bg-error text-neutral-50' },
+  { name: 'info', class: 'bg-info text-neutral-50' },
+];
+
+const semantic = [
+  { name: 'surface-page', desc: 'fondo body principal' },
+  { name: 'surface-muted', desc: 'fondo alternado para diferenciar' },
+  { name: 'surface-elevated', desc: 'fondo tarjetas/contenedores' },
+  { name: 'surface-inverse', desc: 'fondo oscuro inverso' },
+  { name: 'surface-accent', desc: 'fondo coral marca' },
+  { name: 'text-primary', desc: 'texto principal' },
+  { name: 'text-secondary', desc: 'texto secundario' },
+  { name: 'text-muted', desc: 'texto auxiliar' },
+  { name: 'text-accent', desc: 'texto en coral' },
+  { name: 'border-subtle', desc: 'borde sutil' },
+  { name: 'border-default', desc: 'borde visible' },
+];
+---
+
+<BaseLayout
+  title="Style Guide · Lucsan Design"
+  description="Sistema de diseño de la web de Lucsan Design. Solo accesible en desarrollo."
+>
+  <Section surface="muted" spacing="tight">
+    <Container>
+      <Eyebrow>Solo desarrollo</Eyebrow>
+      <Heading level={1} size="2xl">Design System</Heading>
+      <Prose tone="secondary" size="lg" class="mt-4 max-w-2xl">
+        Referencia visual de tokens, primitivos UI y patrones de la web pública de Lucsan Design.
+        No se incluye en builds de producción.
+      </Prose>
+    </Container>
+  </Section>
+
+  {/* ===== TOKENS ===== */}
+  <Section spacing="base">
+    <Container>
+      <Eyebrow>01 / Tokens base</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Paleta completa</Heading>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6">
+        {
+          tokens.map((t) => (
+            <div class:list={[t.class, 'flex h-24 items-end rounded-lg p-3 font-mono text-xs']}>
+              {t.name}
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <Section surface="muted">
+    <Container>
+      <Eyebrow>02 / Tokens semánticos</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Roles (la capa que cambias)</Heading>
+      <Prose tone="secondary" class="mt-3 max-w-2xl">
+        Estos mapean los tokens base a roles funcionales. Modifica acá para cambiar la experiencia
+        sin tocar 80 componentes.
+      </Prose>
+
+      <ul class="mt-8 grid gap-2 md:grid-cols-2">
+        {
+          semantic.map((s) => (
+            <li class="flex items-baseline justify-between gap-4 border-b border-border-subtle py-2 font-mono text-sm">
+              <span class="text-text-primary">--color-{s.name}</span>
+              <span class="text-text-muted">{s.desc}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </Section>
+
+  {/* ===== TIPOGRAFÍA ===== */}
+  <Section>
+    <Container>
+      <Eyebrow>03 / Tipografía</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Escala de display (Cabinet Grotesk)</Heading>
+
+      <div class="mt-10 space-y-6 border-y border-border-subtle py-8">
+        <div><Heading level={3} size="3xl">3xl · Hero principal</Heading></div>
+        <div><Heading level={3} size="2xl">2xl · Headline sección</Heading></div>
+        <div><Heading level={3} size="xl">xl · Subsección</Heading></div>
+        <div><Heading level={3} size="lg">lg · Title de card grande</Heading></div>
+        <div><Heading level={3} size="md">md · Title de card mediana</Heading></div>
+        <div><Heading level={3} size="sm">sm · Title compacto</Heading></div>
+        <div><Heading level={3} size="xs">xs · Label destacado</Heading></div>
+      </div>
+
+      <Heading level={2} size="lg" class="mt-16">Body (Switzer)</Heading>
+      <div class="mt-6 space-y-4">
+        <Prose size="xl">XL · Subhead potente de hero, frases impactantes.</Prose>
+        <Prose size="lg">LG · Subhead estándar, intros de sección.</Prose>
+        <Prose size="base">Base · Texto corrido principal. Aquí va el contenido de bloques de copy.</Prose>
+        <Prose size="sm" tone="muted">SM · Texto auxiliar, captions, metadata.</Prose>
+      </div>
+
+      <Heading level={2} size="lg" class="mt-16">Eyebrow</Heading>
+      <div class="mt-4 space-y-2">
+        <Eyebrow tone="muted">eyebrow muted · contexto sección</Eyebrow>
+        <Eyebrow tone="accent">eyebrow accent · contexto destacado</Eyebrow>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ===== BOTONES ===== */}
+  <Section surface="muted">
+    <Container>
+      <Eyebrow>04 / Buttons</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Variantes</Heading>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <Button variant="primary">Primary</Button>
+        <Button variant="primary" iconRight="ph:arrow-right-bold">Primary con flecha</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="outline">Outline</Button>
+        <Button variant="ghost" iconRight="ph:arrow-right-bold">Ghost</Button>
+      </div>
+
+      <Heading level={2} size="md" class="mt-12">Tamaños</Heading>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <Button variant="primary" size="sm">Small</Button>
+        <Button variant="primary" size="md">Medium</Button>
+        <Button variant="primary" size="lg">Large</Button>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ===== CARDS ===== */}
+  <Section>
+    <Container>
+      <Eyebrow>05 / Cards</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Contenedores</Heading>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card variant="default">
+          <Heading level={3} size="md">Default</Heading>
+          <Prose tone="secondary" size="sm" class="mt-2">Borde sutil, fondo página.</Prose>
+        </Card>
+        <Card variant="elevated">
+          <Heading level={3} size="md">Elevated</Heading>
+          <Prose tone="secondary" size="sm" class="mt-2">Fondo blanco, sombra suave.</Prose>
+        </Card>
+        <Card variant="filled">
+          <Heading level={3} size="md">Filled</Heading>
+          <Prose tone="secondary" size="sm" class="mt-2">Fondo gris sutil.</Prose>
+        </Card>
+        <Card variant="inverse">
+          <Heading level={3} size="md" tone="inverse">Inverse</Heading>
+          <Prose tone="inverse-secondary" size="sm" class="mt-2">Fondo oscuro inverso.</Prose>
+        </Card>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ===== BADGES + MÉTRICAS ===== */}
+  <Section surface="muted">
+    <Container>
+      <Eyebrow>06 / Badges y métricas</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Pills</Heading>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <Badge variant="neutral">neutral</Badge>
+        <Badge variant="accent">accent</Badge>
+        <Badge variant="success">success</Badge>
+        <Badge variant="warning">warning</Badge>
+        <Badge variant="error">error</Badge>
+        <Badge variant="info">info</Badge>
+        <Badge variant="inverse">inverse</Badge>
+      </div>
+
+      <Heading level={2} size="md" class="mt-12">MetricBadge</Heading>
+      <div class="mt-6 grid gap-10 md:grid-cols-3">
+        <MetricBadge valor="+47%" descripcion="aumento en leads cualificados primer trimestre" />
+        <MetricBadge valor="-70%" descripcion="solicitudes a diseño externo" />
+        <MetricBadge valor="8 sem" descripcion="duración del proyecto end-to-end" />
+      </div>
+    </Container>
+  </Section>
+
+  {/* ===== FAQ ===== */}
+  <Section>
+    <Container size="md">
+      <Eyebrow>07 / FAQ</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Acordeón nativo</Heading>
+
+      <FAQ class="mt-8">
+        <FAQItem pregunta="¿Cuánto demora un proyecto?">
+          <Prose>Entre 6 y 10 semanas según alcance. Te damos un plan concreto antes de empezar.</Prose>
+        </FAQItem>
+        <FAQItem pregunta="¿Cómo cobran?">
+          <Prose>Valor cerrado por proyecto, no por hora. Hitos de pago vinculados a entregas.</Prose>
+        </FAQItem>
+        <FAQItem pregunta="¿Trabajan fuera de Chile?">
+          <Prose>Sí, hemos trabajado con clientes en Argentina, Perú y México de manera 100% remota.</Prose>
+        </FAQItem>
+      </FAQ>
+    </Container>
+  </Section>
+
+  {/* ===== CTA BLOCK ===== */}
+  <Section surface="muted">
+    <Container>
+      <Eyebrow>08 / CTA Blocks</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Variantes de cierre</Heading>
+
+      <div class="mt-10 grid gap-6">
+        <CTABlock
+          eyebrow="¿Empezamos?"
+          headline="Cuéntanos sobre tu proyecto."
+          accentText=""
+          primaryCta={{ texto: 'Conversemos', href: '/contacto' }}
+          secondaryCta={{ texto: 'Ver proyectos', href: '/proyectos' }}
+          surface="inverse"
+        />
+        <CTABlock
+          headline="Tu próximo paso está a un click."
+          primaryCta={{ texto: 'Empezar proyecto', href: '/contacto' }}
+          surface="accent"
+        />
+        <CTABlock
+          eyebrow="Versión sutil"
+          headline="Conversemos sobre tu proyecto."
+          primaryCta={{ texto: 'Contactar', href: '/contacto' }}
+          surface="elevated"
+        />
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

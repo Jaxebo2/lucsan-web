@@ -1,0 +1,50 @@
+---
+/**
+ * MetricBadge — large metric value + descriptive label.
+ * Used in case studies for "+47% / aumento en leads".
+ */
+
+type Tone = 'accent' | 'inverse' | 'inherit';
+type Align = 'left' | 'center';
+
+interface Props {
+  valor: string;
+  descripcion: string;
+  tone?: Tone;
+  align?: Align;
+  class?: string;
+}
+
+const {
+  valor,
+  descripcion,
+  tone = 'accent',
+  align = 'left',
+  class: className = '',
+} = Astro.props as Props;
+
+const valorMap: Record<Tone, string> = {
+  accent: 'text-text-accent',
+  inverse: 'text-text-inverse',
+  inherit: '',
+};
+const valorTone = valorMap[tone];
+
+const descripcionMap: Record<Tone, string> = {
+  accent: 'text-text-secondary',
+  inverse: 'text-text-inverse-secondary',
+  inherit: 'opacity-70',
+};
+const descripcionTone = descripcionMap[tone];
+
+const alignClass = align === 'center' ? 'text-center items-center' : 'text-left items-start';
+---
+
+<div class:list={['flex flex-col gap-2', alignClass, className]}>
+  <span class:list={['font-display text-5xl font-bold leading-none md:text-6xl', valorTone]}>
+    {valor}
+  </span>
+  <span class:list={['max-w-[20ch] text-sm', descripcionTone]}>
+    {descripcion}
+  </span>
+</div>

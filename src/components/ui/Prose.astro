@@ -1,0 +1,53 @@
+---
+/**
+ * Prose — body text with consistent size/weight.
+ *
+ * Sizes:
+ * - sm:  text-sm
+ * - base: text-base (default)
+ * - lg:  text-lg
+ * - xl:  text-xl
+ */
+
+type Size = 'sm' | 'base' | 'lg' | 'xl';
+type Tone = 'primary' | 'secondary' | 'muted' | 'inverse' | 'inverse-secondary' | 'inherit';
+
+interface Props {
+  size?: Size;
+  tone?: Tone;
+  as?: 'p' | 'span' | 'div';
+  /** Apply `max-w-prose` for readable line length. */
+  prose?: boolean;
+  class?: string;
+}
+
+const {
+  size = 'base',
+  tone = 'inherit',
+  as: Tag = 'p',
+  prose = false,
+  class: className = '',
+} = Astro.props as Props;
+
+const sizeMap: Record<Size, string> = {
+  sm: 'text-sm',
+  base: 'text-base md:text-lg',
+  lg: 'text-lg md:text-xl',
+  xl: 'text-xl md:text-2xl',
+};
+const sizeClass = sizeMap[size];
+
+const toneMap: Record<Tone, string> = {
+  primary: 'text-text-primary',
+  secondary: 'text-text-secondary',
+  muted: 'text-text-muted',
+  inverse: 'text-text-inverse',
+  'inverse-secondary': 'text-text-inverse-secondary',
+  inherit: '',
+};
+const toneClass = toneMap[tone];
+---
+
+<Tag class:list={['leading-relaxed', sizeClass, toneClass, prose && 'max-w-prose', className]}>
+  <slot />
+</Tag>

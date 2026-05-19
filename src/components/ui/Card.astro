@@ -1,0 +1,67 @@
+---
+/**
+ * Card — surface container with optional hover state.
+ *
+ * Variants:
+ * - default:  bordered, light bg
+ * - elevated: white bg, subtle shadow
+ * - filled:   muted bg, no border
+ * - inverse:  dark bg for inverse sections
+ *
+ * If `href` is provided, renders <a> with hover lift effect.
+ */
+
+type Variant = 'default' | 'elevated' | 'filled' | 'inverse';
+type Padding = 'sm' | 'md' | 'lg';
+type Radius = 'md' | 'lg' | 'xl';
+
+interface Props {
+  variant?: Variant;
+  href?: string;
+  /** Padding scale. */
+  padding?: Padding;
+  /** Radius scale. */
+  radius?: Radius;
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  href,
+  padding = 'md',
+  radius = 'lg',
+  class: className = '',
+} = Astro.props as Props;
+
+const variantMap: Record<Variant, string> = {
+  default: 'bg-surface-page border border-border-subtle',
+  elevated: 'bg-surface-elevated shadow-sm',
+  filled: 'bg-surface-muted border border-transparent',
+  inverse: 'bg-surface-inverse-alt border border-border-inverse text-text-inverse',
+};
+const variantClass = variantMap[variant];
+
+const paddingMap: Record<Padding, string> = { sm: 'p-5', md: 'p-7 md:p-8', lg: 'p-10 md:p-12' };
+const paddingClass = paddingMap[padding];
+
+const radiusMap: Record<Radius, string> = { md: 'rounded-md', lg: 'rounded-xl', xl: 'rounded-2xl' };
+const radiusClass = radiusMap[radius];
+
+const interactiveClass = href
+  ? 'transition-all duration-200 ease-out hover:border-border-accent hover:shadow-md'
+  : '';
+
+const allClass = ['group flex flex-col', variantClass, paddingClass, radiusClass, interactiveClass, className];
+---
+
+{
+  href ? (
+    <a href={href} class:list={allClass}>
+      <slot />
+    </a>
+  ) : (
+    <div class:list={allClass}>
+      <slot />
+    </div>
+  )
+}

@@ -82,6 +82,10 @@ export default config({
         ),
         pruebaSocial: fields.object({
           titulo: fields.text({ label: 'Título sección' }),
+          logos: fields.array(imageField, {
+            label: 'Logos de clientes',
+            itemLabel: (p) => p.fields.alt.value || 'logo',
+          }),
         }),
         serviciosDestacados: fields.array(
           fields.relationship({ label: 'Servicio', collection: 'services' }),

@@ -1,0 +1,96 @@
+---
+import Heading from './Heading.astro';
+import Button from './Button.astro';
+
+/**
+ * CTABlock — reusable call-to-action banner.
+ *
+ * Surfaces:
+ * - inverse (default): black bg with coral accent + light text
+ * - accent:           coral bg with black text
+ * - elevated:         white with subtle border
+ */
+
+type Surface = 'inverse' | 'accent' | 'elevated';
+
+interface Props {
+  eyebrow?: string;
+  headline: string;
+  /** Phrase rendered in coral inside headline (use {accentText} placeholder if needed). */
+  accentText?: string;
+  primaryCta: { texto: string; href: string };
+  secondaryCta?: { texto: string; href: string };
+  surface?: Surface;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  headline,
+  accentText,
+  primaryCta,
+  secondaryCta,
+  surface = 'inverse',
+  class: className = '',
+} = Astro.props as Props;
+
+const surfaceMap: Record<Surface, string> = {
+  inverse: 'bg-surface-inverse text-text-inverse',
+  accent: 'bg-surface-accent text-text-primary',
+  elevated: 'bg-surface-elevated border border-border-subtle text-text-primary',
+};
+const surfaceClass = surfaceMap[surface];
+
+const headingTone = surface === 'inverse' ? 'inverse' : 'primary';
+const eyebrowTone = surface === 'inverse' ? 'inverse' : 'muted';
+const buttonVariant = surface === 'accent' ? 'secondary' : 'primary';
+---
+
+<div
+  class:list={[
+    'rounded-2xl px-8 py-12 md:px-12 md:py-16',
+    surfaceClass,
+    className,
+  ]}
+>
+  <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <div class="max-w-2xl">
+      {eyebrow && (
+        <p
+          class:list={[
+            'mb-3 font-sans text-xs font-medium uppercase tracking-[0.18em] md:text-sm',
+            eyebrowTone === 'inverse' ? 'text-text-inverse-secondary' : 'text-text-muted',
+          ]}
+        >
+          {eyebrow}
+        </p>
+      )}
+      <Heading level={2} size="xl" tone={headingTone}>
+        {headline}
+        {
+          accentText && (
+            <>
+              {' '}
+              <span class="text-text-accent">{accentText}</span>
+            </>
+          )
+        }
+      </Heading>
+    </div>
+    <div class="flex flex-wrap gap-3 self-start md:self-auto">
+      <Button href={primaryCta.href} variant={buttonVariant} iconRight="ph:arrow-right-bold">
+        {primaryCta.texto}
+      </Button>
+      {
+        secondaryCta && (
+          <Button
+            href={secondaryCta.href}
+            variant={surface === 'inverse' ? 'outline' : 'ghost'}
+          >
+            {secondaryCta.texto}
+          </Button>
+        )
+      }
+    </div>
+  </div>
+</div>

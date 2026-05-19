@@ -1,0 +1,44 @@
+---
+/**
+ * Badge — pill label for tags, sectors, small metadata.
+ */
+
+type Variant = 'neutral' | 'accent' | 'success' | 'warning' | 'error' | 'info' | 'inverse';
+type Size = 'sm' | 'md';
+
+interface Props {
+  variant?: Variant;
+  size?: Size;
+  class?: string;
+}
+
+const { variant = 'neutral', size = 'md', class: className = '' } = Astro.props as Props;
+
+const variantMap: Record<Variant, string> = {
+  neutral: 'bg-neutral-100 text-neutral-700',
+  accent: 'bg-brand-coral text-brand-black',
+  success: 'bg-success-bg text-success',
+  warning: 'bg-warning-bg text-warning',
+  error: 'bg-error-bg text-error',
+  info: 'bg-info-bg text-info',
+  inverse: 'bg-neutral-800 text-neutral-100',
+};
+const variantClass = variantMap[variant];
+
+const sizeMap: Record<Size, string> = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-3 py-1 text-sm',
+};
+const sizeClass = sizeMap[size];
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1 rounded-full font-medium',
+    variantClass,
+    sizeClass,
+    className,
+  ]}
+>
+  <slot />
+</span>

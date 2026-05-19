@@ -1,26 +1,52 @@
 {
   "tipo": "home",
   "hero": {
-    "headline": "Tu marca no se ve como vale. Arreglémoslo.",
+    "headline": "Tu marca no se ve como vale. Eso tiene solución.",
     "subhead": "Diseñamos branding, sitios web y campañas que conectan con tus clientes y convierten visitas en negocio.",
-    "ctaPrimario": { "texto": "Empezar un proyecto", "href": "/contacto" },
-    "ctaSecundario": { "texto": "Ver proyectos", "href": "/proyectos" }
+    "ctaPrimario": {
+      "texto": "Empezar un proyecto",
+      "href": "/contacto"
+    },
+    "ctaSecundario": {
+      "texto": "Ver proyectos",
+      "href": "/proyectos"
+    }
   },
   "pruebaSocial": {
     "titulo": "Equipos que confiaron en nosotros",
     "logos": []
   },
-  "serviciosDestacados": ["branding"],
+  "serviciosDestacados": [
+    "branding"
+  ],
   "metodoResumen": {
     "titulo": "Un método claro, sin sorpresas.",
     "fases": [
-      { "numero": "01", "titulo": "Descubrimiento", "descripcion": "Entendemos tu negocio, tu cliente y tu competencia antes de tocar nada visual." },
-      { "numero": "02", "titulo": "Estrategia", "descripcion": "Definimos posicionamiento, mensajes clave y el plan de acción." },
-      { "numero": "03", "titulo": "Diseño", "descripcion": "Iteramos en propuestas concretas hasta dar con la que conecta." },
-      { "numero": "04", "titulo": "Entrega y soporte", "descripcion": "Implementación, capacitación y acompañamiento post-lanzamiento." }
+      {
+        "numero": "01",
+        "titulo": "Descubrimiento",
+        "descripcion": "Entendemos tu negocio, tu cliente y tu competencia antes de tocar nada visual."
+      },
+      {
+        "numero": "02",
+        "titulo": "Estrategia",
+        "descripcion": "Definimos posicionamiento, mensajes clave y el plan de acción."
+      },
+      {
+        "numero": "03",
+        "titulo": "Diseño",
+        "descripcion": "Iteramos en propuestas concretas hasta dar con la que conecta."
+      },
+      {
+        "numero": "04",
+        "titulo": "Entrega y soporte",
+        "descripcion": "Implementación, capacitación y acompañamiento post-lanzamiento."
+      }
     ]
   },
-  "casosDestacados": ["acme-rebrand"],
+  "casosDestacados": [
+    "acme-rebrand"
+  ],
   "testimonios": [
     {
       "cita": "Por primera vez tenemos una marca que nuestro equipo entiende y sabe aplicar.",

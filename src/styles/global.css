@@ -121,6 +121,53 @@
   /* ---------- Transiciones ---------- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 400ms;
+}
+
+/* ============================================================
+   SEMANTIC LAYER — role-based tokens
+   ----------------------------------------------------------
+   Estos tokens mapean los tokens "brand" a roles funcionales.
+   Si en el futuro cambiamos el coral o agregamos modo oscuro,
+   modificamos SOLO esta capa. Los componentes consumen estos.
+   ============================================================ */
+
+@theme {
+  /* Surfaces (fondos) */
+  --color-surface-page:        var(--color-neutral-50);
+  --color-surface-elevated:    #ffffff;
+  --color-surface-muted:       var(--color-neutral-100);
+  --color-surface-inverse:     var(--color-brand-black);
+  --color-surface-inverse-alt: var(--color-neutral-800);
+  --color-surface-accent:      var(--color-brand-coral);
+
+  /* Text */
+  --color-text-primary:    var(--color-brand-black);
+  --color-text-secondary:  var(--color-neutral-600);
+  --color-text-muted:      var(--color-neutral-500);
+  --color-text-disabled:   var(--color-neutral-400);
+  --color-text-inverse:    var(--color-neutral-50);
+  --color-text-inverse-secondary: var(--color-neutral-400);
+  --color-text-accent:     var(--color-brand-coral);
+  --color-text-link:       var(--color-brand-black);
+  --color-text-link-hover: var(--color-brand-coral);
+
+  /* Borders */
+  --color-border-subtle:   var(--color-neutral-200);
+  --color-border-default:  var(--color-neutral-300);
+  --color-border-strong:   var(--color-brand-black);
+  --color-border-accent:   var(--color-brand-coral);
+  --color-border-inverse:  var(--color-neutral-700);
+
+  /* Interactive */
+  --color-interactive-primary:       var(--color-brand-coral);
+  --color-interactive-primary-hover: #e94336;
+  --color-interactive-primary-text:  var(--color-brand-black);
+  --color-interactive-secondary:     var(--color-brand-black);
+  --color-interactive-secondary-text: var(--color-neutral-50);
+  --color-interactive-ghost-text:    var(--color-brand-black);
 }
 
 /* ============================================================
