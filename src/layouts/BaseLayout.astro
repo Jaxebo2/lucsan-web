@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/nav/Navbar.astro';
+import Footer from '../components/nav/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Override absolute canonical (defaults to current URL). */
+  canonical?: string;
+  /** Open Graph image (absolute URL or path relative to site). */
+  ogImage?: string;
+  /** Whether to render a transparent navbar overlay (e.g. on hero pages). Default false. */
+  transparentNav?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.png',
+  transparentNav = false,
+} = Astro.props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'https://lucsandesign.com').toString();
+const ogImageUrl = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, Astro.site ?? 'https://lucsandesign.com').toString();
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* Favicon */}
+    <link rel="icon" href="/brand/Simbolo-coral.svg" type="image/svg+xml" />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="Lucsan Design" />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {/* Preload critical fonts (LCP candidates) */}
+    <link
+      rel="preload"
+      href="/fonts/CabinetGrotesk-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/Switzer-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="min-h-screen bg-neutral-50 text-brand-black antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-brand-black focus:px-4 focus:py-2 focus:text-neutral-50"
+    >
+      Saltar al contenido
+    </a>
+
+    <Navbar transparent={transparentNav} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

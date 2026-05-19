@@ -1,0 +1,268 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  /** If true, navbar starts transparent (over a hero section). */
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+
+const navLinks: { label: string; href: string }[] = [
+  { label: 'Servicios', href: '/servicios' },
+  { label: 'Proyectos', href: '/proyectos' },
+  { label: 'Sobre nosotros', href: '/sobre-nosotros' },
+  { label: 'Contacto', href: '/contacto' },
+];
+---
+
+<header
+  id="site-navbar"
+  data-transparent={transparent ? 'true' : 'false'}
+  class:list={[
+    'fixed inset-x-0 top-0 z-40',
+    'transition-[background-color,backdrop-filter,color] duration-200 ease-out',
+    'nav--light', // initial theme, JS swaps based on section
+  ]}
+>
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 md:px-16">
+    {/* Logo */}
+    <a
+      href="/"
+      class="flex items-center gap-2 transition-opacity hover:opacity-80"
+      aria-label="Lucsan Design — Inicio"
+    >
+      {/* Two logo variants; CSS reveals correct one based on data-theme */}
+      <img
+        src="/brand/LucsanDesign-horizontal-azul oscuro.svg"
+        alt="Lucsan Design"
+        class="nav-logo nav-logo--dark h-7 w-auto md:h-8"
+        width="160"
+        height="32"
+      />
+      <img
+        src="/brand/LucsanDesign-horizontal-blanco.svg"
+        alt="Lucsan Design"
+        class="nav-logo nav-logo--light h-7 w-auto md:h-8"
+        width="160"
+        height="32"
+      />
+    </a>
+
+    {/* Desktop nav */}
+    <nav class="hidden items-center gap-8 md:flex" aria-label="Primaria">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="nav-link text-sm font-medium transition-colors hover:text-brand-coral"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="/contacto"
+        class="inline-flex items-center gap-2 rounded-full bg-brand-coral px-5 py-2 text-sm font-medium text-brand-black transition-transform hover:scale-[1.02]"
+      >
+        Conversemos
+        <Icon name="ph:arrow-right-bold" class="h-4 w-4" />
+      </a>
+    </nav>
+
+    {/* Mobile hamburger */}
+    <button
+      id="nav-toggle"
+      type="button"
+      class="nav-toggle md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+    >
+      <Icon name="ph:list-bold" class="h-7 w-7" />
+    </button>
+  </div>
+
+  {/* Mobile drawer */}
+  <div
+    id="nav-drawer"
+    class="fixed inset-0 z-50 hidden bg-brand-black text-neutral-50"
+    aria-hidden="true"
+  >
+    <div class="flex h-16 items-center justify-between px-6">
+      <a href="/" class="flex items-center gap-2" aria-label="Lucsan Design — Inicio">
+        <img
+          src="/brand/LucsanDesign-horizontal-blanco.svg"
+          alt="Lucsan Design"
+          class="h-7 w-auto"
+          width="160"
+          height="32"
+        />
+      </a>
+      <button
+        id="nav-close"
+        type="button"
+        class="text-neutral-50"
+        aria-label="Cerrar menú"
+      >
+        <Icon name="ph:x-bold" class="h-7 w-7" />
+      </button>
+    </div>
+    <nav class="flex flex-col gap-2 px-6 py-8" aria-label="Móvil">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="border-b border-neutral-700 py-4 font-display text-3xl font-medium transition-colors hover:text-brand-coral"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="/contacto"
+        class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-brand-coral px-6 py-4 font-medium text-brand-black"
+      >
+        Conversemos
+        <Icon name="ph:arrow-right-bold" class="h-5 w-5" />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style is:global>
+  /* Light theme: dark logo + dark links */
+  #site-navbar.nav--light {
+    background-color: color-mix(in oklab, var(--color-neutral-50) 70%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-neutral-300) 50%, transparent);
+  }
+  #site-navbar.nav--light .nav-link {
+    color: var(--color-brand-black);
+  }
+  #site-navbar.nav--light .nav-logo--dark {
+    display: block;
+  }
+  #site-navbar.nav--light .nav-logo--light {
+    display: none;
+  }
+  #site-navbar.nav--light .nav-toggle {
+    color: var(--color-brand-black);
+  }
+
+  /* Dark theme: white logo + white links */
+  #site-navbar.nav--dark {
+    background-color: color-mix(in oklab, var(--color-brand-black) 50%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-neutral-50) 10%, transparent);
+  }
+  #site-navbar.nav--dark .nav-link {
+    color: var(--color-neutral-50);
+  }
+  #site-navbar.nav--dark .nav-logo--dark {
+    display: none;
+  }
+  #site-navbar.nav--dark .nav-logo--light {
+    display: block;
+  }
+  #site-navbar.nav--dark .nav-toggle {
+    color: var(--color-neutral-50);
+  }
+
+  /* Transparent variant (over hero, before scroll) */
+  #site-navbar[data-transparent='true'][data-scrolled='false'] {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom-color: transparent !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #site-navbar {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ============================================================
+  // Adaptive navbar: detect section theme + scrolled state
+  // ============================================================
+  const navbar = document.getElementById('site-navbar');
+  if (navbar) {
+    // 1) Scrolled state — affects transparent variant
+    const onScroll = () => {
+      navbar.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // 2) Section theme detection via IntersectionObserver
+    const sections = document.querySelectorAll<HTMLElement>('[data-theme]');
+    if (sections.length > 0) {
+      const setTheme = (theme: 'light' | 'dark') => {
+        navbar.classList.remove('nav--light', 'nav--dark');
+        navbar.classList.add(`nav--${theme}`);
+      };
+
+      // Detect which section overlaps the top of the viewport (under navbar)
+      const navHeight = navbar.offsetHeight;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          // Find the section currently crossing the navbar's bottom edge
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible[0]) {
+            const theme = (visible[0].target.getAttribute('data-theme') as 'light' | 'dark') ?? 'light';
+            setTheme(theme);
+          }
+        },
+        {
+          // Trigger when section's top crosses the area just below navbar
+          rootMargin: `-${navHeight}px 0px -${window.innerHeight - navHeight - 1}px 0px`,
+          threshold: 0,
+        }
+      );
+      sections.forEach((s) => observer.observe(s));
+    }
+  }
+
+  // ============================================================
+  // Mobile drawer
+  // ============================================================
+  const toggle = document.getElementById('nav-toggle');
+  const close = document.getElementById('nav-close');
+  const drawer = document.getElementById('nav-drawer');
+
+  const openDrawer = () => {
+    if (!drawer || !toggle) return;
+    drawer.classList.remove('hidden');
+    drawer.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeDrawer = () => {
+    if (!drawer || !toggle) return;
+    drawer.classList.add('hidden');
+    drawer.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
+
+  toggle?.addEventListener('click', openDrawer);
+  close?.addEventListener('click', closeDrawer);
+
+  // Close on link click inside drawer
+  drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeDrawer));
+
+  // Close on Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer && !drawer.classList.contains('hidden')) {
+      closeDrawer();
+    }
+  });
+</script>

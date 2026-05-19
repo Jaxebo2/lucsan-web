@@ -1,35 +1,150 @@
 ---
-import '../styles/global.css';
-const title = 'Lucsan Design';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+const title = 'Lucsan Design — Estudio de branding, diseño web y marketing';
+const description =
+  'Estudio chileno que integra estrategia, diseño y tecnología para que tu marca crezca con sentido. Branding, diseño web y marketing digital con foco en resultados.';
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content="Estudio de diseño, branding y marketing digital en Chile." />
-  </head>
-  <body class="bg-neutral-50 text-brand-black">
-    <main class="mx-auto max-w-7xl px-6 py-24 md:px-16">
-      <p class="font-sans text-sm uppercase tracking-widest text-neutral-500">
-        Tailwind v4 smoke test
+<BaseLayout title={title} description={description} transparentNav={true}>
+  {/* HERO — dark section, navbar should swap to light text + white logo */}
+  <section
+    data-theme="dark"
+    class="relative flex min-h-[100vh] items-center bg-brand-black text-neutral-50"
+  >
+    <div class="mx-auto w-full max-w-7xl px-6 pt-32 pb-24 md:px-16 md:pt-40">
+      <p class="font-sans text-sm uppercase tracking-widest text-neutral-400">
+        Estudio de diseño · Santiago, Chile
       </p>
-      <h1 class="mt-4 font-display text-5xl md:text-7xl">
-        <span class="text-brand-black">Lucsan</span>
-        <span class="text-brand-coral">Design</span>
+      <h1 class="mt-6 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl lg:text-8xl">
+        Tu marca <span class="text-brand-coral">no se ve</span> como vale.
+        Arreglémoslo.
       </h1>
-      <p class="mt-6 max-w-prose text-lg text-neutral-700">
-        Stack base funcionando. Tokens de marca, neutrales y tipografía cargados.
+      <p class="mt-8 max-w-2xl text-lg text-neutral-300 md:text-xl">
+        Diseñamos branding, sitios web y campañas que conectan con tus clientes y convierten visitas en negocio.
       </p>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <span class="rounded-full bg-brand-black px-4 py-2 text-sm font-medium text-neutral-50">brand-black</span>
-        <span class="rounded-full bg-brand-coral px-4 py-2 text-sm font-medium text-brand-black">brand-coral</span>
-        <span class="rounded-full bg-brand-blue px-4 py-2 text-sm font-medium text-neutral-50">brand-blue</span>
-        <span class="rounded-full bg-brand-green px-4 py-2 text-sm font-medium text-brand-black">brand-green</span>
-        <span class="rounded-full bg-brand-yellow px-4 py-2 text-sm font-medium text-brand-black">brand-yellow</span>
+      <div class="mt-12 flex flex-wrap gap-4">
+        <a
+          href="/contacto"
+          class="inline-flex items-center gap-2 rounded-full bg-brand-coral px-6 py-3 font-medium text-brand-black transition-transform hover:scale-[1.02]"
+        >
+          Empezar un proyecto
+          <Icon name="ph:arrow-right-bold" class="h-5 w-5" />
+        </a>
+        <a
+          href="/proyectos"
+          class="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-6 py-3 font-medium text-neutral-50 transition-colors hover:border-brand-coral hover:text-brand-coral"
+        >
+          Ver proyectos
+        </a>
       </div>
-    </main>
-  </body>
-</html>
+    </div>
+  </section>
+
+  {/* SERVICIOS DESTACADOS — light section, navbar swaps to dark text */}
+  <section
+    data-theme="light"
+    class="bg-neutral-50 py-section-mobile md:py-section"
+  >
+    <div class="mx-auto max-w-7xl px-6 md:px-16">
+      <p class="font-sans text-sm uppercase tracking-widest text-neutral-500">Qué hacemos</p>
+      <h2 class="mt-3 max-w-3xl font-display text-4xl leading-tight md:text-6xl">
+        Tres disciplinas, <span class="text-brand-coral">una sola visión</span>.
+      </h2>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-3">
+        {
+          [
+            {
+              titulo: 'Branding',
+              descripcion: 'Marcas con propósito, sistemas que escalan y una identidad que tu equipo sabe usar.',
+              icon: 'ph:target-bold',
+              href: '/servicios/branding',
+            },
+            {
+              titulo: 'Diseño web',
+              descripcion: 'Sitios rápidos, mensurables y pensados para convertir, no solo para verse bonitos.',
+              icon: 'ph:browsers-bold',
+              href: '/servicios/diseno-web',
+            },
+            {
+              titulo: 'Marketing digital',
+              descripcion: 'Campañas con estrategia detrás. Ads, contenido y analítica que se traducen en clientes.',
+              icon: 'ph:trend-up-bold',
+              href: '/servicios/marketing-digital',
+            },
+          ].map((s) => (
+            <a
+              href={s.href}
+              class="group flex flex-col rounded-2xl border border-neutral-200 bg-neutral-50 p-8 transition-all hover:border-brand-coral hover:shadow-lg"
+            >
+              <Icon name={s.icon} class="h-10 w-10 text-brand-coral" />
+              <h3 class="mt-6 font-display text-2xl md:text-3xl">{s.titulo}</h3>
+              <p class="mt-3 text-neutral-600">{s.descripcion}</p>
+              <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-brand-black group-hover:text-brand-coral">
+                Ver servicio
+                <Icon name="ph:arrow-right-bold" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* CASOS — light section continúa */}
+  <section
+    data-theme="light"
+    class="bg-neutral-100 py-section-mobile md:py-section"
+  >
+    <div class="mx-auto max-w-7xl px-6 md:px-16">
+      <p class="font-sans text-sm uppercase tracking-widest text-neutral-500">Proyectos recientes</p>
+      <h2 class="mt-3 max-w-3xl font-display text-4xl leading-tight md:text-6xl">
+        Lo que hicimos para <span class="text-brand-coral">otros</span>.
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg text-neutral-700">
+        Cada proyecto resuelve un problema concreto. Aquí está cómo, con qué y con qué resultado.
+      </p>
+      <div class="mt-12">
+        <a
+          href="/proyectos"
+          class="inline-flex items-center gap-2 rounded-full border-2 border-brand-black px-6 py-3 font-medium text-brand-black transition-colors hover:bg-brand-black hover:text-neutral-50"
+        >
+          Ver todos los proyectos
+          <Icon name="ph:arrow-right-bold" class="h-5 w-5" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* MÉTODO — dark section, navbar swaps back to dark mode */}
+  <section
+    data-theme="dark"
+    class="bg-brand-black py-section-mobile text-neutral-50 md:py-section"
+  >
+    <div class="mx-auto max-w-7xl px-6 md:px-16">
+      <p class="font-sans text-sm uppercase tracking-widest text-neutral-400">Cómo trabajamos</p>
+      <h2 class="mt-3 max-w-3xl font-display text-4xl leading-tight md:text-6xl">
+        Un método claro, <span class="text-brand-coral">sin sorpresas</span>.
+      </h2>
+
+      <div class="mt-16 grid gap-12 md:grid-cols-4">
+        {
+          [
+            { numero: '01', titulo: 'Descubrimiento', descripcion: 'Entendemos tu negocio, tu cliente y tu competencia antes de tocar nada visual.' },
+            { numero: '02', titulo: 'Estrategia', descripcion: 'Definimos posicionamiento, mensajes clave y el plan de acción.' },
+            { numero: '03', titulo: 'Diseño', descripcion: 'Iteramos en propuestas concretas hasta dar con la que conecta.' },
+            { numero: '04', titulo: 'Entrega y soporte', descripcion: 'Implementación, capacitación y acompañamiento post-lanzamiento.' },
+          ].map((fase) => (
+            <div>
+              <span class="font-display text-5xl text-brand-coral">{fase.numero}</span>
+              <h3 class="mt-4 font-display text-xl md:text-2xl">{fase.titulo}</h3>
+              <p class="mt-3 text-sm text-neutral-400">{fase.descripcion}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

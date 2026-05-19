@@ -1,0 +1,154 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const year = new Date().getFullYear();
+
+const servicios: { label: string; href: string }[] = [
+  { label: 'Branding', href: '/servicios/branding' },
+  { label: 'Diseño web', href: '/servicios/diseno-web' },
+  { label: 'Marketing digital', href: '/servicios/marketing-digital' },
+  { label: 'Identidad visual', href: '/servicios/identidad-visual' },
+  { label: 'Rediseño de marca', href: '/servicios/rediseno-de-marca' },
+  { label: 'Estrategia de marca', href: '/servicios/estrategia-de-marca' },
+  { label: 'Diseño UX/UI', href: '/servicios/diseno-ux-ui' },
+  { label: 'Contenido para redes', href: '/servicios/contenido-redes-sociales' },
+];
+
+const estudio: { label: string; href: string }[] = [
+  { label: 'Sobre nosotros', href: '/sobre-nosotros' },
+  { label: 'Proyectos', href: '/proyectos' },
+  { label: 'Contacto', href: '/contacto' },
+];
+
+const redes: { label: string; href: string; icon: string }[] = [
+  { label: 'Instagram', href: 'https://instagram.com/lucsandesign', icon: 'ph:instagram-logo-bold' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/company/lucsandesign', icon: 'ph:linkedin-logo-bold' },
+  { label: 'Behance', href: 'https://behance.net/lucsandesign', icon: 'ph:behance-logo-bold' },
+];
+---
+
+<footer
+  data-theme="dark"
+  class="bg-brand-black text-neutral-50"
+>
+  <div class="mx-auto max-w-7xl px-6 py-16 md:px-16 md:py-24">
+    {/* Top: CTA */}
+    <div class="mb-16 flex flex-col gap-6 border-b border-neutral-700 pb-12 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-2xl">
+        <p class="font-sans text-sm uppercase tracking-widest text-neutral-400">¿Empezamos?</p>
+        <h2 class="mt-3 font-display text-4xl leading-tight md:text-6xl">
+          Cuéntanos sobre <span class="text-brand-coral">tu proyecto</span>.
+        </h2>
+      </div>
+      <a
+        href="/contacto"
+        class="inline-flex items-center gap-2 self-start rounded-full bg-brand-coral px-6 py-3 font-medium text-brand-black transition-transform hover:scale-[1.02] md:self-auto"
+      >
+        Conversemos
+        <Icon name="ph:arrow-right-bold" class="h-5 w-5" />
+      </a>
+    </div>
+
+    {/* Middle: 4 columns */}
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-4 md:gap-8">
+      {/* Brand col */}
+      <div class="col-span-2 md:col-span-1">
+        <img
+          src="/brand/LucsanDesign-vertical-blanco.svg"
+          alt="Lucsan Design"
+          class="h-20 w-auto"
+          width="120"
+          height="80"
+        />
+        <p class="mt-4 max-w-xs text-sm text-neutral-400">
+          Estrategia + diseño + tecnología para marcas que quieren crecer con sentido.
+        </p>
+      </div>
+
+      {/* Servicios */}
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-widest text-neutral-400">
+          Servicios
+        </h3>
+        <ul class="mt-4 space-y-2">
+          {
+            servicios.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  class="text-sm text-neutral-50 transition-colors hover:text-brand-coral"
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {/* Estudio */}
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-widest text-neutral-400">
+          Estudio
+        </h3>
+        <ul class="mt-4 space-y-2">
+          {
+            estudio.map((e) => (
+              <li>
+                <a
+                  href={e.href}
+                  class="text-sm text-neutral-50 transition-colors hover:text-brand-coral"
+                >
+                  {e.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {/* Contacto */}
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-widest text-neutral-400">
+          Contacto
+        </h3>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li>
+            <a
+              href="mailto:contacto@lucsandesign.com"
+              class="text-neutral-50 transition-colors hover:text-brand-coral"
+            >
+              contacto@lucsandesign.com
+            </a>
+          </li>
+          <li class="text-neutral-400">Santiago, Chile</li>
+        </ul>
+        <div class="mt-6 flex gap-4">
+          {
+            redes.map((r) => (
+              <a
+                href={r.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={r.label}
+                class="text-neutral-400 transition-colors hover:text-brand-coral"
+              >
+                <Icon name={r.icon} class="h-5 w-5" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom: legal */}
+    <div class="mt-16 flex flex-col gap-3 border-t border-neutral-700 pt-8 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between">
+      <p>© {year} Lucsan Design SpA · Chile · Todos los derechos reservados.</p>
+      <p>
+        <a href="/legal/privacidad" class="hover:text-brand-coral">Privacidad</a>
+        <span class="mx-2">·</span>
+        <a href="/legal/cookies" class="hover:text-brand-coral">Cookies</a>
+      </p>
+    </div>
+  </div>
+</footer>
