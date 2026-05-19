@@ -17,14 +17,22 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.5",
+    "@astrojs/vercel": "^9.0.5",
     "@iconify-json/ph": "^1.2.2",
+    "@keystatic/astro": "^5.0.6",
+    "@keystatic/core": "^0.5.50",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^5.13.0",
     "astro-icon": "^1.1.5",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "typescript": "^5.6.3"
   }
 }
