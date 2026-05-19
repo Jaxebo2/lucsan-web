@@ -35,7 +35,7 @@ const isActive = (href: string): boolean => {
     'nav--light',
   ]}
 >
-  <div class="nav-pill relative flex h-14 items-center gap-2 rounded-full pl-3 pr-3 md:h-16 md:gap-3 md:pl-5 md:pr-2">
+  <div class="nav-pill relative flex h-16 items-center gap-3 rounded-full pl-4 pr-4 md:h-[72px] md:gap-6 md:pl-7 md:pr-3">
     {/* Logo */}
     <a
       href="/"
@@ -59,7 +59,7 @@ const isActive = (href: string): boolean => {
     </a>
 
     {/* Desktop nav */}
-    <nav class="hidden items-center gap-1 md:flex" aria-label="Primaria">
+    <nav class="hidden items-center gap-2 md:flex" aria-label="Primaria">
       {
         navLinks.map((link) => {
           const active = isActive(link.href);
