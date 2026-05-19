@@ -1,0 +1,234 @@
+---
+import { getCollection, getEntries, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Section from '../../components/ui/Section.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Heading from '../../components/ui/Heading.astro';
+import Prose from '../../components/ui/Prose.astro';
+import Badge from '../../components/ui/Badge.astro';
+import MetricBadge from '../../components/ui/MetricBadge.astro';
+import CTABlock from '../../components/ui/CTABlock.astro';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', (p) => p.data.publicado);
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const p = project.data;
+
+const serviciosAplicados = p.serviciosAplicados.length > 0
+  ? await getEntries(p.serviciosAplicados)
+  : [];
+
+const sectorLabels: Record<string, string> = {
+  tecnologia: 'Tecnología',
+  retail: 'Retail',
+  salud: 'Salud',
+  educacion: 'Educación',
+  gastronomia: 'Gastronomía',
+  servicios: 'Servicios',
+  inmobiliaria: 'Inmobiliaria',
+  finanzas: 'Finanzas',
+  otro: 'Otro',
+};
+---
+
+<BaseLayout title={p.seo.title} description={p.seo.description} ogImage={p.seo.ogImage}>
+  {/* HERO + COVER — dark */}
+  <Section surface="inverse" spacing="none" class="relative pt-32 pb-16 md:pt-44 md:pb-24">
+    <Container>
+      <p class="text-sm text-text-inverse-secondary">
+        <a href="/proyectos" class="hover:text-text-accent">Proyectos</a>
+        <span class="mx-2 opacity-50">/</span>
+        <span class="text-text-inverse">{p.cliente}</span>
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        <Badge variant="inverse" size="sm">{p.cliente}</Badge>
+        <Badge variant="inverse" size="sm">{sectorLabels[p.sector] ?? p.sector}</Badge>
+        <Badge variant="inverse" size="sm">{p.ano}</Badge>
+        {p.destacado && <Badge variant="accent" size="sm">Destacado</Badge>}
+      </div>
+
+      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
+        {p.titulo}
+      </Heading>
+      <Prose tone="inverse-secondary" size="xl" class="mt-6 max-w-3xl">
+        {p.resumenCorto}
+      </Prose>
+    </Container>
+
+    {/* Cover image full-bleed */}
+    <div class="mx-auto mt-16 max-w-[1440px] px-6 md:px-16">
+      <div class="aspect-[16/9] overflow-hidden rounded-2xl bg-neutral-800">
+        <img
+          src={p.cover.src}
+          alt={p.cover.alt}
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  </Section>
+
+  {/* CONTEXTO + DESAFÍO — light */}
+  <Section surface="page">
+    <Container>
+      <div class="grid gap-12 md:grid-cols-3">
+        <aside class="md:col-span-1">
+          <div class="sticky top-28 flex flex-col gap-6">
+            {
+              serviciosAplicados.length > 0 && (
+                <div>
+                  <p class="text-xs font-medium uppercase tracking-widest text-text-muted">
+                    Servicios aplicados
+                  </p>
+                  <ul class="mt-3 flex flex-col gap-1">
+                    {serviciosAplicados.map((s) => (
+                      <li>
+                        <a
+                          href={`/servicios/${s.data.slug}`}
+                          class="text-text-primary transition-colors hover:text-text-accent"
+                        >
+                          {s.data.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+            <div>
+              <p class="text-xs font-medium uppercase tracking-widest text-text-muted">Cliente</p>
+              <p class="mt-2 text-text-primary">{p.cliente}</p>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-widest text-text-muted">Sector</p>
+              <p class="mt-2 text-text-primary">{sectorLabels[p.sector] ?? p.sector}</p>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-widest text-text-muted">Año</p>
+              <p class="mt-2 text-text-primary">{p.ano}</p>
+            </div>
+          </div>
+        </aside>
+
+        <div class="flex flex-col gap-14 md:col-span-2">
+          <div>
+            <Eyebrow>01 / Contexto</Eyebrow>
+            <Heading level={2} size="lg" class="mt-3">El punto de partida.</Heading>
+            <Prose tone="secondary" size="lg" class="mt-4">{p.caso.contexto}</Prose>
+          </div>
+
+          <div>
+            <Eyebrow>02 / Desafío</Eyebrow>
+            <Heading level={2} size="lg" class="mt-3">Qué había que resolver.</Heading>
+            <Prose tone="secondary" size="lg" class="mt-4">{p.caso.desafio}</Prose>
+          </div>
+
+          <div>
+            <Eyebrow>03 / Enfoque</Eyebrow>
+            <Heading level={2} size="lg" class="mt-3">Cómo lo abordamos.</Heading>
+            <Prose tone="secondary" size="lg" class="mt-4">{p.caso.enfoque}</Prose>
+          </div>
+
+          <div>
+            <Eyebrow>04 / Solución</Eyebrow>
+            <Heading level={2} size="lg" class="mt-3">Qué construimos.</Heading>
+            <Prose tone="secondary" size="lg" class="mt-4">{p.caso.solucion}</Prose>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  {/* GALERÍA — muted */}
+  {
+    p.caso.galeria.length > 0 && (
+      <Section surface="muted">
+        <Container>
+          <Eyebrow>Galería</Eyebrow>
+          <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+            El trabajo, <span class="text-text-accent">en detalle</span>.
+          </Heading>
+
+          <div class="mt-12 grid gap-6 md:grid-cols-2">
+            {p.caso.galeria.map((img) => (
+              <div class="overflow-hidden rounded-2xl bg-neutral-200">
+                <img src={img.src} alt={img.alt} class="h-full w-full object-cover" />
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    )
+  }
+
+  {/* RESULTADO — dark */}
+  <Section surface="inverse">
+    <Container>
+      <Eyebrow tone="inverse">05 / Resultado</Eyebrow>
+      <Heading level={2} size="2xl" tone="inverse" class="mt-3 max-w-3xl">
+        Qué <span class="text-text-accent">cambió</span> después del proyecto.
+      </Heading>
+
+      <Prose tone="inverse-secondary" size="lg" class="mt-6 max-w-3xl">
+        {p.caso.resultado.narrativa}
+      </Prose>
+
+      {
+        p.caso.resultado.metricas.length > 0 && (
+          <div class="mt-16 grid gap-12 md:grid-cols-3">
+            {p.caso.resultado.metricas.map((m) => (
+              <MetricBadge valor={m.valor} descripcion={m.descripcion} tone="accent" />
+            ))}
+          </div>
+        )
+      }
+    </Container>
+  </Section>
+
+  {/* TESTIMONIO — light */}
+  {
+    p.caso.testimonio && (
+      <Section surface="page">
+        <Container size="md">
+          <figure class="text-center">
+            <Icon name="ph:quotes-fill" class="mx-auto h-10 w-10 text-text-accent" />
+            <blockquote class="mt-6">
+              <p class="font-display text-2xl leading-snug text-text-primary md:text-4xl">
+                "{p.caso.testimonio.cita}"
+              </p>
+            </blockquote>
+            <figcaption class="mt-8 text-sm">
+              <span class="font-medium text-text-primary">{p.caso.testimonio.autor}</span>
+              <span class="text-text-muted"> — {p.caso.testimonio.cargo}</span>
+            </figcaption>
+          </figure>
+        </Container>
+      </Section>
+    )
+  }
+
+  {/* CTA FINAL */}
+  <Section surface="page" spacing="base">
+    <Container>
+      <CTABlock
+        eyebrow="¿Tu proyecto, el próximo?"
+        headline="Cuéntanos en qué estás."
+        primaryCta={{ texto: 'Conversemos', href: '/contacto' }}
+        secondaryCta={{ texto: 'Ver más proyectos', href: '/proyectos' }}
+        surface="inverse"
+      />
+    </Container>
+  </Section>
+</BaseLayout>

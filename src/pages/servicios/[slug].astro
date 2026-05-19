@@ -1,0 +1,214 @@
+---
+import { getCollection, getEntries, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Section from '../../components/ui/Section.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Heading from '../../components/ui/Heading.astro';
+import Prose from '../../components/ui/Prose.astro';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import FAQ from '../../components/ui/FAQ.astro';
+import FAQItem from '../../components/ui/FAQItem.astro';
+import CTABlock from '../../components/ui/CTABlock.astro';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services', (s) => s.data.publicado);
+  return services.map((service) => ({
+    params: { slug: service.data.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: CollectionEntry<'services'>;
+}
+
+const { service } = Astro.props;
+const s = service.data;
+
+const proyectosRelacionados = s.casosRelacionados.length > 0
+  ? await getEntries(s.casosRelacionados)
+  : [];
+---
+
+<BaseLayout title={s.seo.title} description={s.seo.description} ogImage={s.seo.ogImage}>
+  {/* HERO — dark */}
+  <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
+    <Container>
+      <p class="text-sm text-text-inverse-secondary">
+        <a href="/servicios" class="hover:text-text-accent">Servicios</a>
+        <span class="mx-2 opacity-50">/</span>
+        <span class="text-text-inverse">{s.title}</span>
+      </p>
+      <Eyebrow tone="inverse" class="mt-8">{s.title}</Eyebrow>
+      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
+        {s.hero.headline}
+      </Heading>
+      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
+        {s.hero.subhead}
+      </Prose>
+      <div class="mt-12 flex flex-wrap gap-4">
+        <Button href="/contacto" variant="primary" iconRight="ph:arrow-right-bold">
+          Conversemos
+        </Button>
+        <Button href="#metodo" variant="outline">
+          Ver método
+        </Button>
+      </div>
+    </Container>
+  </Section>
+
+  {/* PARA QUIÉN — light */}
+  <Section surface="page">
+    <Container>
+      <Eyebrow>Para quién</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+        ¿Te suena <span class="text-text-accent">familiar</span>?
+      </Heading>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-3">
+        {
+          s.paraQuien.map((p) => (
+            <Card variant="filled" padding="lg" radius="xl">
+              <Icon name="ph:user-focus-bold" class="h-8 w-8 text-text-accent" />
+              <Heading level={3} size="sm" class="mt-5">{p.perfil}</Heading>
+              <Prose tone="secondary" class="mt-3">{p.descripcion}</Prose>
+            </Card>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  {/* PROBLEMA — muted */}
+  <Section surface="muted">
+    <Container size="md">
+      <Eyebrow>El problema</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3">
+        {s.problema.titulo}
+      </Heading>
+
+      <ul class="mt-12 flex flex-col gap-4">
+        {
+          s.problema.sintomas.map((sintoma) => (
+            <li class="flex items-start gap-4 border-b border-border-subtle pb-4 last:border-b-0">
+              <Icon name="ph:warning-circle-bold" class="mt-1 h-6 w-6 flex-none text-text-accent" />
+              <span class="text-lg text-text-primary md:text-xl">{sintoma}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </Section>
+
+  {/* MÉTODO — dark */}
+  <Section surface="inverse" id="metodo">
+    <Container>
+      <Eyebrow tone="inverse">Cómo trabajamos</Eyebrow>
+      <Heading level={2} size="2xl" tone="inverse" class="mt-3 max-w-3xl">
+        El proceso, <span class="text-text-accent">paso a paso</span>.
+      </Heading>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        {
+          s.metodo.map((fase, i) => (
+            <Card variant="inverse" padding="lg" radius="xl">
+              <span class="font-display text-3xl font-bold text-text-accent">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <Heading level={3} size="md" tone="inverse" class="mt-4">
+                {fase.fase.replace(/^\d+\.\s*/, '')}
+              </Heading>
+              <Prose tone="inverse-secondary" class="mt-3">{fase.descripcion}</Prose>
+              <ul class="mt-6 flex flex-col gap-2">
+                {fase.entregables.map((e) => (
+                  <li class="flex items-start gap-2 text-sm text-text-inverse-secondary">
+                    <Icon name="ph:check-bold" class="mt-1 h-4 w-4 flex-none text-text-accent" />
+                    <span>{e}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  {/* ENTREGABLES — light */}
+  <Section surface="page">
+    <Container size="md">
+      <Eyebrow>Qué te llevás</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3">
+        Todo lo que entregamos al cerrar el proyecto.
+      </Heading>
+
+      <ul class="mt-12 grid gap-3 md:grid-cols-2">
+        {
+          s.entregables.map((e) => (
+            <li class="flex items-start gap-3 rounded-lg bg-surface-muted p-4">
+              <Icon name="ph:check-circle-fill" class="mt-0.5 h-5 w-5 flex-none text-text-accent" />
+              <span class="text-text-primary">{e}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </Section>
+
+  {/* CASOS RELACIONADOS — muted */}
+  {
+    proyectosRelacionados.length > 0 && (
+      <Section surface="muted">
+        <Container>
+          <Eyebrow>Casos relacionados</Eyebrow>
+          <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+            Cómo lo aplicamos para <span class="text-text-accent">otros</span>.
+          </Heading>
+
+          <div class="mt-16 grid gap-6 md:grid-cols-2">
+            {proyectosRelacionados.map((p) => (
+              <Card href={`/proyectos/${p.data.slug}`} variant="elevated" padding="lg" radius="xl">
+                <p class="text-sm text-text-muted">{p.data.cliente}</p>
+                <Heading level={3} size="md" class="mt-2">{p.data.titulo}</Heading>
+                <Prose tone="secondary" class="mt-3">{p.data.resumenCorto}</Prose>
+                <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-text-primary transition-colors group-hover:text-text-accent">
+                  Ver caso
+                  <Icon name="ph:arrow-right-bold" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    )
+  }
+
+  {/* FAQ — light */}
+  <Section surface="page">
+    <Container size="md">
+      <Eyebrow>Preguntas frecuentes</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3">
+        Lo que <span class="text-text-accent">siempre</span> nos preguntan.
+      </Heading>
+
+      <FAQ class="mt-12">
+        {s.faq.map((f) => <FAQItem pregunta={f.pregunta}>{f.respuesta}</FAQItem>)}
+      </FAQ>
+    </Container>
+  </Section>
+
+  {/* CTA FINAL */}
+  <Section surface="page" spacing="base">
+    <Container>
+      <CTABlock
+        eyebrow={s.title}
+        headline={s.cta.headline}
+        primaryCta={{ texto: s.cta.botonTexto, href: '/contacto' }}
+        surface="inverse"
+      />
+    </Container>
+  </Section>
+</BaseLayout>

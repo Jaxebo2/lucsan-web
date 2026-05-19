@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Section from '../../components/ui/Section.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Heading from '../../components/ui/Heading.astro';
+import Prose from '../../components/ui/Prose.astro';
+import Card from '../../components/ui/Card.astro';
+import Badge from '../../components/ui/Badge.astro';
+import CTABlock from '../../components/ui/CTABlock.astro';
+import { Icon } from 'astro-icon/components';
+
+const projects = (await getCollection('projects', (p) => p.data.publicado))
+  .sort((a, b) => {
+    // Destacados primero, luego por año descendente
+    if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
+    return b.data.ano - a.data.ano;
+  });
+
+const sectorLabels: Record<string, string> = {
+  tecnologia: 'Tecnología',
+  retail: 'Retail',
+  salud: 'Salud',
+  educacion: 'Educación',
+  gastronomia: 'Gastronomía',
+  servicios: 'Servicios',
+  inmobiliaria: 'Inmobiliaria',
+  finanzas: 'Finanzas',
+  otro: 'Otro',
+};
+
+const seoTitle = 'Proyectos — Lucsan Design';
+const seoDescription =
+  'Casos de estudio de Lucsan Design: branding, diseño web y marketing digital. Resultados de negocio reales, no portfolio decorativo.';
+---
+
+<BaseLayout title={seoTitle} description={seoDescription}>
+  {/* HERO — dark */}
+  <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
+    <Container>
+      <Eyebrow tone="inverse">Proyectos</Eyebrow>
+      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
+        Lo que hicimos para <span class="text-text-accent">otros</span>.
+      </Heading>
+      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
+        Cada caso resuelve un problema concreto. Acá está cómo, con qué y con qué resultado.
+      </Prose>
+    </Container>
+  </Section>
+
+  {/* GRID — light */}
+  <Section surface="page">
+    <Container>
+      {
+        projects.length === 0 ? (
+          <Prose tone="secondary" size="lg">
+            Aún no hay proyectos publicados.
+          </Prose>
+        ) : (
+          <div class="grid gap-8 md:grid-cols-2">
+            {projects.map((p) => (
+              <a
+                href={`/proyectos/${p.data.slug}`}
+                class="group flex flex-col overflow-hidden rounded-2xl bg-surface-muted transition-all hover:shadow-lg"
+              >
+                <div class="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+                  <img
+                    src={p.data.thumbnail.src}
+                    alt={p.data.thumbnail.alt}
+                    class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                  {p.data.destacado && (
+                    <span class="absolute left-4 top-4">
+                      <Badge variant="accent" size="sm">Destacado</Badge>
+                    </span>
+                  )}
+                </div>
+                <div class="flex flex-1 flex-col p-6 md:p-8">
+                  <div class="flex items-center gap-3 text-xs text-text-muted">
+                    <span>{p.data.cliente}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{sectorLabels[p.data.sector] ?? p.data.sector}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{p.data.ano}</span>
+                  </div>
+                  <Heading level={2} size="md" class="mt-3">{p.data.titulo}</Heading>
+                  <Prose tone="secondary" class="mt-3 flex-1">{p.data.resumenCorto}</Prose>
+                  <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-text-primary transition-colors group-hover:text-text-accent">
+                    Ver caso
+                    <Icon name="ph:arrow-right-bold" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </Container>
+  </Section>
+
+  {/* CTA — final */}
+  <Section surface="page" spacing="base">
+    <Container>
+      <CTABlock
+        eyebrow="¿El próximo?"
+        headline="Conversemos sobre tu proyecto."
+        primaryCta={{ texto: 'Conversemos', href: '/contacto' }}
+        surface="inverse"
+      />
+    </Container>
+  </Section>
+</BaseLayout>
