@@ -10,8 +10,6 @@ interface Props {
   canonical?: string;
   /** Open Graph image (absolute URL or path relative to site). */
   ogImage?: string;
-  /** Whether to render a transparent navbar overlay (e.g. on hero pages). Default false. */
-  transparentNav?: boolean;
 }
 
 const {
@@ -19,8 +17,7 @@ const {
   description,
   canonical,
   ogImage = '/og-default.png',
-  transparentNav = false,
-} = Astro.props;
+} = Astro.props as Props;
 
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'https://lucsandesign.com').toString();
 const ogImageUrl = ogImage.startsWith('http')
@@ -81,7 +78,7 @@ const ogImageUrl = ogImage.startsWith('http')
       Saltar al contenido
     </a>
 
-    <Navbar transparent={transparentNav} />
+    <Navbar />
 
     <main id="main-content">
       <slot />
