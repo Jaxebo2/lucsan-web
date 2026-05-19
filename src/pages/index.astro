@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 const title = 'Lucsan Design';
 ---
 
@@ -10,10 +11,25 @@ const title = 'Lucsan Design';
     <title>{title}</title>
     <meta name="description" content="Estudio de diseño, branding y marketing digital en Chile." />
   </head>
-  <body>
-    <main>
-      <h1>{title}</h1>
-      <p>Bootstrap Astro OK.</p>
+  <body class="bg-neutral-50 text-brand-black">
+    <main class="mx-auto max-w-7xl px-6 py-24 md:px-16">
+      <p class="font-sans text-sm uppercase tracking-widest text-neutral-500">
+        Tailwind v4 smoke test
+      </p>
+      <h1 class="mt-4 font-display text-5xl md:text-7xl">
+        <span class="text-brand-black">Lucsan</span>
+        <span class="text-brand-coral">Design</span>
+      </h1>
+      <p class="mt-6 max-w-prose text-lg text-neutral-700">
+        Stack base funcionando. Tokens de marca, neutrales y tipografía cargados.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <span class="rounded-full bg-brand-black px-4 py-2 text-sm font-medium text-neutral-50">brand-black</span>
+        <span class="rounded-full bg-brand-coral px-4 py-2 text-sm font-medium text-brand-black">brand-coral</span>
+        <span class="rounded-full bg-brand-blue px-4 py-2 text-sm font-medium text-neutral-50">brand-blue</span>
+        <span class="rounded-full bg-brand-green px-4 py-2 text-sm font-medium text-brand-black">brand-green</span>
+        <span class="rounded-full bg-brand-yellow px-4 py-2 text-sm font-medium text-brand-black">brand-yellow</span>
+      </div>
     </main>
   </body>
 </html>
