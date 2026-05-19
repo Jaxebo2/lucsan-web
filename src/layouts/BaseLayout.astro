@@ -3,6 +3,8 @@ import '../styles/global.css';
 import Navbar from '../components/nav/Navbar.astro';
 import Footer from '../components/nav/Footer.astro';
 import SchemaOrg from '../components/seo/SchemaOrg.astro';
+import Analytics from '../components/analytics/Analytics.astro';
+import GTMNoscript from '../components/analytics/GTMNoscript.astro';
 import { organizationSchema, websiteSchema } from '../lib/seo';
 
 interface Props {
@@ -65,6 +67,9 @@ const ogImageUrl = ogImage.startsWith('http')
     {/* Schema.org JSON-LD */}
     <SchemaOrg schemas={allSchemas} />
 
+    {/* Analytics (GTM + GA4 fallback + Meta Pixel) — prod only */}
+    <Analytics />
+
     {/* Preload critical fonts (LCP candidates) */}
     <link
       rel="preload"
@@ -82,6 +87,9 @@ const ogImageUrl = ogImage.startsWith('http')
     />
   </head>
   <body class="min-h-screen bg-neutral-50 text-brand-black antialiased">
+    {/* GTM noscript fallback — must be immediately after <body> */}
+    <GTMNoscript />
+
     <a
       href="#main-content"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-brand-black focus:px-4 focus:py-2 focus:text-neutral-50"

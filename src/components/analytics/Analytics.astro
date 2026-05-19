@@ -1,0 +1,79 @@
+---
+/**
+ * Analytics — GTM container (head + body) + optional Meta Pixel.
+ *
+ * GTM is the preferred entry point — load GA4 + Meta Pixel + others
+ * from inside GTM rather than hardcoding each script here. If GTM is
+ * empty but GA4 is set directly, we fall back to a minimal GA4 install.
+ *
+ * Scripts only render when their respective IDs are configured AND
+ * we're in production. In dev (import.meta.env.DEV), analytics is
+ * disabled to keep your dashboards clean.
+ */
+
+const gtmId = import.meta.env.PUBLIC_GTM_ID ?? '';
+const ga4Id = import.meta.env.PUBLIC_GA4_ID ?? '';
+const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID ?? '';
+
+const isProduction = !import.meta.env.DEV;
+const enableGtm = isProduction && gtmId.length > 0;
+const enableGa4Standalone = isProduction && !enableGtm && ga4Id.length > 0;
+const enableMetaPixel = isProduction && metaPixelId.length > 0;
+---
+
+{/* GTM container script (head) */}
+{
+  enableGtm && (
+    <script is:inline define:vars={{ gtmId }}>
+      {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','${gtmId}');`}
+    </script>
+  )
+}
+
+{/* GA4 standalone fallback (only if GTM is not configured) */}
+{
+  enableGa4Standalone && (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} />
+      <script is:inline define:vars={{ ga4Id }}>
+        {`window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${ga4Id}', { anonymize_ip: true });`}
+      </script>
+    </>
+  )
+}
+
+{/* Meta Pixel base */}
+{
+  enableMetaPixel && (
+    <>
+      <script is:inline define:vars={{ metaPixelId }}>
+        {`!function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '${metaPixelId}');
+        fbq('track', 'PageView');`}
+      </script>
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style="display:none"
+          src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+          alt=""
+        />
+      </noscript>
+    </>
+  )
+}
