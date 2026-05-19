@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import Navbar from '../components/nav/Navbar.astro';
 import Footer from '../components/nav/Footer.astro';
 import SchemaOrg from '../components/seo/SchemaOrg.astro';
@@ -69,6 +70,14 @@ const ogImageUrl = ogImage.startsWith('http')
 
     {/* Analytics (GTM + GA4 fallback + Meta Pixel) — prod only */}
     <Analytics />
+
+    {/* Astro View Transitions — smooth client-side navigation */}
+    <ClientRouter />
+
+    {/* Animations (Lenis smooth scroll + GSAP reveals) — respects reduced-motion */}
+    <script>
+      import '../scripts/animations';
+    </script>
 
     {/* Preload critical fonts (LCP candidates) */}
     <link
