@@ -1,12 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
+import Button from '../ui/Button.astro';
 
 interface Props {
   /** If true, navbar starts transparent (over a hero section). */
   transparent?: boolean;
 }
 
-const { transparent = false } = Astro.props;
+const { transparent = false } = Astro.props as Props;
 
 const navLinks: { label: string; href: string }[] = [
   { label: 'Servicios', href: '/servicios' },
@@ -14,6 +15,14 @@ const navLinks: { label: string; href: string }[] = [
   { label: 'Sobre nosotros', href: '/sobre-nosotros' },
   { label: 'Contacto', href: '/contacto' },
 ];
+
+// Active link detection: exact match for "/", startsWith for nested routes
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string): boolean => {
+  const normalized = href.replace(/\/$/, '') || '/';
+  if (normalized === '/') return currentPath === '/';
+  return currentPath === normalized || currentPath.startsWith(`${normalized}/`);
+};
 ---
 
 <header
@@ -22,7 +31,7 @@ const navLinks: { label: string; href: string }[] = [
   class:list={[
     'fixed inset-x-0 top-0 z-40',
     'transition-[background-color,backdrop-filter,color] duration-200 ease-out',
-    'nav--light', // initial theme, JS swaps based on section
+    'nav--light',
   ]}
 >
   <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 md:px-16">
@@ -32,7 +41,6 @@ const navLinks: { label: string; href: string }[] = [
       class="flex items-center gap-2 transition-opacity hover:opacity-80"
       aria-label="Lucsan Design — Inicio"
     >
-      {/* Two logo variants; CSS reveals correct one based on data-theme */}
       <img
         src="/brand/LucsanDesign-horizontal-azul oscuro.svg"
         alt="Lucsan Design"
@@ -52,22 +60,25 @@ const navLinks: { label: string; href: string }[] = [
     {/* Desktop nav */}
     <nav class="hidden items-center gap-8 md:flex" aria-label="Primaria">
       {
-        navLinks.map((link) => (
-          <a
-            href={link.href}
-            class="nav-link text-sm font-medium transition-colors hover:text-brand-coral"
-          >
-            {link.label}
-          </a>
-        ))
+        navLinks.map((link) => {
+          const active = isActive(link.href);
+          return (
+            <a
+              href={link.href}
+              data-active={active ? 'true' : 'false'}
+              aria-current={active ? 'page' : undefined}
+              class="nav-link relative inline-flex items-center text-sm font-medium"
+            >
+              <span class="nav-link__label relative inline-block">
+                {link.label}
+              </span>
+            </a>
+          );
+        })
       }
-      <a
-        href="/contacto"
-        class="inline-flex items-center gap-2 rounded-full bg-brand-coral px-5 py-2 text-sm font-medium text-neutral-50 transition-transform hover:scale-[1.02]"
-      >
+      <Button href="/contacto" size="sm" variant="primary" iconRight="ph:arrow-right-bold">
         Conversemos
-        <Icon name="ph:arrow-right-bold" class="h-4 w-4" />
-      </a>
+      </Button>
     </nav>
 
     {/* Mobile hamburger */}
@@ -110,28 +121,36 @@ const navLinks: { label: string; href: string }[] = [
     </div>
     <nav class="flex flex-col gap-2 px-6 py-8" aria-label="Móvil">
       {
-        navLinks.map((link) => (
-          <a
-            href={link.href}
-            class="border-b border-neutral-700 py-4 font-display text-3xl font-medium transition-colors hover:text-brand-coral"
-          >
-            {link.label}
-          </a>
-        ))
+        navLinks.map((link) => {
+          const active = isActive(link.href);
+          return (
+            <a
+              href={link.href}
+              aria-current={active ? 'page' : undefined}
+              class:list={[
+                'border-b border-neutral-700 py-4 font-display text-3xl font-medium transition-colors',
+                active ? 'text-brand-coral' : 'text-neutral-50 hover:text-brand-coral',
+              ]}
+            >
+              {link.label}
+            </a>
+          );
+        })
       }
-      <a
-        href="/contacto"
-        class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-brand-coral px-6 py-4 font-medium text-neutral-50"
-      >
-        Conversemos
-        <Icon name="ph:arrow-right-bold" class="h-5 w-5" />
-      </a>
+      <div class="mt-6">
+        <Button href="/contacto" variant="primary" size="lg" fullWidth iconRight="ph:arrow-right-bold">
+          Conversemos
+        </Button>
+      </div>
     </nav>
   </div>
 </header>
 
 <style is:global>
-  /* Light theme: dark logo + dark links */
+  /* ============================================================
+     Theme-driven base styles (set by JS via IntersectionObserver)
+     ============================================================ */
+
   #site-navbar.nav--light {
     background-color: color-mix(in oklab, var(--color-neutral-50) 70%, transparent);
     backdrop-filter: blur(16px) saturate(140%);
@@ -141,17 +160,10 @@ const navLinks: { label: string; href: string }[] = [
   #site-navbar.nav--light .nav-link {
     color: var(--color-brand-black);
   }
-  #site-navbar.nav--light .nav-logo--dark {
-    display: block;
-  }
-  #site-navbar.nav--light .nav-logo--light {
-    display: none;
-  }
-  #site-navbar.nav--light .nav-toggle {
-    color: var(--color-brand-black);
-  }
+  #site-navbar.nav--light .nav-logo--dark { display: block; }
+  #site-navbar.nav--light .nav-logo--light { display: none; }
+  #site-navbar.nav--light .nav-toggle { color: var(--color-brand-black); }
 
-  /* Dark theme: white logo + white links */
   #site-navbar.nav--dark {
     background-color: color-mix(in oklab, var(--color-brand-black) 50%, transparent);
     backdrop-filter: blur(16px) saturate(140%);
@@ -161,17 +173,10 @@ const navLinks: { label: string; href: string }[] = [
   #site-navbar.nav--dark .nav-link {
     color: var(--color-neutral-50);
   }
-  #site-navbar.nav--dark .nav-logo--dark {
-    display: none;
-  }
-  #site-navbar.nav--dark .nav-logo--light {
-    display: block;
-  }
-  #site-navbar.nav--dark .nav-toggle {
-    color: var(--color-neutral-50);
-  }
+  #site-navbar.nav--dark .nav-logo--dark { display: none; }
+  #site-navbar.nav--dark .nav-logo--light { display: block; }
+  #site-navbar.nav--dark .nav-toggle { color: var(--color-neutral-50); }
 
-  /* Transparent variant (over hero, before scroll) */
   #site-navbar[data-transparent='true'][data-scrolled='false'] {
     background-color: transparent !important;
     backdrop-filter: none !important;
@@ -179,8 +184,42 @@ const navLinks: { label: string; href: string }[] = [
     border-bottom-color: transparent !important;
   }
 
+  /* ============================================================
+     Nav link animation — color + underline
+     ============================================================ */
+
+  .nav-link {
+    transition: color 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover,
+  .nav-link[data-active='true'] {
+    color: var(--color-brand-coral) !important;
+  }
+
+  .nav-link__label {
+    position: relative;
+  }
+  .nav-link__label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .nav-link:hover .nav-link__label::after,
+  .nav-link[data-active='true'] .nav-link__label::after {
+    transform: scaleX(1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    #site-navbar {
+    .nav-link,
+    .nav-link__label::after {
       transition: none !important;
     }
   }
@@ -192,14 +231,12 @@ const navLinks: { label: string; href: string }[] = [
   // ============================================================
   const navbar = document.getElementById('site-navbar');
   if (navbar) {
-    // 1) Scrolled state — affects transparent variant
     const onScroll = () => {
       navbar.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // 2) Section theme detection via IntersectionObserver
     const sections = document.querySelectorAll<HTMLElement>('[data-theme]');
     if (sections.length > 0) {
       const setTheme = (theme: 'light' | 'dark') => {
@@ -207,11 +244,9 @@ const navLinks: { label: string; href: string }[] = [
         navbar.classList.add(`nav--${theme}`);
       };
 
-      // Detect which section overlaps the top of the viewport (under navbar)
       const navHeight = navbar.offsetHeight;
       const observer = new IntersectionObserver(
         (entries) => {
-          // Find the section currently crossing the navbar's bottom edge
           const visible = entries
             .filter((e) => e.isIntersecting)
             .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
@@ -221,10 +256,9 @@ const navLinks: { label: string; href: string }[] = [
           }
         },
         {
-          // Trigger when section's top crosses the area just below navbar
           rootMargin: `-${navHeight}px 0px -${window.innerHeight - navHeight - 1}px 0px`,
           threshold: 0,
-        }
+        },
       );
       sections.forEach((s) => observer.observe(s));
     }
@@ -256,10 +290,8 @@ const navLinks: { label: string; href: string }[] = [
   toggle?.addEventListener('click', openDrawer);
   close?.addEventListener('click', closeDrawer);
 
-  // Close on link click inside drawer
   drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeDrawer));
 
-  // Close on Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && drawer && !drawer.classList.contains('hidden')) {
       closeDrawer();

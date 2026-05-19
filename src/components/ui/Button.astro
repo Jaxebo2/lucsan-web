@@ -2,17 +2,21 @@
 import { Icon } from 'astro-icon/components';
 
 /**
- * Button — Primary CTA component (renders <a> or <button>).
+ * Button — Primary CTA component with premium hover animations.
  *
  * Variants:
- * - primary:   coral fill, black text (CTA principal)
- * - secondary: black fill, white text (CTA alternativo)
- * - outline:   border only, transparent fill (sobre fondo oscuro)
- * - ghost:     no border/fill, just text + arrow (CTAs terciarios)
+ * - primary:   coral → fills to black on hover (or to neutral-50 inverse via prop)
+ * - secondary: black → fills to coral on hover
+ * - outline:   transparent → fills to coral on hover
+ * - ghost:     transparent → subtle bg + accent text
  *
  * Sizes: sm | md (default) | lg
  *
- * Icons: pass `iconRight` o `iconLeft` con nombre Phosphor (ej. "ph:arrow-right-bold").
+ * Icons:
+ * - iconRight: animated "ticker" — current icon exits right while duplicate enters
+ *   from left. Premium swap feel.
+ * - iconLeft: reverse direction (icon enters from right).
+ * Use Phosphor names like "ph:arrow-right-bold".
  *
  * Rendered as <a> if `href` provided, else <button>.
  */
@@ -49,55 +53,151 @@ const {
 } = Astro.props as Props;
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+  'group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variantMap: Record<Variant, string> = {
   primary:
-    'bg-interactive-primary text-interactive-primary-text hover:bg-interactive-primary-hover hover:scale-[1.02] focus-visible:outline-interactive-primary',
+    'bg-brand-coral text-neutral-50 hover:text-neutral-50 focus-visible:outline-brand-coral',
   secondary:
-    'bg-interactive-secondary text-interactive-secondary-text hover:scale-[1.02] focus-visible:outline-interactive-secondary',
+    'bg-brand-black text-neutral-50 hover:text-brand-black focus-visible:outline-brand-black',
   outline:
-    'border border-current bg-transparent hover:border-interactive-primary hover:text-interactive-primary',
-  ghost: 'bg-transparent text-interactive-ghost-text hover:text-interactive-primary',
+    'border border-current bg-transparent text-current hover:text-neutral-50',
+  ghost:
+    'bg-transparent text-current hover:text-brand-coral',
 };
-const variantClass = variantMap[variant];
+
+// Color that sweeps up from below on hover
+const fillMap: Record<Variant, string> = {
+  primary: 'bg-brand-black',   // coral → black
+  secondary: 'bg-brand-coral', // black → coral
+  outline: 'bg-brand-coral',   // transparent → coral
+  ghost: 'bg-transparent',     // ghost: no fill, only text shift
+};
 
 const sizeMap: Record<Size, string> = {
   sm: 'px-4 py-2 text-sm',
   md: 'px-5 py-2.5 text-sm md:px-6 md:py-3 md:text-base',
   lg: 'px-7 py-4 text-base md:text-lg',
 };
-const sizeClass = sizeMap[size];
 
 const iconSizeMap: Record<Size, string> = {
   sm: 'h-4 w-4',
   md: 'h-4 w-4 md:h-5 md:w-5',
   lg: 'h-5 w-5',
 };
+
+const variantClass = variantMap[variant];
+const fillClass = fillMap[variant];
+const sizeClass = sizeMap[size];
 const iconSize = iconSizeMap[size];
 
 const allClass = [base, variantClass, sizeClass, fullWidth && 'w-full', className];
 const isLink = !!href;
 const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
+
+// Premium ease — "out expo" feel
+const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
 ---
 
 {
   isLink ? (
     <a href={href} target={target} rel={rel} aria-label={ariaLabel} class:list={allClass}>
-      {iconLeft && <Icon name={iconLeft} class={iconSize} />}
-      <slot />
-      {iconRight && <Icon name={iconRight} class={iconSize} />}
+      <span
+        aria-hidden="true"
+        class:list={[
+          'pointer-events-none absolute inset-0 -z-10 translate-y-full transition-transform duration-500 group-hover:translate-y-0',
+          fillClass,
+        ]}
+        style={`transition-timing-function: ${ease}`}
+      />
+      <span class="relative z-10 inline-flex items-center gap-2">
+        {iconLeft && (
+          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
+            <Icon
+              name={iconLeft}
+              class:list={['absolute inset-0 transition-transform duration-500 group-hover:-translate-x-[150%]']}
+              style={`transition-timing-function: ${ease}`}
+            />
+            <Icon
+              name={iconLeft}
+              class:list={['absolute inset-0 translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
+              style={`transition-timing-function: ${ease}`}
+            />
+          </span>
+        )}
+        <slot />
+        {iconRight && (
+          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
+            <Icon
+              name={iconRight}
+              class:list={['absolute inset-0 transition-transform duration-500 group-hover:translate-x-[150%]']}
+              style={`transition-timing-function: ${ease}`}
+            />
+            <Icon
+              name={iconRight}
+              class:list={['absolute inset-0 -translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
+              style={`transition-timing-function: ${ease}`}
+            />
+          </span>
+        )}
+      </span>
     </a>
   ) : (
-    <button
-      type={type}
-      disabled={disabled}
-      aria-label={ariaLabel}
-      class:list={allClass}
-    >
-      {iconLeft && <Icon name={iconLeft} class={iconSize} />}
-      <slot />
-      {iconRight && <Icon name={iconRight} class={iconSize} />}
+    <button type={type} disabled={disabled} aria-label={ariaLabel} class:list={allClass}>
+      <span
+        aria-hidden="true"
+        class:list={[
+          'pointer-events-none absolute inset-0 -z-10 translate-y-full transition-transform duration-500 group-hover:translate-y-0',
+          fillClass,
+        ]}
+        style={`transition-timing-function: ${ease}`}
+      />
+      <span class="relative z-10 inline-flex items-center gap-2">
+        {iconLeft && (
+          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
+            <Icon
+              name={iconLeft}
+              class:list={['absolute inset-0 transition-transform duration-500 group-hover:-translate-x-[150%]']}
+              style={`transition-timing-function: ${ease}`}
+            />
+            <Icon
+              name={iconLeft}
+              class:list={['absolute inset-0 translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
+              style={`transition-timing-function: ${ease}`}
+            />
+          </span>
+        )}
+        <slot />
+        {iconRight && (
+          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
+            <Icon
+              name={iconRight}
+              class:list={['absolute inset-0 transition-transform duration-500 group-hover:translate-x-[150%]']}
+              style={`transition-timing-function: ${ease}`}
+            />
+            <Icon
+              name={iconRight}
+              class:list={['absolute inset-0 -translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
+              style={`transition-timing-function: ${ease}`}
+            />
+          </span>
+        )}
+      </span>
     </button>
   )
 }
+
+<style>
+  /* Respect prefers-reduced-motion — kill transforms */
+  @media (prefers-reduced-motion: reduce) {
+    .group span[aria-hidden='true'] {
+      transition: none !important;
+    }
+    .group .group-hover\:translate-y-0,
+    .group .group-hover\:translate-x-0,
+    .group .group-hover\:translate-x-\[150\%\],
+    .group .group-hover\:-translate-x-\[150\%\] {
+      transition: none !important;
+    }
+  }
+</style>
