@@ -9,15 +9,24 @@ import Prose from '../components/ui/Prose.astro';
 import Card from '../components/ui/Card.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
 import { Icon } from 'astro-icon/components';
+import { aboutPageSchema, breadcrumbSchema } from '../lib/seo';
 
 const entry = await getEntry('pages', 'sobre');
 if (!entry || entry.data.tipo !== 'sobre') {
   throw new Error('Sobre content not found in src/content/pages/sobre.json');
 }
 const sobre = entry.data;
+
+const schemas = [
+  aboutPageSchema(),
+  breadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'Sobre nosotros', url: '/sobre-nosotros' },
+  ]),
+];
 ---
 
-<BaseLayout title={sobre.seo.title} description={sobre.seo.description}>
+<BaseLayout title={sobre.seo.title} description={sobre.seo.description} schemas={schemas}>
   {/* HERO — dark */}
   <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
     <Container>

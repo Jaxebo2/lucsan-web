@@ -5,6 +5,7 @@ import icon from 'astro-icon';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import vercel from '@astrojs/vercel';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,6 +30,15 @@ export default defineConfig({
       include: {
         ph: ['*'], // Phosphor: only icons referenced in templates are bundled
       },
+    }),
+    sitemap({
+      filter: (page) =>
+        !page.includes('/keystatic') &&
+        !page.includes('/style-guide') &&
+        !page.includes('/api/'),
+      changefreq: 'monthly',
+      priority: 0.7,
+      lastmod: new Date(),
     }),
   ],
   vite: {

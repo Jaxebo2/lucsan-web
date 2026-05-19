@@ -12,6 +12,7 @@ import FAQ from '../../components/ui/FAQ.astro';
 import FAQItem from '../../components/ui/FAQItem.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import { Icon } from 'astro-icon/components';
+import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const services = await getCollection('services', (s) => s.data.publicado);
@@ -31,9 +32,19 @@ const s = service.data;
 const proyectosRelacionados = s.casosRelacionados.length > 0
   ? await getEntries(s.casosRelacionados)
   : [];
+
+const schemas = [
+  serviceSchema({ name: s.title, description: s.seo.description, slug: s.slug }),
+  breadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'Servicios', url: '/servicios' },
+    { name: s.title, url: `/servicios/${s.slug}` },
+  ]),
+  faqSchema(s.faq),
+];
 ---
 
-<BaseLayout title={s.seo.title} description={s.seo.description} ogImage={s.seo.ogImage}>
+<BaseLayout title={s.seo.title} description={s.seo.description} ogImage={s.seo.ogImage} schemas={schemas}>
   {/* HERO — dark */}
   <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
     <Container>

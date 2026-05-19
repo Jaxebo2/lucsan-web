@@ -9,6 +9,7 @@ import Prose from '../components/ui/Prose.astro';
 import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import { Icon } from 'astro-icon/components';
+import { contactPageSchema, breadcrumbSchema } from '../lib/seo';
 
 const entry = await getEntry('pages', 'contacto');
 if (!entry || entry.data.tipo !== 'contacto') {
@@ -17,9 +18,17 @@ if (!entry || entry.data.tipo !== 'contacto') {
 const c = entry.data;
 
 const whatsappUrl = `https://wa.me/${c.whatsapp.numero.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(c.whatsapp.mensajePreLlenado)}`;
+
+const schemas = [
+  contactPageSchema({ email: c.email }),
+  breadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'Contacto', url: '/contacto' },
+  ]),
+];
 ---
 
-<BaseLayout title={c.seo.title} description={c.seo.description}>
+<BaseLayout title={c.seo.title} description={c.seo.description} schemas={schemas}>
   {/* HERO — light */}
   <Section surface="page" spacing="none" class="relative pt-32 pb-12 md:pt-44 md:pb-20">
     <Container>

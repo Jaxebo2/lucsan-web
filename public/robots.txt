@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block CMS panel and developer routes from crawling
+Disallow: /keystatic
+Disallow: /keystatic/
+Disallow: /style-guide
+Disallow: /api/
+
+Sitemap: https://lucsandesign.com/sitemap-index.xml

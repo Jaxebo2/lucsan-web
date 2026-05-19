@@ -1,0 +1,26 @@
+---
+/**
+ * SchemaOrg — emits one or more JSON-LD blocks into the <head>.
+ *
+ * Usage:
+ *   <SchemaOrg schemas={[organizationSchema(), websiteSchema(), serviceSchema({...})]} />
+ *
+ * Each block is rendered as <script type="application/ld+json">.
+ */
+
+interface Props {
+  schemas: Array<Record<string, unknown>>;
+}
+
+const { schemas } = Astro.props as Props;
+---
+
+{
+  schemas.map((schema) => (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(schema)}
+    />
+  ))
+}

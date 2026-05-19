@@ -10,6 +10,7 @@ import Badge from '../../components/ui/Badge.astro';
 import MetricBadge from '../../components/ui/MetricBadge.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import { Icon } from 'astro-icon/components';
+import { caseStudySchema, breadcrumbSchema } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', (p) => p.data.publicado);
@@ -30,6 +31,23 @@ const serviciosAplicados = p.serviciosAplicados.length > 0
   ? await getEntries(p.serviciosAplicados)
   : [];
 
+const schemas = [
+  caseStudySchema({
+    titulo: p.titulo,
+    resumenCorto: p.resumenCorto,
+    slug: p.slug,
+    cliente: p.cliente,
+    ano: p.ano,
+    coverUrl: p.cover.src,
+    coverAlt: p.cover.alt,
+  }),
+  breadcrumbSchema([
+    { name: 'Inicio', url: '/' },
+    { name: 'Proyectos', url: '/proyectos' },
+    { name: p.cliente, url: `/proyectos/${p.slug}` },
+  ]),
+];
+
 const sectorLabels: Record<string, string> = {
   tecnologia: 'Tecnología',
   retail: 'Retail',
@@ -43,7 +61,7 @@ const sectorLabels: Record<string, string> = {
 };
 ---
 
-<BaseLayout title={p.seo.title} description={p.seo.description} ogImage={p.seo.ogImage}>
+<BaseLayout title={p.seo.title} description={p.seo.description} ogImage={p.seo.ogImage} schemas={schemas}>
   {/* HERO + COVER — dark */}
   <Section surface="inverse" spacing="none" class="relative pt-32 pb-16 md:pt-44 md:pb-24">
     <Container>

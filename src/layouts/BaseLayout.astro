@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Navbar from '../components/nav/Navbar.astro';
 import Footer from '../components/nav/Footer.astro';
+import SchemaOrg from '../components/seo/SchemaOrg.astro';
+import { organizationSchema, websiteSchema } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -10,6 +12,8 @@ interface Props {
   canonical?: string;
   /** Open Graph image (absolute URL or path relative to site). */
   ogImage?: string;
+  /** Additional Schema.org JSON-LD blocks for this specific page. */
+  schemas?: Array<Record<string, unknown>>;
 }
 
 const {
@@ -17,7 +21,11 @@ const {
   description,
   canonical,
   ogImage = '/og-default.png',
+  schemas = [],
 } = Astro.props as Props;
+
+// Global schemas (Organization + WebSite) on every page + page-specific extras
+const allSchemas = [organizationSchema(), websiteSchema(), ...schemas];
 
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'https://lucsandesign.com').toString();
 const ogImageUrl = ogImage.startsWith('http')
@@ -53,6 +61,9 @@ const ogImageUrl = ogImage.startsWith('http')
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+
+    {/* Schema.org JSON-LD */}
+    <SchemaOrg schemas={allSchemas} />
 
     {/* Preload critical fonts (LCP candidates) */}
     <link
