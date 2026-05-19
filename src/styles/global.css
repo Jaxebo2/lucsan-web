@@ -162,12 +162,12 @@
   --color-border-inverse:  var(--color-neutral-700);
 
   /* Interactive */
-  --color-interactive-primary:       var(--color-brand-coral);
-  --color-interactive-primary-hover: #e94336;
-  --color-interactive-primary-text:  var(--color-brand-black);
-  --color-interactive-secondary:     var(--color-brand-black);
+  --color-interactive-primary:        var(--color-brand-coral);
+  --color-interactive-primary-hover:  #e94336;
+  --color-interactive-primary-text:   var(--color-neutral-50); /* white text on coral */
+  --color-interactive-secondary:      var(--color-brand-black);
   --color-interactive-secondary-text: var(--color-neutral-50);
-  --color-interactive-ghost-text:    var(--color-brand-black);
+  --color-interactive-ghost-text:     var(--color-brand-black);
 }
 
 /* ============================================================
