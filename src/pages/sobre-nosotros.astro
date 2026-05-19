@@ -1,0 +1,135 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Heading from '../components/ui/Heading.astro';
+import Prose from '../components/ui/Prose.astro';
+import Card from '../components/ui/Card.astro';
+import CTABlock from '../components/ui/CTABlock.astro';
+import { Icon } from 'astro-icon/components';
+
+const entry = await getEntry('pages', 'sobre');
+if (!entry || entry.data.tipo !== 'sobre') {
+  throw new Error('Sobre content not found in src/content/pages/sobre.json');
+}
+const sobre = entry.data;
+---
+
+<BaseLayout title={sobre.seo.title} description={sobre.seo.description}>
+  {/* HERO — dark */}
+  <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
+    <Container>
+      <Eyebrow tone="inverse">Sobre el estudio</Eyebrow>
+      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
+        Diseño que <span class="text-text-accent">resuelve problemas</span> de negocio.
+      </Heading>
+      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
+        {sobre.manifiesto}
+      </Prose>
+    </Container>
+  </Section>
+
+  {/* MÉTODO — light */}
+  <Section surface="page">
+    <Container>
+      <Eyebrow>Cómo trabajamos</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+        Un método con <span class="text-text-accent">cuatro fases</span>.
+      </Heading>
+      <Prose tone="secondary" size="lg" class="mt-6 max-w-2xl">
+        El mismo proceso para cada proyecto. Sin sorpresas, con entregables claros y check-points en cada fase.
+      </Prose>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-2">
+        {
+          sobre.metodo.map((fase, i) => (
+            <Card variant="filled" padding="lg" radius="xl">
+              <div class="flex items-baseline gap-4">
+                <span class="font-display text-3xl font-bold text-text-accent">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <Heading level={3} size="md">{fase.fase.replace(/^\d+\.\s*/, '')}</Heading>
+              </div>
+              <Prose tone="secondary" class="mt-4">{fase.descripcion}</Prose>
+              <ul class="mt-6 flex flex-col gap-2">
+                {fase.entregables.map((e) => (
+                  <li class="flex items-start gap-2 text-sm text-text-secondary">
+                    <Icon name="ph:check-bold" class="mt-1 h-4 w-4 flex-none text-text-accent" />
+                    <span>{e}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  {/* VALORES — muted */}
+  <Section surface="muted">
+    <Container>
+      <Eyebrow>Lo que nos define</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+        Valores que se <span class="text-text-accent">notan</span> en cómo trabajamos.
+      </Heading>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        {
+          sobre.valores.map((v) => (
+            <div>
+              <Heading level={3} size="sm">{v.titulo}</Heading>
+              <Prose tone="secondary" class="mt-3">{v.descripcion}</Prose>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  {/* EQUIPO — light */}
+  {
+    sobre.equipo.length > 0 && (
+      <Section surface="page">
+        <Container>
+          <Eyebrow>Equipo</Eyebrow>
+          <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+            Quién está <span class="text-text-accent">detrás</span> del estudio.
+          </Heading>
+
+          <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {sobre.equipo.map((p) => (
+              <Card variant="elevated" padding="lg" radius="xl">
+                {p.foto && (
+                  <img
+                    src={p.foto.src}
+                    alt={p.foto.alt}
+                    class="mb-6 h-20 w-20 rounded-full object-cover"
+                  />
+                )}
+                <Heading level={3} size="md">{p.nombre}</Heading>
+                <p class="mt-1 text-sm text-text-muted">{p.rol}</p>
+                <Prose tone="secondary" class="mt-4">{p.bioCorta}</Prose>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    )
+  }
+
+  {/* CTA FINAL */}
+  <Section surface="page" spacing="base">
+    <Container>
+      <CTABlock
+        eyebrow="¿Empezamos?"
+        headline="Cuéntanos sobre tu proyecto."
+        primaryCta={{ texto: 'Conversemos', href: '/contacto' }}
+        secondaryCta={{ texto: 'Ver proyectos', href: '/proyectos' }}
+        surface="inverse"
+      />
+    </Container>
+  </Section>
+</BaseLayout>
