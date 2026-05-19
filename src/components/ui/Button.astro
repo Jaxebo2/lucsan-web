@@ -2,23 +2,23 @@
 import { Icon } from 'astro-icon/components';
 
 /**
- * Button — Primary CTA component with premium hover animations.
+ * Button — Primary CTA with premium hover animations.
  *
  * Variants:
- * - primary:   coral → fills to black on hover (or to neutral-50 inverse via prop)
- * - secondary: black → fills to coral on hover
- * - outline:   transparent → fills to coral on hover
- * - ghost:     transparent → subtle bg + accent text
+ * - primary:   coral → fills to black on hover (white text always)
+ * - secondary: black → fills to coral on hover (white text always)
+ * - outline:   transparent → fills to coral on hover (text turns white)
+ * - ghost:     transparent → no fill, text shifts to accent
+ *
+ * All "coral surfaces" use white text per brand decision.
  *
  * Sizes: sm | md (default) | lg
  *
- * Icons:
- * - iconRight: animated "ticker" — current icon exits right while duplicate enters
- *   from left. Premium swap feel.
- * - iconLeft: reverse direction (icon enters from right).
- * Use Phosphor names like "ph:arrow-right-bold".
+ * Icons (Phosphor names, e.g. "ph:arrow-right-bold"):
+ * - iconRight: animated track — icon slides right while duplicate enters from left
+ * - iconLeft:  reverse direction
  *
- * Rendered as <a> if `href` provided, else <button>.
+ * Rendered as <a> if `href` is provided, else <button>.
  */
 
 type Variant = 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -53,15 +53,19 @@ const {
 } = Astro.props as Props;
 
 const base =
-  'group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+  'btn group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
 
 const variantMap: Record<Variant, string> = {
+  // White text always (resting + hover = both surfaces white-friendly: coral & black)
   primary:
-    'bg-brand-coral text-neutral-50 hover:text-neutral-50 focus-visible:outline-brand-coral',
+    'bg-brand-coral text-neutral-50 focus-visible:outline-brand-coral',
+  // White text always (resting on black, hover on coral — both fine with white)
   secondary:
-    'bg-brand-black text-neutral-50 hover:text-brand-black focus-visible:outline-brand-black',
+    'bg-brand-black text-neutral-50 focus-visible:outline-brand-black',
+  // Text inherits container color at rest; on hover it goes white (over coral fill)
   outline:
     'border border-current bg-transparent text-current hover:text-neutral-50',
+  // No fill — only text color shift
   ghost:
     'bg-transparent text-current hover:text-brand-coral',
 };
@@ -71,7 +75,7 @@ const fillMap: Record<Variant, string> = {
   primary: 'bg-brand-black',   // coral → black
   secondary: 'bg-brand-coral', // black → coral
   outline: 'bg-brand-coral',   // transparent → coral
-  ghost: 'bg-transparent',     // ghost: no fill, only text shift
+  ghost: 'bg-transparent',     // no fill
 };
 
 const sizeMap: Record<Size, string> = {
@@ -80,22 +84,22 @@ const sizeMap: Record<Size, string> = {
   lg: 'px-7 py-4 text-base md:text-lg',
 };
 
-const iconSizeMap: Record<Size, string> = {
-  sm: 'h-4 w-4',
-  md: 'h-4 w-4 md:h-5 md:w-5',
-  lg: 'h-5 w-5',
+// Icon wrapper size in em (matches text size). Using em keeps icon centered relative to text baseline.
+const iconEm: Record<Size, string> = {
+  sm: '1.1em',
+  md: '1.15em',
+  lg: '1.2em',
 };
 
 const variantClass = variantMap[variant];
 const fillClass = fillMap[variant];
 const sizeClass = sizeMap[size];
-const iconSize = iconSizeMap[size];
+const iconBoxSize = iconEm[size];
 
 const allClass = [base, variantClass, sizeClass, fullWidth && 'w-full', className];
 const isLink = !!href;
 const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
-// Premium ease — "out expo" feel
 const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
 ---
 
@@ -105,39 +109,39 @@ const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
       <span
         aria-hidden="true"
         class:list={[
-          'pointer-events-none absolute inset-0 -z-10 translate-y-full transition-transform duration-500 group-hover:translate-y-0',
+          'btn-fill pointer-events-none absolute -inset-px -z-10 translate-y-[105%] transition-transform duration-500 group-hover:translate-y-0',
           fillClass,
         ]}
         style={`transition-timing-function: ${ease}`}
       />
       <span class="relative z-10 inline-flex items-center gap-2">
         {iconLeft && (
-          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
-            <Icon
-              name={iconLeft}
-              class:list={['absolute inset-0 transition-transform duration-500 group-hover:-translate-x-[150%]']}
-              style={`transition-timing-function: ${ease}`}
-            />
-            <Icon
-              name={iconLeft}
-              class:list={['absolute inset-0 translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
-              style={`transition-timing-function: ${ease}`}
-            />
+          <span
+            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
+            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
+          >
+            <span
+              class="btn-icon-track flex h-full translate-x-0 group-hover:-translate-x-1/2"
+              style={`transition: transform 500ms ${ease};`}
+            >
+              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+            </span>
           </span>
         )}
         <slot />
         {iconRight && (
-          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
-            <Icon
-              name={iconRight}
-              class:list={['absolute inset-0 transition-transform duration-500 group-hover:translate-x-[150%]']}
-              style={`transition-timing-function: ${ease}`}
-            />
-            <Icon
-              name={iconRight}
-              class:list={['absolute inset-0 -translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
-              style={`transition-timing-function: ${ease}`}
-            />
+          <span
+            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
+            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
+          >
+            <span
+              class="btn-icon-track flex h-full -translate-x-1/2 group-hover:translate-x-0"
+              style={`transition: transform 500ms ${ease};`}
+            >
+              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+            </span>
           </span>
         )}
       </span>
@@ -147,39 +151,39 @@ const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
       <span
         aria-hidden="true"
         class:list={[
-          'pointer-events-none absolute inset-0 -z-10 translate-y-full transition-transform duration-500 group-hover:translate-y-0',
+          'btn-fill pointer-events-none absolute -inset-px -z-10 translate-y-[105%] transition-transform duration-500 group-hover:translate-y-0',
           fillClass,
         ]}
         style={`transition-timing-function: ${ease}`}
       />
       <span class="relative z-10 inline-flex items-center gap-2">
         {iconLeft && (
-          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
-            <Icon
-              name={iconLeft}
-              class:list={['absolute inset-0 transition-transform duration-500 group-hover:-translate-x-[150%]']}
-              style={`transition-timing-function: ${ease}`}
-            />
-            <Icon
-              name={iconLeft}
-              class:list={['absolute inset-0 translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
-              style={`transition-timing-function: ${ease}`}
-            />
+          <span
+            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
+            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
+          >
+            <span
+              class="btn-icon-track flex h-full translate-x-0 group-hover:-translate-x-1/2"
+              style={`transition: transform 500ms ${ease};`}
+            >
+              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+            </span>
           </span>
         )}
         <slot />
         {iconRight && (
-          <span class:list={['relative inline-block flex-none overflow-hidden', iconSize]}>
-            <Icon
-              name={iconRight}
-              class:list={['absolute inset-0 transition-transform duration-500 group-hover:translate-x-[150%]']}
-              style={`transition-timing-function: ${ease}`}
-            />
-            <Icon
-              name={iconRight}
-              class:list={['absolute inset-0 -translate-x-[150%] transition-transform duration-500 group-hover:translate-x-0']}
-              style={`transition-timing-function: ${ease}`}
-            />
+          <span
+            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
+            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
+          >
+            <span
+              class="btn-icon-track flex h-full -translate-x-1/2 group-hover:translate-x-0"
+              style={`transition: transform 500ms ${ease};`}
+            >
+              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
+            </span>
           </span>
         )}
       </span>
@@ -188,15 +192,16 @@ const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
 }
 
 <style>
-  /* Respect prefers-reduced-motion — kill transforms */
+  /* Force GPU compositing on the fill to avoid sub-pixel peek on rounded edges */
+  .btn-fill {
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .group span[aria-hidden='true'] {
-      transition: none !important;
-    }
-    .group .group-hover\:translate-y-0,
-    .group .group-hover\:translate-x-0,
-    .group .group-hover\:translate-x-\[150\%\],
-    .group .group-hover\:-translate-x-\[150\%\] {
+    .btn,
+    .btn-fill,
+    .btn-icon-track {
       transition: none !important;
     }
   }
