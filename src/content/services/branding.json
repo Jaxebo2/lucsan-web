@@ -1,0 +1,106 @@
+{
+  "title": "Branding",
+  "slug": "branding",
+  "keyword": "diseño de marca chile",
+  "orden": 1,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Tu marca no se parece a lo que vendes. Arreglémoslo.",
+    "subhead": "Construimos marcas que tu equipo sabe explicar, tu cliente reconoce y tu competencia respeta."
+  },
+
+  "paraQuien": [
+    {
+      "perfil": "Founder lanzando una empresa nueva",
+      "descripcion": "Necesitas una marca que se vea seria desde el día uno, sin gastar lo que no tienes."
+    },
+    {
+      "perfil": "Pyme con 3+ años que se quedó atrás",
+      "descripcion": "Tu marca creció a tropezones. Hoy parece improvisada al lado de tu competencia."
+    },
+    {
+      "perfil": "Empresa que va a expandirse",
+      "descripcion": "Vas a entrar a un mercado nuevo o subir de liga. Tu marca actual no aguanta."
+    }
+  ],
+
+  "problema": {
+    "titulo": "Síntomas de que tu marca necesita atención",
+    "sintomas": [
+      "Tus colaboradores no usan la marca igual: cada uno hace lo suyo en Canva.",
+      "Tu logo se ve bien en Instagram pero terrible en una factura.",
+      "Tienes que explicar dos veces qué hace tu empresa.",
+      "Tu sitio web, tarjetas y redes parecen de empresas distintas.",
+      "Cuando piensas en cambiar el logo, te bloqueas porque no sabes por dónde."
+    ]
+  },
+
+  "metodo": [
+    {
+      "fase": "1. Descubrimiento",
+      "descripcion": "Entrevistas, auditoría visual, análisis de competencia y mapeo de cliente.",
+      "entregables": ["Brief estratégico", "Mapa de posicionamiento", "Insights clave"]
+    },
+    {
+      "fase": "2. Estrategia",
+      "descripcion": "Definimos territorio, personalidad, promesa y arquitectura de marca.",
+      "entregables": ["Plataforma de marca", "Manifiesto", "Tono y voz"]
+    },
+    {
+      "fase": "3. Identidad visual",
+      "descripcion": "Logo, tipografía, color, sistema gráfico y aplicaciones críticas.",
+      "entregables": ["Sistema visual completo", "Manual de marca", "Plantillas operacionales"]
+    },
+    {
+      "fase": "4. Activación",
+      "descripcion": "Llevamos la marca a tus puntos de contacto reales: web, redes, papelería, presentaciones.",
+      "entregables": ["Roadmap de implementación", "Capacitación al equipo", "Soporte 30 días post-entrega"]
+    }
+  ],
+
+  "entregables": [
+    "Plataforma estratégica de marca",
+    "Identidad visual completa (logo + sistema)",
+    "Manual de marca aplicable",
+    "Plantillas para redes, presentaciones y papelería",
+    "Sesión de capacitación al equipo",
+    "30 días de soporte post-entrega"
+  ],
+
+  "casosRelacionados": [],
+
+  "faq": [
+    {
+      "pregunta": "¿Cuánto demora un proyecto de branding?",
+      "respuesta": "Entre 6 y 10 semanas según alcance. Un branding básico para startup: 6 semanas. Un rediseño completo con sistema gráfico extenso: 10 semanas."
+    },
+    {
+      "pregunta": "¿Cuánto cuesta?",
+      "respuesta": "Los proyectos parten desde 2.500.000 CLP + IVA y escalan según alcance. Te pasamos una propuesta concreta con valor cerrado tras la primera reunión."
+    },
+    {
+      "pregunta": "¿Qué necesito tener listo antes de empezar?",
+      "respuesta": "Claridad sobre qué vendes, a quién y por qué. Si no la tienes, la primera fase del proyecto la construye contigo."
+    },
+    {
+      "pregunta": "¿Trabajan con empresas fuera de Chile?",
+      "respuesta": "Sí. Hemos trabajado con clientes en Argentina, Perú y México de manera 100% remota."
+    },
+    {
+      "pregunta": "¿Qué pasa después de la entrega?",
+      "respuesta": "30 días de soporte incluido para resolver dudas, ajustes menores y aplicar la marca a piezas adicionales. Después podemos seguir con un retainer mensual si lo necesitas."
+    }
+  ],
+
+  "cta": {
+    "headline": "¿Lista tu marca para el próximo nivel?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño de marca en Chile — Lucsan Design",
+    "description": "Estudio chileno especializado en branding estratégico. Identidad visual, manuales de marca y sistemas que tu equipo sabe usar. Pyme y startup.",
+    "ogImage": "/og-branding.png"
+  }
+}

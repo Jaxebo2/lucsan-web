@@ -1,0 +1,24 @@
+{
+  "tipo": "contacto",
+  "headline": "Cuéntanos sobre tu proyecto.",
+  "subhead": "Respondemos cada mensaje. Si tu proyecto encaja con lo que hacemos, agendamos una reunión sin compromiso.",
+  "tiempoRespuesta": "Te respondemos en menos de 24 horas hábiles.",
+  "whatsapp": {
+    "numero": "+56912345678",
+    "mensajePreLlenado": "Hola Lucsan, vengo desde su sitio web y me gustaría conversar sobre un proyecto."
+  },
+  "email": "contacto@lucsandesign.com",
+  "serviciosDisponibles": ["branding"],
+  "rangosPresupuesto": [
+    "Menos de $1.500.000 CLP",
+    "$1.500.000 — $5.000.000 CLP",
+    "$5.000.000 — $15.000.000 CLP",
+    "Más de $15.000.000 CLP",
+    "No estoy seguro"
+  ],
+  "seo": {
+    "title": "Contacto — Lucsan Design",
+    "description": "Conversemos sobre tu proyecto de branding, diseño web o marketing. Respondemos en menos de 24 horas hábiles. Santiago, Chile y Latinoamérica.",
+    "ogImage": "/og-default.png"
+  }
+}

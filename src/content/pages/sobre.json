@@ -1,0 +1,56 @@
+{
+  "tipo": "sobre",
+  "manifiesto": "Creemos que el diseño es una herramienta de negocio, no decoración. Cada marca que construimos, cada sitio que diseñamos y cada campaña que lanzamos responde primero a una pregunta: ¿esto le sirve al negocio de nuestro cliente? Si la respuesta es no, no lo hacemos.",
+  "metodo": [
+    {
+      "fase": "1. Entender antes de proponer",
+      "descripcion": "La mitad de los proyectos fallidos arrancan con el brief equivocado. Por eso dedicamos las primeras dos semanas a entender tu negocio, no a presentar moodboards.",
+      "entregables": ["Brief estratégico", "Mapa de cliente", "Análisis competitivo"]
+    },
+    {
+      "fase": "2. Estrategia antes que estética",
+      "descripcion": "Definimos qué tiene que comunicar la marca, a quién y por qué. La parte visual es consecuencia, no punto de partida.",
+      "entregables": ["Plataforma de marca", "Tono y voz", "Sistema de mensajes"]
+    },
+    {
+      "fase": "3. Diseño con propósito",
+      "descripcion": "Cada decisión visual tiene una razón comercial detrás. Si una pieza no aporta al objetivo, no entra.",
+      "entregables": ["Identidad completa", "Sistema gráfico", "Aplicaciones críticas"]
+    },
+    {
+      "fase": "4. Activación y soporte",
+      "descripcion": "El proyecto no termina al entregar. Acompañamos la implementación para que el equipo sepa usar lo que construimos.",
+      "entregables": ["Manual de marca", "Plantillas operacionales", "30 días de soporte"]
+    }
+  ],
+  "equipo": [
+    {
+      "nombre": "Lucio Santana",
+      "rol": "Founder + Director creativo",
+      "bioCorta": "10+ años diseñando marcas y experiencias digitales para pymes y startups en Chile y Latinoamérica."
+    }
+  ],
+  "valores": [
+    {
+      "titulo": "Honestidad sobre simpatía",
+      "descripcion": "Preferimos decirte que algo no va a funcionar antes que cobrarte por hacerlo."
+    },
+    {
+      "titulo": "Proceso visible",
+      "descripcion": "Sabes en qué fase está tu proyecto, qué viene después y por qué. Nada de cajas negras."
+    },
+    {
+      "titulo": "Decisiones con argumento",
+      "descripcion": "Cada propuesta viene con el porqué. No tienes que adivinar nuestra cabeza."
+    },
+    {
+      "titulo": "Calidad sobre cantidad",
+      "descripcion": "Tomamos menos proyectos para dedicarles el tiempo que necesitan."
+    }
+  ],
+  "seo": {
+    "title": "Sobre Lucsan Design — Estudio de diseño con foco en negocio",
+    "description": "Conoce nuestro método, valores y equipo. Estudio chileno que integra estrategia, diseño y tecnología para marcas que quieren crecer con sentido.",
+    "ogImage": "/og-default.png"
+  }
+}

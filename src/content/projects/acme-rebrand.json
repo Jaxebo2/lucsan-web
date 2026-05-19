@@ -1,0 +1,51 @@
+{
+  "titulo": "Rebranding completo de Acme Corp",
+  "slug": "acme-rebrand",
+  "cliente": "Acme Corp",
+  "sector": "tecnologia",
+  "serviciosAplicados": ["branding"],
+  "ano": 2025,
+  "destacado": true,
+  "publicado": true,
+
+  "cover": {
+    "src": "/brand/Simbolo-coral.svg",
+    "alt": "Cover Acme Rebrand placeholder",
+    "width": 1600,
+    "height": 900
+  },
+  "thumbnail": {
+    "src": "/brand/Simbolo-coral.svg",
+    "alt": "Acme thumbnail",
+    "width": 800,
+    "height": 1000
+  },
+  "resumenCorto": "Modernización completa de identidad para una empresa tech B2B con 8 años en el mercado chileno.",
+
+  "caso": {
+    "contexto": "Acme Corp llevaba 8 años vendiendo software a empresas medianas en Chile. Su marca había crecido a tropezones, con un logo de 2017 y materiales que parecían de tres empresas distintas.",
+    "desafio": "Salir a competir con jugadores regionales con identidad visual moderna sin perder el reconocimiento construido en 8 años.",
+    "enfoque": "Auditoría exhaustiva primero. Encontramos que el problema no era el logo: era la falta de sistema. Construimos plataforma estratégica, sistema visual modular y plantillas operacionales que el equipo de marketing pudiera usar sin pedirnos archivos cada semana.",
+    "solucion": "Nueva identidad que conserva el equity del logo anterior pero lo moderniza. Sistema gráfico extensible. 40 plantillas Figma para el equipo. Manual de marca como sitio interno navegable.",
+    "galeria": [],
+    "resultado": {
+      "narrativa": "Tras el relanzamiento, el equipo de marketing redujo en 70% las solicitudes a diseño externo, y el equipo comercial reportó que prospectos los compararon con jugadores regionales en lugar de competidores locales.",
+      "metricas": [
+        { "valor": "-70%", "descripcion": "solicitudes a diseño externo" },
+        { "valor": "+45%", "descripcion": "tasa de respuesta en cold outreach B2B" },
+        { "valor": "8 sem", "descripcion": "duración del proyecto end-to-end" }
+      ]
+    },
+    "testimonio": {
+      "cita": "Por primera vez tenemos una marca que nuestro equipo entiende y sabe aplicar. La diferencia comercial fue inmediata.",
+      "autor": "María Pérez",
+      "cargo": "CMO, Acme Corp"
+    }
+  },
+
+  "seo": {
+    "title": "Caso: Rebranding Acme Corp — Lucsan Design",
+    "description": "Cómo modernizamos la identidad de Acme Corp sin perder 8 años de reconocimiento. Sistema visual, manual navegable y -70% en solicitudes a diseño externo.",
+    "ogImage": "/og-acme.png"
+  }
+}
