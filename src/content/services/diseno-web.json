@@ -84,20 +84,20 @@
 
   "frameworks": [
     {
-      "titulo": "Customer Journey Map digital",
-      "descripcion": "Mapeo del recorrido del usuario desde la primera búsqueda hasta la recomendación. Define qué necesita ver en cada página y qué acción debe poder tomar."
+      "titulo": "Mapa de experiencia digital",
+      "descripcion": "Diseñamos cada página pensando en qué necesita ver tu usuario y qué acción debe tomar."
     },
     {
       "titulo": "Arquitectura de información",
-      "descripcion": "Estructura lógica del contenido del sitio, navegación, jerarquía de páginas y flujos de conversión. Cómo se organiza la información para que el usuario encuentre lo que necesita en pocos clics."
+      "descripcion": "Estructura clara que ayuda a tu usuario a encontrar lo que necesita en pocos clics."
     },
     {
-      "titulo": "Core Web Vitals y SEO técnico",
-      "descripcion": "Optimización de LCP, CLS, TBT y SEO técnico desde el día uno. Schema.org, sitemap, robots, OG, hreflang. No se agregan al final, se diseñan desde el inicio."
+      "titulo": "Rendimiento y SEO técnico",
+      "descripcion": "Optimización pensada desde el primer día, no agregada al final del proyecto."
     },
     {
-      "titulo": "Diseño accesible (WCAG)",
-      "descripcion": "Contraste, navegación por teclado, lectores de pantalla, focus visible. Diseñamos para que cualquier persona pueda usar el sitio, no solo el usuario promedio."
+      "titulo": "Diseño accesible",
+      "descripcion": "Cualquier persona puede usar tu sitio, no solo el usuario promedio."
     }
   ],
 

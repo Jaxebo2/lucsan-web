@@ -69,6 +69,29 @@ function initReveals(): void {
     );
   });
 
+  // Auto-stagger grid children when wrapper has [data-reveal-stagger]
+  const staggerWrappers = document.querySelectorAll<HTMLElement>('[data-reveal-stagger]');
+  staggerWrappers.forEach((wrapper) => {
+    const children = Array.from(wrapper.children) as HTMLElement[];
+    if (children.length === 0) return;
+    gsap.fromTo(
+      children,
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        stagger: 0.06,
+        scrollTrigger: {
+          trigger: wrapper,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      },
+    );
+  });
+
   // Hero entrance — fades in immediately on load (no scroll trigger)
   const hero = document.querySelector<HTMLElement>('[data-hero-reveal]');
   if (hero) {

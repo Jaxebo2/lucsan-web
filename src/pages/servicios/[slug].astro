@@ -11,6 +11,8 @@ import Card from '../../components/ui/Card.astro';
 import FAQ from '../../components/ui/FAQ.astro';
 import FAQItem from '../../components/ui/FAQItem.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
+import MediaSlot from '../../components/ui/MediaSlot.astro';
+import AnimatedMark from '../../components/ui/AnimatedMark.astro';
 import { Icon } from 'astro-icon/components';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
 
@@ -46,8 +48,11 @@ const schemas = [
 
 <BaseLayout title={s.seo.title} description={s.seo.description} ogImage={s.seo.ogImage} schemas={schemas}>
   {/* HERO — dark */}
-  <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
-    <Container>
+  <Section surface="inverse" spacing="none" class="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28">
+    <div class="pointer-events-none absolute -right-32 top-20 hidden opacity-40 lg:block">
+      <AnimatedMark variant="coral" size="lg" />
+    </div>
+    <Container class="relative z-10">
       <p class="text-sm text-text-inverse-secondary">
         <a href="/servicios" class="hover:text-text-accent">Servicios</a>
         <span class="mx-2 opacity-50">/</span>
@@ -79,7 +84,7 @@ const schemas = [
         Todas las <span class="text-text-accent">disciplinas</span> que cubrimos.
       </Heading>
 
-      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
         {
           s.incluye.map((item) => (
             <Card variant="default" padding="lg" radius="xl">
@@ -103,7 +108,7 @@ const schemas = [
         ¿Te suena <span class="text-text-accent">familiar</span>?
       </Heading>
 
-      <div class="mt-16 grid gap-6 md:grid-cols-3">
+      <div class="mt-16 grid gap-6 md:grid-cols-3" data-reveal-stagger>
         {
           s.paraQuien.map((p) => (
             <Card variant="filled" padding="lg" radius="xl">
@@ -193,7 +198,7 @@ const schemas = [
             tu marca, tu mercado y tu cliente.
           </Prose>
 
-          <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
             {s.frameworks.map((fw) => (
               <Card variant="filled" padding="lg" radius="xl">
                 <Icon name="ph:compass-bold" class="h-8 w-8 text-text-accent" />
@@ -220,7 +225,7 @@ const schemas = [
         Todo lo que entregamos al cerrar el proyecto.
       </Heading>
 
-      <ul class="mt-12 grid gap-3 md:grid-cols-2">
+      <ul class="mt-12 grid gap-3 md:grid-cols-2" data-reveal-stagger>
         {
           s.entregables.map((e) => (
             <li class="flex items-start gap-3 rounded-lg bg-surface-muted p-4">

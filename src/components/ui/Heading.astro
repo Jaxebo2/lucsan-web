@@ -44,13 +44,13 @@ const defaultSizeByLevel: Record<Level, Size> = { 1: '3xl', 2: '2xl', 3: 'lg', 4
 const resolvedSize: Size = size ?? defaultSizeByLevel[level];
 
 const sizeMap: Record<Size, string> = {
-  xs: 'text-xl md:text-2xl',
-  sm: 'text-2xl md:text-3xl',
-  md: 'text-3xl md:text-4xl',
-  lg: 'text-4xl md:text-5xl',
-  xl: 'text-5xl md:text-6xl',
-  '2xl': 'text-5xl leading-[1.05] md:text-6xl',
-  '3xl': 'text-5xl leading-[1.05] md:text-7xl lg:text-8xl',
+  xs: 'text-xl md:text-2xl tracking-tight',
+  sm: 'text-2xl md:text-3xl tracking-tight',
+  md: 'text-3xl md:text-4xl tracking-tight',
+  lg: 'text-4xl md:text-5xl tracking-tight leading-[1.08]',
+  xl: 'text-5xl md:text-6xl tracking-tight leading-[1.06]',
+  '2xl': 'text-5xl leading-[1.04] tracking-tight md:text-6xl',
+  '3xl': 'text-5xl leading-[1.02] tracking-tight md:text-7xl lg:text-8xl',
 };
 const sizeClass = sizeMap[resolvedSize];
 

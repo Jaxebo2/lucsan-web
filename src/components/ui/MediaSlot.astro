@@ -1,0 +1,73 @@
+---
+/**
+ * MediaSlot — placeholder visual marcado para imagen/video/animación futura.
+ *
+ * Mientras no haya asset real, muestra un bloque con aspect-ratio definido y
+ * un patrón sutil que indica "aquí va contenido visual". En producción se
+ * reemplaza por la imagen, video o componente animado real.
+ *
+ * Variants:
+ * - default: claro, bordeado
+ * - inverse: oscuro para secciones con surface="inverse"
+ * - accent: con tinte coral sutil
+ *
+ * Aspect: 16/9 (default), 4/3, 1/1, 3/4, 9/16
+ */
+
+type Variant = 'default' | 'inverse' | 'accent';
+type Aspect = '16/9' | '4/3' | '1/1' | '3/4' | '9/16';
+
+interface Props {
+  variant?: Variant;
+  aspect?: Aspect;
+  label?: string;
+  /** Si se pasa, indica el tipo: imagen, video, animación. */
+  kind?: 'imagen' | 'video' | 'animación';
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  aspect = '16/9',
+  label,
+  kind = 'imagen',
+  class: className = '',
+} = Astro.props as Props;
+
+const variantMap: Record<Variant, string> = {
+  default: 'bg-neutral-100 border border-border-subtle text-text-muted',
+  inverse: 'bg-neutral-800/40 border border-neutral-700 text-neutral-400',
+  accent: 'bg-brand-coral/5 border border-brand-coral/20 text-text-accent',
+};
+
+const aspectMap: Record<Aspect, string> = {
+  '16/9': 'aspect-[16/9]',
+  '4/3': 'aspect-[4/3]',
+  '1/1': 'aspect-square',
+  '3/4': 'aspect-[3/4]',
+  '9/16': 'aspect-[9/16]',
+};
+
+const variantClass = variantMap[variant];
+const aspectClass = aspectMap[aspect];
+const placeholderLabel = label ?? `${kind} próximamente`;
+---
+
+<div
+  class:list={[
+    'relative flex items-center justify-center overflow-hidden rounded-2xl',
+    aspectClass,
+    variantClass,
+    className,
+  ]}
+  data-media-slot
+  data-kind={kind}
+>
+  {/* Subtle grid pattern as visual hint */}
+  <div
+    class="absolute inset-0 opacity-30"
+    style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"
+    aria-hidden="true"
+  />
+  <span class="relative font-mono text-xs uppercase tracking-widest">{placeholderLabel}</span>
+</div>

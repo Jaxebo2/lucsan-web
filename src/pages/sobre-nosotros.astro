@@ -8,6 +8,8 @@ import Heading from '../components/ui/Heading.astro';
 import Prose from '../components/ui/Prose.astro';
 import Card from '../components/ui/Card.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
+import AnimatedMark from '../components/ui/AnimatedMark.astro';
+import MediaSlot from '../components/ui/MediaSlot.astro';
 import { Icon } from 'astro-icon/components';
 import { aboutPageSchema, breadcrumbSchema } from '../lib/seo';
 
@@ -28,8 +30,11 @@ const schemas = [
 
 <BaseLayout title={sobre.seo.title} description={sobre.seo.description} schemas={schemas}>
   {/* HERO — dark */}
-  <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
-    <Container>
+  <Section surface="inverse" spacing="none" class="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28">
+    <div class="pointer-events-none absolute -right-24 top-16 hidden opacity-30 lg:block">
+      <AnimatedMark variant="coral" size="xl" />
+    </div>
+    <Container class="relative z-10">
       <Eyebrow tone="inverse">Sobre el estudio</Eyebrow>
       <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
         Diseño que <span class="text-text-accent">resuelve problemas</span> de negocio.
@@ -78,33 +83,18 @@ const schemas = [
     )
   }
 
-  {/* MODELO META-ANÁLISIS — page */}
+  {/* MODELO — page */}
   <Section surface="page">
-    <Container>
-      <Eyebrow>Nuestro modelo</Eyebrow>
-      <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+    <Container size="md">
+      <Eyebrow>Nuestro enfoque</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3">
         Antes de proponer, <span class="text-text-accent">analizamos</span>.
       </Heading>
-      <Prose tone="secondary" size="lg" class="mt-6 max-w-2xl">
-        Investigamos cuatro dimensiones para entender dónde la organización, la categoría y el
-        usuario se alinean para crear valor real. De ese cruce salen la ventaja, la relevancia y
-        las oportunidades de marca.
+      <Prose tone="secondary" size="lg" class="mt-6">
+        Cruzamos la mirada del negocio, del mercado y de la audiencia antes de construir cualquier
+        propuesta. Esa intersección es donde aparece el valor real que tu marca puede entregar al
+        cliente correcto en el momento adecuado.
       </Prose>
-
-      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {[
-          { num: '01', titulo: 'Marca', desc: 'Estado actual desde lo estratégico, su significado y expresión.' },
-          { num: '02', titulo: 'Categoría', desc: 'Industria, competencia directa, indirecta, referentes e industrias relacionadas.' },
-          { num: '03', titulo: 'Usuario', desc: 'Relación del usuario con la industria y la marca, basado en tendencias actuales.' },
-          { num: '04', titulo: 'Tendencias', desc: 'Tendencias actuales y emergentes que definen el escenario donde se desarrollará la marca.' },
-        ].map((d) => (
-          <Card variant="default" padding="lg" radius="xl">
-            <span class="font-display text-3xl font-bold text-text-accent">{d.num}</span>
-            <Heading level={3} size="sm" class="mt-4">{d.titulo}</Heading>
-            <Prose tone="secondary" size="sm" class="mt-3">{d.desc}</Prose>
-          </Card>
-        ))}
-      </div>
     </Container>
   </Section>
 
@@ -183,15 +173,17 @@ const schemas = [
             Quién está <span class="text-text-accent">detrás</span> del estudio.
           </Heading>
 
-          <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
             {sobre.equipo.map((p) => (
               <Card variant="elevated" padding="lg" radius="xl">
-                {p.foto && (
+                {p.foto ? (
                   <img
                     src={p.foto.src}
                     alt={p.foto.alt}
                     class="mb-6 h-20 w-20 rounded-full object-cover"
                   />
+                ) : (
+                  <MediaSlot aspect="1/1" kind="imagen" label="Foto" class="mb-6 max-w-[80px]" />
                 )}
                 <Heading level={3} size="md">{p.nombre}</Heading>
                 <p class="mt-1 text-sm text-text-muted">{p.rol}</p>

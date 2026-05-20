@@ -84,28 +84,28 @@
 
   "frameworks": [
     {
-      "titulo": "Brand Compass",
-      "descripcion": "Brújula de marca con cuatro pilares: Propósito (por qué existes más allá del dinero), Onliness (frase que define tu atributo diferenciador), Personalidad (atributos de cara y voz) y Trueline (expresión interna que sustenta la diferenciación)."
+      "titulo": "Brújula de marca",
+      "descripcion": "Define los cimientos estratégicos para que cada decisión futura tenga un norte claro."
     },
     {
-      "titulo": "Brand Core",
-      "descripcion": "Definición de los principios fundamentales: misión, visión, valores y atributos. Lo que la marca quiere lograr, en qué cree y con qué cualidades se mueve en el mundo."
+      "titulo": "Núcleo de marca",
+      "descripcion": "Articula lo que tu organización es, hacia dónde va y por qué importa."
     },
     {
-      "titulo": "Meta-Análisis",
-      "descripcion": "Investigación cruzada en cuatro dimensiones: Marca (estado actual), Categoría (industria y competencia), Usuario (relación con la categoría) y Tendencias (escenarios futuros). De ahí salen ventaja, relevancia y oportunidades de marca."
+      "titulo": "Meta-análisis estratégico",
+      "descripcion": "Investigación cruzada de tu marca, tu categoría, tu cliente y las tendencias del mercado."
     },
     {
-      "titulo": "Brand Statement",
-      "descripcion": "Fórmula que articula qué ofrece la empresa, a quién, en qué entorno cultural, con qué tono y qué beneficios emocionales genera. Responde al qué, cómo y por qué del negocio."
+      "titulo": "Statement de marca",
+      "descripcion": "Una frase que articula con precisión qué ofreces, a quién y por qué."
     },
     {
       "titulo": "Arquetipos de marca",
-      "descripcion": "Trabajamos con los doce arquetipos clásicos (Cuidador, Creador, Soberano, Héroe, Mago, Rebelde, Ciudadano, Amante, Bufón, Inocente, Explorador, Sabio) para definir personalidad y diferenciador comunicacional."
+      "descripcion": "Personalidad y carácter comunicacional que diferencian a tu marca en el mercado."
     },
     {
-      "titulo": "Customer Journey Map",
-      "descripcion": "Mapeo del recorrido del cliente desde que descubre el problema hasta que recomienda la marca. Identifica puntos de contacto, oportunidades de mejora y experiencia esperada en cada etapa."
+      "titulo": "Mapa de experiencia del cliente",
+      "descripcion": "Mapeo de los momentos clave de relación entre tu cliente y tu marca."
     }
   ],
 

@@ -77,30 +77,30 @@
   "frameworks": [
     {
       "titulo": "Golden Circle",
-      "descripcion": "Modelo de Simon Sinek para definir el porqué (propósito), cómo (proceso) y qué (resultado) del negocio. Punto de partida cuando la marca opera sin un propósito articulado.",
+      "descripcion": "Articulamos el propósito real de tu negocio antes de tomar decisiones estratégicas.",
       "autor": "Simon Sinek"
     },
     {
       "titulo": "Business Model Canvas",
-      "descripcion": "Análisis estructurado del modelo de negocio: propuesta de valor, segmentos de clientes, canales, relaciones, flujo de ingresos, recursos, actividades, socios y estructura de costos."
+      "descripcion": "Mapeo completo de tu modelo de negocio para entender dónde generar valor."
     },
     {
-      "titulo": "Análisis FODA",
-      "descripcion": "Diagnóstico clásico de fortalezas, oportunidades, debilidades y amenazas. Útil para contextualizar el momento del negocio antes de cualquier decisión estratégica."
+      "titulo": "Análisis FODA estratégico",
+      "descripcion": "Diagnóstico del contexto real antes de proponer cualquier movimiento."
     },
     {
-      "titulo": "Niveles de consciencia del cliente",
-      "descripcion": "Modelo de Eugene Schwartz que mapea al cliente en cinco estados: no sabe que tiene un problema, lo identifica, conoce soluciones, conoce la tuya, te elige. Define el tipo de comunicación que corresponde a cada etapa.",
+      "titulo": "Madurez del cliente",
+      "descripcion": "Identifica en qué etapa está tu audiencia para definir cómo hablarle.",
       "autor": "Eugene Schwartz"
     },
     {
-      "titulo": "Niveles de consciencia organizacional",
-      "descripcion": "Modelo de Richard Barrett con siete niveles (supervivencia, relaciones, rendimiento, transformación, alineamiento, colaboración, servicio). Diagnostica madurez de cultura organizacional.",
+      "titulo": "Madurez organizacional",
+      "descripcion": "Diagnóstico de cultura interna y palancas de crecimiento de la organización.",
       "autor": "Richard Barrett"
     },
     {
       "titulo": "Pirámide de valor",
-      "descripcion": "Tres dimensiones de la experiencia: funcional (resuelve lo básico), desempeño superior (relación + procesos) y valor (diferenciación real). Sirve para auditar dónde está la marca y dónde puede subir."
+      "descripcion": "Auditoría de dónde está tu marca hoy y dónde puede llegar mañana."
     }
   ],
 
