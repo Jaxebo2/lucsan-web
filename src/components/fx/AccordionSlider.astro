@@ -1,7 +1,7 @@
 ---
 /**
- * AccordionSlider — VERTICAL accordion. Click expande hacia abajo
- * con animación smooth. Solo uno abierto a la vez.
+ * AccordionSlider — HORIZONTAL accordion. Hover sobre un panel lo expande
+ * con animación real flex-grow (CSS plain, no Tailwind shorthand).
  */
 
 import { Icon } from 'astro-icon/components';
@@ -21,108 +21,106 @@ interface Props {
 const { panels, class: className = '' } = Astro.props as Props;
 ---
 
-<div class:list={['vertical-accordion flex flex-col gap-3', className]} data-vertical-accordion>
+<div
+  class:list={['accordion-slider flex flex-col gap-3 md:h-[440px] md:flex-row md:gap-3', className]}
+  data-accordion-slider
+>
   {
     panels.map((panel, i) => (
-      <div
-        class="va-item rounded-2xl border border-border-subtle bg-surface-elevated overflow-hidden transition-all duration-300"
-        data-va-item
-        data-va-open={i === 0 ? 'true' : 'false'}
+      <button
+        type="button"
+        class="accordion-slider__panel group relative overflow-hidden rounded-2xl bg-brand-black text-left"
+        data-panel-index={i}
+        aria-expanded={i === 0 ? 'true' : 'false'}
       >
-        <button
-          type="button"
-          class="va-trigger flex w-full items-center gap-5 p-6 text-left md:p-8"
-          data-va-trigger
-          aria-expanded={i === 0 ? 'true' : 'false'}
-        >
-          <span class="va-index font-mono text-xs text-text-muted md:text-sm">
-            {String(i + 1).padStart(2, '0')}
-          </span>
-          {panel.icon && (
-            <Icon name={panel.icon} class="va-icon h-7 w-7 flex-none text-text-accent" />
-          )}
-          <h3 class="va-title flex-1 font-display text-xl font-bold tracking-tight md:text-3xl">
-            {panel.titulo}
-          </h3>
-          <span class="va-caret flex h-10 w-10 flex-none items-center justify-center rounded-full border border-current transition-transform duration-300">
-            <Icon name="ph:plus-bold" class="h-4 w-4" />
-          </span>
-        </button>
+        {panel.image ? (
+          <img src={panel.image} alt="" class="absolute inset-0 h-full w-full object-cover opacity-50" />
+        ) : (
+          <div class="absolute inset-0 bg-gradient-to-br from-brand-coral/40 via-brand-coral/10 to-brand-black"></div>
+        )}
+        <span aria-hidden="true" class="accordion-slider__overlay absolute inset-0 bg-brand-black/40"></span>
 
-        <div class="va-body" data-va-body>
-          <div class="va-body-inner px-6 pb-8 pl-[5.5rem] md:px-8 md:pb-10 md:pl-24">
-            <p class="text-base leading-relaxed text-text-secondary md:text-lg">
-              {panel.descripcion}
-            </p>
+        <div class="relative flex h-full flex-col justify-between p-6 md:p-8">
+          <div class="flex items-start justify-between">
+            <span class="font-mono text-xs uppercase tracking-widest text-neutral-50/70">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            {panel.icon && <Icon name={panel.icon} class="h-7 w-7 text-text-accent" />}
+          </div>
+
+          <div>
+            <h3 class="accordion-slider__title font-display text-2xl font-bold leading-tight text-neutral-50 md:text-3xl">
+              {panel.titulo}
+            </h3>
+            <div class="accordion-slider__desc-wrap">
+              <p class="accordion-slider__desc mt-3 max-w-md text-sm text-neutral-50/90 md:text-base">
+                {panel.descripcion}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </button>
     ))
   }
 </div>
 
 <style>
-  .va-item[data-va-open='true'] {
-    border-color: var(--color-brand-coral);
+  .accordion-slider__panel {
+    flex: 1 1 0;
+    min-height: 220px;
+    /* Transición REAL del flex-grow */
+    transition: flex-grow 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .va-item[data-va-open='true'] .va-title {
-    color: var(--color-brand-coral);
-  }
-  .va-item[data-va-open='true'] .va-caret {
-    transform: rotate(45deg);
-    color: var(--color-brand-coral);
+  /* Mobile: comportamiento stacked, sin animación horizontal */
+  @media (min-width: 768px) {
+    .accordion-slider__panel { min-height: 0; }
+    /* Panel activo crece, los otros se contraen */
+    .accordion-slider__panel[aria-expanded='true'] {
+      flex-grow: 4;
+    }
   }
 
-  /* Body collapse smooth — usa grid-template-rows trick (animable) */
-  .va-body {
+  /* Overlay del panel — más oscuro cuando colapsado, más claro cuando expandido */
+  .accordion-slider__overlay {
+    transition: background-color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .accordion-slider__panel[aria-expanded='true'] .accordion-slider__overlay {
+    background-color: color-mix(in oklab, var(--color-brand-black) 25%, transparent);
+  }
+
+  /* Descripción: collapse smooth con grid trick */
+  .accordion-slider__desc-wrap {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 450ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: grid-template-rows 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .va-item[data-va-open='true'] .va-body {
+  .accordion-slider__panel[aria-expanded='true'] .accordion-slider__desc-wrap {
     grid-template-rows: 1fr;
+    transition-delay: 200ms;
   }
-  .va-body-inner {
+  .accordion-slider__desc {
     overflow: hidden;
   }
 
-  /* Hover state cuando está cerrado */
-  .va-item:not([data-va-open='true']):hover {
-    border-color: color-mix(in oklab, var(--color-brand-coral) 40%, transparent);
-  }
-  .va-item:not([data-va-open='true']):hover .va-title {
-    color: var(--color-brand-coral);
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .va-item,
-    .va-body,
-    .va-caret {
+    .accordion-slider__panel,
+    .accordion-slider__overlay,
+    .accordion-slider__desc-wrap {
       transition: none;
     }
   }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-vertical-accordion]').forEach((accordion) => {
-    const items = accordion.querySelectorAll<HTMLElement>('[data-va-item]');
-    items.forEach((item, idx) => {
-      const trigger = item.querySelector<HTMLButtonElement>('[data-va-trigger]');
-      if (!trigger) return;
-      trigger.addEventListener('click', () => {
-        const isOpen = item.dataset.vaOpen === 'true';
-        // Cerrar todos primero (acordeón clásico — solo uno abierto)
-        items.forEach((it) => {
-          it.dataset.vaOpen = 'false';
-          const t = it.querySelector<HTMLButtonElement>('[data-va-trigger]');
-          t?.setAttribute('aria-expanded', 'false');
-        });
-        // Si NO estaba abierto, abrir este
-        if (!isOpen) {
-          item.dataset.vaOpen = 'true';
-          trigger.setAttribute('aria-expanded', 'true');
-        }
-      });
+  document.querySelectorAll<HTMLElement>('[data-accordion-slider]').forEach((slider) => {
+    const panels = slider.querySelectorAll<HTMLButtonElement>('.accordion-slider__panel');
+    const setActive = (idx: number) => {
+      panels.forEach((p, i) => p.setAttribute('aria-expanded', i === idx ? 'true' : 'false'));
+    };
+    panels.forEach((panel, idx) => {
+      panel.addEventListener('mouseenter', () => setActive(idx));
+      panel.addEventListener('focus', () => setActive(idx));
+      panel.addEventListener('click', () => setActive(idx));
     });
   });
 </script>

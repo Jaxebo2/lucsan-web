@@ -114,29 +114,18 @@ const isDark = variant === 'dark';
 </div>
 
 <style>
+  /* Items visibles por defecto (sin depender de JS). Si IntersectionObserver
+     se activa, animan; sino quedan visibles igual. */
   .premium-timeline__item {
-    opacity: 0;
-    transform: translateY(24px);
+    opacity: 1;
     transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
                 transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .premium-timeline__item[data-visible='true'] {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .premium-timeline__item {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
   }
 </style>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-premium-timeline]').forEach((timeline) => {
     const progress = timeline.querySelector<HTMLElement>('[data-timeline-progress]');
-    const items = timeline.querySelectorAll<HTMLElement>('[data-timeline-item]');
 
     // Progress fill al scroll
     if (progress) {
@@ -153,18 +142,6 @@ const isDark = variant === 'dark';
       onScroll();
     }
 
-    // Reveal items con stagger
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).dataset.visible = 'true';
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: '0px 0px -15% 0px' },
-    );
-    items.forEach((item) => observer.observe(item));
+    // No-op: items ya son visibles por CSS, no necesitamos JS reveal
   });
 </script>
