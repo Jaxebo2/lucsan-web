@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useState } from 'react';
 
 interface Panel {
@@ -11,16 +11,17 @@ interface Props {
 }
 
 /**
- * MotionAccordion — accordion horizontal con springs reales de Framer Motion.
- * Hover/click expande el panel. Layout animation = flex-grow REAL animado.
+ * MotionAccordion — horizontal accordion con spring overshoot (bounce) y
+ * descripción que aparece sin saltar el título.
  */
 export default function MotionAccordion({ panels }: Props) {
   const [active, setActive] = useState(0);
   const reduceMotion = useReducedMotion();
 
+  // Spring con overshoot para sensación de "bounce" al final
   const transition = reduceMotion
     ? { duration: 0 }
-    : { type: 'spring' as const, stiffness: 180, damping: 26, mass: 0.9 };
+    : { type: 'spring' as const, stiffness: 220, damping: 18, mass: 1 };
 
   return (
     <div className="flex flex-col gap-3 md:h-[440px] md:flex-row md:gap-3">
@@ -54,27 +55,30 @@ export default function MotionAccordion({ panels }: Props) {
                 </span>
               </div>
 
+              {/* Bottom: título + descripción.
+                  La descripción tiene espacio reservado (max-height fija),
+                  solo se anima opacity + translateY. Esto evita que el título
+                  salte cuando aparece/desaparece. */}
               <div>
                 <h3 className="font-display text-2xl font-bold leading-tight text-neutral-50 md:text-3xl">
                   {panel.titulo}
                 </h3>
-                <AnimatePresence initial={false}>
-                  {isActive && (
-                    <motion.p
-                      key="desc"
-                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                      animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
-                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                      transition={{
-                        opacity: { duration: 0.3, delay: isActive ? 0.15 : 0 },
-                        height: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-                      }}
-                      className="max-w-md overflow-hidden text-sm text-neutral-50/90 md:text-base"
-                    >
-                      {panel.descripcion}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
+                <motion.p
+                  initial={false}
+                  animate={{
+                    opacity: isActive ? 1 : 0,
+                    y: isActive ? 0 : 10,
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    delay: isActive ? 0.2 : 0,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="mt-3 max-w-md text-sm text-neutral-50/90 md:text-base"
+                  style={{ pointerEvents: isActive ? 'auto' : 'none' }}
+                >
+                  {panel.descripcion}
+                </motion.p>
               </div>
             </div>
           </motion.button>

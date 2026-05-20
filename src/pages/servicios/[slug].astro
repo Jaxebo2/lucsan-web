@@ -8,8 +8,7 @@ import Heading from '../../components/ui/Heading.astro';
 import Prose from '../../components/ui/Prose.astro';
 import Button from '../../components/ui/Button.astro';
 import Card from '../../components/ui/Card.astro';
-import FAQ from '../../components/ui/FAQ.astro';
-import FAQItem from '../../components/ui/FAQItem.astro';
+import MotionFAQ from '../../components/fx/MotionFAQ.tsx';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import MediaSlot from '../../components/ui/MediaSlot.astro';
 import HeroFluid from '../../components/fx/HeroFluid.astro';
@@ -281,9 +280,9 @@ const schemas = [
         Lo que <span class="text-text-accent">siempre</span> nos preguntan.
       </Heading>
 
-      <FAQ class="mt-12">
-        {s.faq.map((f) => <FAQItem pregunta={f.pregunta}>{f.respuesta}</FAQItem>)}
-      </FAQ>
+      <div class="mt-12">
+        <MotionFAQ client:visible items={s.faq} />
+      </div>
     </Container>
   </Section>
 

@@ -47,7 +47,9 @@ function destroyLenis(): void {
 }
 
 function initReveals(): void {
-  // Auto-reveal any element with [data-reveal] when it scrolls into view
+  // Auto-reveal any element with [data-reveal] when it enters viewport.
+  // toggleActions: play (enter down) reverse (leave up) play (enter up) reverse (leave down)
+  // Esto hace que SIEMPRE se anime entrada/salida en ambas direcciones de scroll.
   const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
   targets.forEach((el) => {
     const delay = parseFloat(el.dataset.revealDelay ?? '0');
@@ -62,8 +64,9 @@ function initReveals(): void {
         delay,
         scrollTrigger: {
           trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
+          start: 'top 88%',
+          end: 'bottom 12%',
+          toggleActions: 'play reverse play reverse',
         },
       },
     );
@@ -85,8 +88,36 @@ function initReveals(): void {
         stagger: 0.06,
         scrollTrigger: {
           trigger: wrapper,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
+          start: 'top 85%',
+          end: 'bottom 15%',
+          toggleActions: 'play reverse play reverse',
+        },
+      },
+    );
+  });
+
+  // Block-level animation: cualquier <section> sin data-reveal-skip recibe
+  // un fade+slide sutil al entrar/salir del viewport.
+  const sections = document.querySelectorAll<HTMLElement>('section:not([data-reveal-skip])');
+  sections.forEach((sec) => {
+    // Saltar si ya tiene [data-reveal] o si es el hero (data-theme inverse en posición top 0)
+    if (sec.dataset.reveal !== undefined) return;
+    const isHero = sec.getBoundingClientRect().top < 100 && sec.dataset.theme === 'dark';
+    if (isHero) return;
+
+    gsap.fromTo(
+      sec,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sec,
+          start: 'top 92%',
+          end: 'bottom 8%',
+          toggleActions: 'play reverse play reverse',
         },
       },
     );

@@ -1,18 +1,13 @@
 ---
 /**
- * HeroFluid — fluid mesh real con WebGL siguiendo el mouse.
+ * HeroFluid — WebGL fluid simulation real con webgl-fluid (Pavel Dobryakov).
  *
- * Usa `webgl-fluid` (Pavel Dobryakov's port). Canvas pixel-perfect que
- * reacciona al cursor con simulación fluid real. Configurado solo en
- * coral de marca, sin paleta rainbow.
- *
- * Respeta prefers-reduced-motion: en ese caso usa fallback CSS estático.
+ * Canvas pointer-events-AUTO recibe mousemove → fluid lib dibuja splats coral.
+ * IMMEDIATE true mantiene la simulación viva siempre, no solo en hover.
  */
 
 interface Props {
-  /** Intensidad/saturación del efecto (0-1). */
   intensity?: number;
-  /** Si true, fondo neutro claro. Por defecto dark. */
   variant?: 'dark' | 'light';
   class?: string;
 }
@@ -22,7 +17,7 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 
 <div
   class:list={[
-    'hero-fluid pointer-events-none absolute inset-0 overflow-hidden',
+    'hero-fluid absolute inset-0 overflow-hidden',
     `hero-fluid--${variant}`,
     className,
   ]}
@@ -30,40 +25,34 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
   data-hero-fluid
   aria-hidden="true"
 >
-  {/* Fallback CSS sutil mientras carga el canvas o si reduced-motion */}
-  <div class="hero-fluid__fallback"></div>
+  {/* Fallback CSS sutil mientras carga el canvas */}
+  <div class="hero-fluid__fallback pointer-events-none absolute inset-0"></div>
 
+  {/* Canvas que RECIBE eventos del mouse (importante para fluid sim) */}
   <canvas
     class="hero-fluid__canvas absolute inset-0 h-full w-full"
     data-hero-fluid-canvas
   ></canvas>
 
-  {/* Grain overlay sobre todo */}
-  <div class="hero-fluid__grain"></div>
-
-  {/* Capa que captura el mouse (importante para fluid sim) */}
-  <div class="hero-fluid__capture pointer-events-auto absolute inset-0"></div>
+  {/* Grain overlay sobre todo, sin captura de eventos */}
+  <div class="hero-fluid__grain pointer-events-none absolute inset-0"></div>
 </div>
 
 <style>
-  .hero-fluid--dark {
-    background-color: var(--color-brand-black);
-  }
-  .hero-fluid--light {
-    background-color: var(--color-neutral-50);
-  }
+  .hero-fluid--dark { background-color: var(--color-brand-black); }
+  .hero-fluid--light { background-color: var(--color-neutral-50); }
 
   .hero-fluid__canvas {
     opacity: 0;
     transition: opacity 1.2s ease;
+    /* CRÍTICO: el canvas necesita pointer-events para que la lib reciba mouse moves */
+    pointer-events: auto;
   }
   .hero-fluid[data-loaded='true'] .hero-fluid__canvas {
     opacity: var(--hero-fluid-intensity, 1);
   }
 
-  /* Fallback gradient sutil mientras WebGL carga */
   .hero-fluid__fallback {
-    position: absolute;
     inset: -20%;
     background:
       radial-gradient(ellipse 40% 60% at 25% 40%, rgb(255 85 72 / 0.25), transparent 60%),
@@ -71,17 +60,13 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
     filter: blur(80px);
   }
 
-  /* Grain overlay */
   .hero-fluid__grain {
-    position: absolute;
-    inset: 0;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    opacity: 0.15;
+    opacity: 0.12;
     mix-blend-mode: overlay;
-    pointer-events: none;
   }
   .hero-fluid--light .hero-fluid__grain {
-    opacity: 0.1;
+    opacity: 0.08;
     mix-blend-mode: multiply;
   }
 
@@ -91,56 +76,72 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 </style>
 
 <script>
-  // Solo cargar fluid sim si no hay reduced-motion
   const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (motionOk) {
-    // Import dinámico para no bloquear el render inicial
-    // @ts-ignore — webgl-fluid no tiene tipos
-    import('webgl-fluid').then(({ default: WebGLFluid }: { default: (canvas: HTMLCanvasElement, options: Record<string, unknown>) => void }) => {
-      document
-        .querySelectorAll<HTMLElement>('[data-hero-fluid]')
-        .forEach((wrapper) => {
-          const canvas = wrapper.querySelector<HTMLCanvasElement>('[data-hero-fluid-canvas]');
-          if (!canvas) return;
+    // @ts-ignore — webgl-fluid sin types
+    import('webgl-fluid').then((mod: { default: (canvas: HTMLCanvasElement, options: Record<string, unknown>) => void }) => {
+      const WebGLFluid = mod.default;
+      document.querySelectorAll<HTMLElement>('[data-hero-fluid]').forEach((wrapper) => {
+        const canvas = wrapper.querySelector<HTMLCanvasElement>('[data-hero-fluid-canvas]');
+        if (!canvas) return;
 
-          // Coral brand color como única opción de paleta
-          const coral = [{ r: 255 / 255, g: 85 / 255, b: 72 / 255 }];
-
-          WebGLFluid(canvas, {
-            IMMEDIATE: false,
-            TRIGGER: 'hover',
-            SIM_RESOLUTION: 128,
-            DYE_RESOLUTION: 1024,
-            CAPTURE_RESOLUTION: 512,
-            DENSITY_DISSIPATION: 1.2,
-            VELOCITY_DISSIPATION: 1.5,
-            PRESSURE: 0.6,
-            PRESSURE_ITERATIONS: 20,
-            CURL: 18,
-            SPLAT_RADIUS: 0.18,
-            SPLAT_FORCE: 5000,
-            SHADING: true,
-            COLOR_UPDATE_SPEED: 0, // no cambiar de color
-            BACK_COLOR: { r: 8 / 255, g: 8 / 255, b: 12 / 255 }, // brand-black
-            TRANSPARENT: false,
-            BLOOM: true,
-            BLOOM_ITERATIONS: 8,
-            BLOOM_RESOLUTION: 256,
-            BLOOM_INTENSITY: 0.5,
-            BLOOM_THRESHOLD: 0.6,
-            BLOOM_SOFT_KNEE: 0.7,
-            SUNRAYS: false,
-            COLORFUL: false,
-            HOVER: true,
-            // Forzar siempre coral
-            COLOR_PALETTE: coral,
-          });
-
-          // Marcar como cargado para fade-in del canvas
-          requestAnimationFrame(() => {
-            wrapper.dataset.loaded = 'true';
-          });
+        WebGLFluid(canvas, {
+          IMMEDIATE: true,
+          TRIGGER: 'hover',
+          HOVER: true,
+          SIM_RESOLUTION: 128,
+          DYE_RESOLUTION: 1024,
+          // Disipaciones suaves para que las splats duren más
+          DENSITY_DISSIPATION: 0.7,
+          VELOCITY_DISSIPATION: 1.0,
+          PRESSURE: 0.5,
+          PRESSURE_ITERATIONS: 20,
+          CURL: 15,
+          SPLAT_RADIUS: 0.22,
+          SPLAT_FORCE: 6000,
+          SHADING: true,
+          COLORFUL: false,
+          COLOR_UPDATE_SPEED: 0,
+          PAUSED: false,
+          BACK_COLOR: { r: 8 / 255, g: 8 / 255, b: 12 / 255 },
+          TRANSPARENT: false,
+          BLOOM: true,
+          BLOOM_ITERATIONS: 8,
+          BLOOM_RESOLUTION: 256,
+          BLOOM_INTENSITY: 0.6,
+          BLOOM_THRESHOLD: 0.55,
+          BLOOM_SOFT_KNEE: 0.7,
+          SUNRAYS: false,
+          COLOR_PALETTE: [{ r: 1.0, g: 0.333, b: 0.282 }],
         });
+
+        requestAnimationFrame(() => {
+          wrapper.dataset.loaded = 'true';
+        });
+
+        // Mantener fluid vivo: si el usuario no mueve el mouse, disparar
+        // splats sintéticos en posiciones aleatorias cada 2.5s para que
+        // siempre haya movimiento coral en el hero.
+        let lastUserMove = Date.now();
+        canvas.addEventListener('mousemove', () => { lastUserMove = Date.now(); });
+        setInterval(() => {
+          if (Date.now() - lastUserMove < 2000) return; // user activo, no interferir
+          const rect = canvas.getBoundingClientRect();
+          const x = rect.left + Math.random() * rect.width;
+          const y = rect.top + Math.random() * rect.height;
+          // Sintetizar mousemove + mouseup secuencia para splat
+          ['mousedown', 'mousemove', 'mouseup'].forEach((type, idx) => {
+            setTimeout(() => {
+              canvas.dispatchEvent(new MouseEvent(type, {
+                clientX: x + Math.random() * 50,
+                clientY: y + Math.random() * 50,
+                bubbles: true,
+                buttons: 1,
+              }));
+            }, idx * 50);
+          });
+        }, 2500);
+      });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);
     });
