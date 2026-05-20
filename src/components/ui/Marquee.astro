@@ -1,0 +1,79 @@
+---
+/**
+ * Marquee — texto deslizándose horizontalmente en loop infinito.
+ *
+ * Útil para mostrar capacidades, sectores, atributos de marca como banner
+ * decorativo entre secciones. Item separador inline + duplicado para loop.
+ *
+ * Respeta prefers-reduced-motion (se queda estático).
+ */
+
+interface Props {
+  items: string[];
+  speed?: 'slow' | 'normal' | 'fast';
+  /** Color del texto */
+  tone?: 'primary' | 'inverse' | 'accent';
+  /** Tamaño del texto */
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  items,
+  speed = 'normal',
+  tone = 'primary',
+  size = 'md',
+  class: className = '',
+} = Astro.props as Props;
+
+const speedMap = { slow: '60s', normal: '40s', fast: '25s' };
+const toneMap = {
+  primary: 'text-text-primary',
+  inverse: 'text-text-inverse',
+  accent: 'text-text-accent',
+};
+const sizeMap = {
+  sm: 'text-2xl md:text-3xl',
+  md: 'text-4xl md:text-6xl',
+  lg: 'text-6xl md:text-8xl',
+};
+
+const duration = speedMap[speed];
+// Duplicar items para loop infinito sin saltos visibles
+const loopedItems = [...items, ...items, ...items, ...items];
+---
+
+<div
+  class:list={[
+    'marquee relative w-full overflow-hidden',
+    toneMap[tone],
+    sizeMap[size],
+    className,
+  ]}
+  style={`--marquee-duration: ${duration}`}
+  aria-hidden="true"
+>
+  <div class="marquee__track flex shrink-0 items-center gap-12 whitespace-nowrap py-2 md:gap-16">
+    {
+      loopedItems.map((item) => (
+        <>
+          <span class="font-display font-bold tracking-tight">{item}</span>
+          <span class="text-text-accent">●</span>
+        </>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee__track {
+    animation: marquee-scroll var(--marquee-duration) linear infinite;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-25%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+  }
+</style>

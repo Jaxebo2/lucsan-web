@@ -1,0 +1,85 @@
+---
+/**
+ * GradientMesh — fondo decorativo animado con blobs de color.
+ *
+ * Tres círculos blureados de colores de marca flotando lentamente.
+ * Posicionar absoluto dentro de Section con overflow-hidden.
+ * Respeta prefers-reduced-motion.
+ *
+ * Variants:
+ * - subtle: opacidad baja, ideal sobre dark
+ * - vivid: opacidad media-alta, ideal como hero accent
+ */
+
+type Variant = 'subtle' | 'vivid';
+
+interface Props {
+  variant?: Variant;
+  class?: string;
+}
+
+const { variant = 'subtle', class: className = '' } = Astro.props as Props;
+
+const opacity = variant === 'vivid' ? 0.5 : 0.25;
+---
+
+<div
+  class:list={['gradient-mesh pointer-events-none absolute inset-0 overflow-hidden', className]}
+  aria-hidden="true"
+  style={`--mesh-opacity: ${opacity}`}
+>
+  <span class="gradient-mesh__blob gradient-mesh__blob--coral"></span>
+  <span class="gradient-mesh__blob gradient-mesh__blob--blue"></span>
+  <span class="gradient-mesh__blob gradient-mesh__blob--green"></span>
+</div>
+
+<style>
+  .gradient-mesh__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: var(--mesh-opacity);
+    will-change: transform;
+  }
+  .gradient-mesh__blob--coral {
+    width: 40rem;
+    height: 40rem;
+    background: var(--color-brand-coral);
+    top: -10rem;
+    right: -10rem;
+    animation: blob-float-a 22s ease-in-out infinite;
+  }
+  .gradient-mesh__blob--blue {
+    width: 32rem;
+    height: 32rem;
+    background: var(--color-brand-blue);
+    bottom: -10rem;
+    left: -6rem;
+    animation: blob-float-b 28s ease-in-out infinite;
+  }
+  .gradient-mesh__blob--green {
+    width: 24rem;
+    height: 24rem;
+    background: var(--color-brand-green);
+    top: 40%;
+    left: 50%;
+    animation: blob-float-c 32s ease-in-out infinite;
+  }
+
+  @keyframes blob-float-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-3rem, 4rem) scale(1.1); }
+  }
+  @keyframes blob-float-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(4rem, -3rem) scale(0.9); }
+  }
+  @keyframes blob-float-c {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-30%, -60%) scale(1.15); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gradient-mesh__blob { animation: none; }
+  }
+</style>

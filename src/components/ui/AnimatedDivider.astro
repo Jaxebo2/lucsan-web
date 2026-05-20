@@ -1,0 +1,77 @@
+---
+/**
+ * AnimatedDivider — línea decorativa SVG entre secciones.
+ *
+ * Trazo coral que dibuja una curva sutil de izquierda a derecha al entrar
+ * al viewport. Pensado para separar secciones sin un padding muerto.
+ *
+ * Variants:
+ * - line: línea recta animada
+ * - wave: onda sutil
+ * - mark: línea con el símbolo en el centro
+ */
+
+type Variant = 'line' | 'wave' | 'mark';
+
+interface Props {
+  variant?: Variant;
+  tone?: 'accent' | 'subtle' | 'inverse';
+  class?: string;
+}
+
+const { variant = 'line', tone = 'accent', class: className = '' } = Astro.props as Props;
+
+const toneClass = {
+  accent: 'text-text-accent',
+  subtle: 'text-border-subtle',
+  inverse: 'text-text-inverse-secondary',
+}[tone];
+---
+
+<div
+  class:list={['animated-divider relative flex w-full items-center justify-center', toneClass, className]}
+  aria-hidden="true"
+>
+  {variant === 'line' && (
+    <svg class="animated-divider__svg w-full" viewBox="0 0 1000 4" preserveAspectRatio="none" height="4">
+      <line x1="0" y1="2" x2="1000" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  )}
+  {variant === 'wave' && (
+    <svg class="animated-divider__svg w-full" viewBox="0 0 1000 40" preserveAspectRatio="none" height="40">
+      <path
+        d="M0 20 Q 250 0 500 20 T 1000 20"
+        stroke="currentColor"
+        stroke-width="1.5"
+        fill="none"
+        stroke-linecap="round"
+      />
+    </svg>
+  )}
+  {variant === 'mark' && (
+    <div class="flex w-full items-center gap-6">
+      <span class="h-px flex-1 bg-current opacity-30"></span>
+      <span class="text-2xl">●</span>
+      <span class="h-px flex-1 bg-current opacity-30"></span>
+    </div>
+  )}
+</div>
+
+<style>
+  .animated-divider__svg line,
+  .animated-divider__svg path {
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: divider-draw 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes divider-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animated-divider__svg line,
+    .animated-divider__svg path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

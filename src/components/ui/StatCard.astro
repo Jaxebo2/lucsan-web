@@ -1,0 +1,51 @@
+---
+/**
+ * StatCard — número grande + descripción.
+ *
+ * Idéntico a MetricBadge en spirit pero más decorativo: el número aparece
+ * con un sutil counter-up effect al entrar al viewport. La animación es
+ * solo decorativa, el valor real ya está renderizado server-side.
+ *
+ * Pensado para sección de "trust signals" en home.
+ */
+
+interface Props {
+  valor: string;
+  descripcion: string;
+  /** Si quieres mostrar un + adelante del número, ej "+200 proyectos" */
+  prefijo?: string;
+  /** Si quieres mostrar un sufijo, ej "10 años" */
+  sufijo?: string;
+  tone?: 'primary' | 'inverse' | 'accent';
+  class?: string;
+}
+
+const {
+  valor,
+  descripcion,
+  prefijo = '',
+  sufijo = '',
+  tone = 'accent',
+  class: className = '',
+} = Astro.props as Props;
+
+const toneClass = {
+  primary: 'text-text-primary',
+  inverse: 'text-text-inverse',
+  accent: 'text-text-accent',
+}[tone];
+
+const descTone = tone === 'inverse' ? 'text-text-inverse-secondary' : 'text-text-secondary';
+---
+
+<div
+  class:list={['stat-card flex flex-col gap-3', className]}
+  data-reveal
+>
+  <div class="flex items-baseline gap-1">
+    {prefijo && <span class:list={['font-display text-4xl font-bold md:text-5xl', toneClass]}>{prefijo}</span>}
+    <span class:list={['font-display text-5xl font-bold leading-none md:text-7xl', toneClass]}>{valor}</span>
+    {sufijo && <span class:list={['font-display text-2xl font-bold md:text-3xl', toneClass]}>{sufijo}</span>}
+  </div>
+  <p class:list={['text-sm leading-snug md:text-base', descTone]}>{descripcion}</p>
+</div>
