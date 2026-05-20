@@ -8,9 +8,9 @@ import Heading from '../components/ui/Heading.astro';
 import Prose from '../components/ui/Prose.astro';
 import Card from '../components/ui/Card.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
-import InteractiveGradient from '../components/ui/InteractiveGradient.astro';
+import HeroFluid from '../components/fx/HeroFluid.astro';
 import MediaSlot from '../components/ui/MediaSlot.astro';
-import PremiumTimeline from '../components/fx/PremiumTimeline.astro';
+import MotionTimeline from '../components/fx/MotionTimeline.tsx';
 import { Icon } from 'astro-icon/components';
 import { aboutPageSchema, breadcrumbSchema } from '../lib/seo';
 
@@ -32,7 +32,7 @@ const schemas = [
 <BaseLayout title={sobre.seo.title} description={sobre.seo.description} schemas={schemas}>
   {/* HERO — dark */}
   <Section surface="inverse" spacing="none" class="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28">
-    <InteractiveGradient variant="dark" intensity={0.7} />
+    <HeroFluid variant="dark" intensity={0.85} />
     <Container class="relative z-10">
       <Eyebrow tone="inverse">Sobre el estudio</Eyebrow>
       <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
@@ -108,8 +108,9 @@ const schemas = [
         El mismo proceso para cada proyecto. Sin sorpresas, con entregables claros y check-points en cada fase.
       </Prose>
 
-      <div class="mt-16 max-w-4xl" data-reveal>
-        <PremiumTimeline
+      <div class="mt-16 max-w-4xl">
+        <MotionTimeline
+          client:visible
           variant="light"
           items={sobre.metodo.map((fase, i) => ({
             numero: String(i + 1).padStart(2, '0'),

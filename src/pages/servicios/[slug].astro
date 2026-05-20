@@ -12,9 +12,9 @@ import FAQ from '../../components/ui/FAQ.astro';
 import FAQItem from '../../components/ui/FAQItem.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import MediaSlot from '../../components/ui/MediaSlot.astro';
-import InteractiveGradient from '../../components/ui/InteractiveGradient.astro';
+import HeroFluid from '../../components/fx/HeroFluid.astro';
 import CardExpand from '../../components/fx/CardExpand.astro';
-import AccordionSlider from '../../components/fx/AccordionSlider.astro';
+import MotionAccordion from '../../components/fx/MotionAccordion.tsx';
 import { Icon } from 'astro-icon/components';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
 
@@ -51,7 +51,7 @@ const schemas = [
 <BaseLayout title={s.seo.title} description={s.seo.description} ogImage={s.seo.ogImage} schemas={schemas}>
   {/* HERO — dark */}
   <Section surface="inverse" spacing="none" class="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28">
-    <InteractiveGradient variant="dark" intensity={0.65} />
+    <HeroFluid variant="dark" intensity={0.85} />
     <Container class="relative z-10">
       <p class="text-sm text-text-inverse-secondary">
         <a href="/servicios" class="hover:text-text-accent">Servicios</a>
@@ -109,11 +109,11 @@ const schemas = [
       </Heading>
 
       <div class="mt-16" data-reveal>
-        <AccordionSlider
+        <MotionAccordion
+          client:visible
           panels={s.paraQuien.map((p) => ({
             titulo: p.perfil,
             descripcion: p.descripcion,
-            icon: 'ph:user-focus-bold',
           }))}
         />
       </div>

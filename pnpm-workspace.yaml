@@ -1,6 +1,7 @@
 allowBuilds:
   esbuild: set this to true or false
   sharp: set this to true or false
+  webgl-fluid: set this to true or false
 onlyBuiltDependencies:
   - esbuild
   - sharp

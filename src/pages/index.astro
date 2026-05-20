@@ -10,7 +10,7 @@ import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
 import MediaSlot from '../components/ui/MediaSlot.astro';
-import InteractiveGradient from '../components/ui/InteractiveGradient.astro';
+import HeroFluid from '../components/fx/HeroFluid.astro';
 import Marquee from '../components/ui/Marquee.astro';
 import StatCard from '../components/ui/StatCard.astro';
 import PixelTrail from '../components/fx/PixelTrail.astro';
@@ -50,8 +50,7 @@ const iconForService: Record<string, string> = {
   {/* HERO */}
   <Section surface="inverse" spacing="none" class="relative flex min-h-[100vh] items-center overflow-hidden">
     {/* Interactive gradient mesh + pixel trail */}
-    <InteractiveGradient variant="dark" intensity={0.55} />
-    <PixelTrail size={20} radius={120} fadeSpeed={0.05} />
+    <HeroFluid variant="dark" intensity={1} />
 
     <Container class="relative z-10 pt-32 pb-24 md:pt-40" data-hero-reveal>
       <Eyebrow tone="inverse" data-hero-item>Estudio de diseño · Santiago, Chile</Eyebrow>

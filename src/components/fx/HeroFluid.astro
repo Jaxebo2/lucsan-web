@@ -1,0 +1,148 @@
+---
+/**
+ * HeroFluid — fluid mesh real con WebGL siguiendo el mouse.
+ *
+ * Usa `webgl-fluid` (Pavel Dobryakov's port). Canvas pixel-perfect que
+ * reacciona al cursor con simulación fluid real. Configurado solo en
+ * coral de marca, sin paleta rainbow.
+ *
+ * Respeta prefers-reduced-motion: en ese caso usa fallback CSS estático.
+ */
+
+interface Props {
+  /** Intensidad/saturación del efecto (0-1). */
+  intensity?: number;
+  /** Si true, fondo neutro claro. Por defecto dark. */
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+
+const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props as Props;
+---
+
+<div
+  class:list={[
+    'hero-fluid pointer-events-none absolute inset-0 overflow-hidden',
+    `hero-fluid--${variant}`,
+    className,
+  ]}
+  style={`--hero-fluid-intensity: ${intensity}`}
+  data-hero-fluid
+  aria-hidden="true"
+>
+  {/* Fallback CSS sutil mientras carga el canvas o si reduced-motion */}
+  <div class="hero-fluid__fallback"></div>
+
+  <canvas
+    class="hero-fluid__canvas absolute inset-0 h-full w-full"
+    data-hero-fluid-canvas
+  ></canvas>
+
+  {/* Grain overlay sobre todo */}
+  <div class="hero-fluid__grain"></div>
+
+  {/* Capa que captura el mouse (importante para fluid sim) */}
+  <div class="hero-fluid__capture pointer-events-auto absolute inset-0"></div>
+</div>
+
+<style>
+  .hero-fluid--dark {
+    background-color: var(--color-brand-black);
+  }
+  .hero-fluid--light {
+    background-color: var(--color-neutral-50);
+  }
+
+  .hero-fluid__canvas {
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .hero-fluid[data-loaded='true'] .hero-fluid__canvas {
+    opacity: var(--hero-fluid-intensity, 1);
+  }
+
+  /* Fallback gradient sutil mientras WebGL carga */
+  .hero-fluid__fallback {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 40% 60% at 25% 40%, rgb(255 85 72 / 0.25), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 75% 70%, rgb(255 85 72 / 0.2), transparent 65%);
+    filter: blur(80px);
+  }
+
+  /* Grain overlay */
+  .hero-fluid__grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .hero-fluid--light .hero-fluid__grain {
+    opacity: 0.1;
+    mix-blend-mode: multiply;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fluid__canvas { display: none; }
+  }
+</style>
+
+<script>
+  // Solo cargar fluid sim si no hay reduced-motion
+  const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (motionOk) {
+    // Import dinámico para no bloquear el render inicial
+    // @ts-ignore — webgl-fluid no tiene tipos
+    import('webgl-fluid').then(({ default: WebGLFluid }: { default: (canvas: HTMLCanvasElement, options: Record<string, unknown>) => void }) => {
+      document
+        .querySelectorAll<HTMLElement>('[data-hero-fluid]')
+        .forEach((wrapper) => {
+          const canvas = wrapper.querySelector<HTMLCanvasElement>('[data-hero-fluid-canvas]');
+          if (!canvas) return;
+
+          // Coral brand color como única opción de paleta
+          const coral = [{ r: 255 / 255, g: 85 / 255, b: 72 / 255 }];
+
+          WebGLFluid(canvas, {
+            IMMEDIATE: false,
+            TRIGGER: 'hover',
+            SIM_RESOLUTION: 128,
+            DYE_RESOLUTION: 1024,
+            CAPTURE_RESOLUTION: 512,
+            DENSITY_DISSIPATION: 1.2,
+            VELOCITY_DISSIPATION: 1.5,
+            PRESSURE: 0.6,
+            PRESSURE_ITERATIONS: 20,
+            CURL: 18,
+            SPLAT_RADIUS: 0.18,
+            SPLAT_FORCE: 5000,
+            SHADING: true,
+            COLOR_UPDATE_SPEED: 0, // no cambiar de color
+            BACK_COLOR: { r: 8 / 255, g: 8 / 255, b: 12 / 255 }, // brand-black
+            TRANSPARENT: false,
+            BLOOM: true,
+            BLOOM_ITERATIONS: 8,
+            BLOOM_RESOLUTION: 256,
+            BLOOM_INTENSITY: 0.5,
+            BLOOM_THRESHOLD: 0.6,
+            BLOOM_SOFT_KNEE: 0.7,
+            SUNRAYS: false,
+            COLORFUL: false,
+            HOVER: true,
+            // Forzar siempre coral
+            COLOR_PALETTE: coral,
+          });
+
+          // Marcar como cargado para fade-in del canvas
+          requestAnimationFrame(() => {
+            wrapper.dataset.loaded = 'true';
+          });
+        });
+    }).catch((err) => {
+      console.warn('WebGL fluid failed to load:', err);
+    });
+  }
+</script>
