@@ -1,0 +1,43 @@
+{
+  "nombre": "Turismo y hotelería",
+  "slug": "turismo-y-hoteleria",
+  "orden": 8,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas de turismo que se sienten como el destino antes de llegar.",
+    "subhead": "Branding y experiencia digital para hoteles, lodges, agencias de viajes, tours y operadores de experiencias."
+  },
+
+  "contexto": "El viajero compra una promesa antes que un producto. Decide reservar basándose en cómo se ve y se siente la marca: fotografía, narrativa, sitio web, redes. Una experiencia digital pobre cuesta reservas reales, mientras que una marca bien construida puede cobrar más sin perder ocupación. El sector turismo es de los que más recompensa una marca cuidada porque el cliente paga por la promesa, no por el insumo.",
+
+  "desafios": [
+    "Diferenciarte de plataformas globales (Booking, Airbnb, Expedia) que comoditizan tu propuesta.",
+    "Comunicar la experiencia completa, no solo la habitación o el itinerario.",
+    "Generar reservas directas para no depender solo de OTAs y sus comisiones.",
+    "Mantener una marca consistente entre redes, sitio, mailing y la experiencia física.",
+    "Captar viajeros internacionales con sitios bien posicionados en múltiples idiomas."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para hotel, lodge, hostal o cadena turística",
+    "Sitio web con sistema de reservas directo, sin comisión a OTAs",
+    "Dirección de arte para fotografía de producto turístico",
+    "Estrategia digital para captar viajeros internacionales",
+    "Material impreso: brochures, mapas, menús, señalética"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca turística transmite la experiencia que entregas?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño para turismo y hotelería · Lucsan Design",
+    "description": "Branding y diseño digital para hoteles, lodges, operadores turísticos y agencias. Genera reservas directas, comunica la experiencia y reduce dependencia de OTAs.",
+    "ogImage": "/og-sector-turismo.png"
+  }
+}

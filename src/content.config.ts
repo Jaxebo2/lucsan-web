@@ -142,6 +142,20 @@ const sectores = defineCollection({
 
     ejemplosTrabajo: z.array(z.string()).default([]),
 
+    /** Bloque opcional destacado: condiciones especiales, programas, etc. */
+    notaEspecial: z
+      .object({
+        titulo: z.string(),
+        descripcion: z.string(),
+        cta: z
+          .object({
+            texto: z.string(),
+            href: z.string(),
+          })
+          .optional(),
+      })
+      .optional(),
+
     cta: z.object({
       headline: z.string(),
       botonTexto: z.string().default('Conversemos'),

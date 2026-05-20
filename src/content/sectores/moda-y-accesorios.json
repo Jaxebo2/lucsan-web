@@ -1,0 +1,43 @@
+{
+  "nombre": "Moda y accesorios",
+  "slug": "moda-y-accesorios",
+  "orden": 4,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas de moda con identidad propia, no copias de tendencias.",
+    "subhead": "Branding, ecommerce y dirección de arte para marcas de ropa, accesorios y calzado que quieren diferenciarse en una categoría saturada."
+  },
+
+  "contexto": "La moda es uno de los sectores con mayor saturación digital. Cada semana aparecen marcas nuevas con productos similares, fotos parecidas y descuentos agresivos. Diferenciarse no es opcional: es la única forma de no competir solo por precio. Una marca de moda hoy se gana o se pierde en Instagram, en el unboxing y en cómo se siente la experiencia de compra completa.",
+
+  "desafios": [
+    "Diferenciarte cuando hay cientos de marcas con productos visualmente similares.",
+    "Construir comunidad propia para no depender solo del descuento o del ad-spend.",
+    "Mantener consistencia visual entre Instagram, sitio, empaque y la entrega física.",
+    "Convertir followers en compradores recurrentes, no en cazadores de promociones.",
+    "Lograr que tu producto aparezca en búsquedas orgánicas frente a marketplaces y fast fashion."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding completo para marca DTC de ropa, accesorios o calzado",
+    "Tienda online con experiencia de compra diferenciada",
+    "Dirección de arte para sesiones de producto y campañas de temporada",
+    "Estrategia de contenido para Instagram y TikTok",
+    "Diseño de packaging y unboxing experience"
+  ],
+
+  "cta": {
+    "headline": "¿Lista tu marca de moda para destacar de verdad?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño para marcas de moda · Lucsan Design",
+    "description": "Estudio especializado en branding, ecommerce y dirección de arte para marcas de moda, ropa, accesorios y calzado. Diferenciación real en una categoría saturada.",
+    "ogImage": "/og-sector-moda.png"
+  }
+}

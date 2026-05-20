@@ -1,0 +1,43 @@
+{
+  "nombre": "Cultura y entretenimiento",
+  "slug": "cultura-y-entretenimiento",
+  "orden": 11,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas culturales que generan audiencia, no solo asistencia.",
+    "subhead": "Branding y experiencia digital para museos, festivales, productoras, sellos, teatros, galerías y proyectos culturales."
+  },
+
+  "contexto": "El sector cultural compite por atención en una economía donde el entretenimiento es infinito y gratuito. Para que tu proyecto tenga audiencia recurrente y patrocinios sólidos, necesitas una marca que comunique relevancia y autoridad cultural. Las instituciones culturales con marcas bien construidas atraen mejor talento, financiamiento y público que las que dependen solo de la programación.",
+
+  "desafios": [
+    "Captar audiencia en un mercado saturado de opciones de entretenimiento.",
+    "Construir credibilidad institucional para atraer patrocinios y financiamiento.",
+    "Renovar la marca sin perder identidad histórica del proyecto.",
+    "Vender entradas y abonos con embudo digital eficiente.",
+    "Generar comunidad alrededor del proyecto, no solo asistentes puntuales."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para museo, galería, festival, productora o sello discográfico",
+    "Sitio web con programación dinámica y venta de entradas",
+    "Campañas de promoción de exposiciones, lanzamientos o eventos",
+    "Sistema de identidad para festivales recurrentes y sus ediciones",
+    "Material editorial: catálogos, programas, libros institucionales"
+  ],
+
+  "cta": {
+    "headline": "¿Tu proyecto cultural proyecta el peso que tiene?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño para cultura y entretenimiento · Lucsan Design",
+    "description": "Branding y experiencia digital para museos, festivales, productoras, sellos, teatros y proyectos culturales. Construye audiencia y autoridad institucional.",
+    "ogImage": "/og-sector-cultura.png"
+  }
+}

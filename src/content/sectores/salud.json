@@ -1,0 +1,43 @@
+{
+  "nombre": "Salud",
+  "slug": "salud",
+  "orden": 6,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas del sector salud que transmiten confianza, no marketing.",
+    "subhead": "Branding y experiencia digital para clínicas, consultas, equipos médicos, telemedicina y marcas relacionadas con el cuidado de la salud."
+  },
+
+  "contexto": "La salud es un sector donde la confianza no se compra con publicidad, se construye con coherencia. Los pacientes investigan antes de elegir y comparan no solo precios o ubicación, sino también la calidad percibida de la marca. Una identidad amateur en un centro médico genera dudas; un sitio web confuso pierde citas. La diferencia entre la consulta llena y la consulta vacía está, muchas veces, antes del primer contacto.",
+
+  "desafios": [
+    "Comunicar profesionalismo sin perder calidez humana.",
+    "Diferenciarte de clínicas grandes con presupuestos de marketing muy altos.",
+    "Construir confianza online suficiente para que el paciente agende una primera cita.",
+    "Cumplir con normativa sanitaria y de comunicación responsable.",
+    "Optimizar la captación de pacientes nuevos sin depender solo de derivaciones."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para clínica, centro médico o consulta profesional",
+    "Sitio web con agendamiento online y portal de pacientes",
+    "Plataforma de telemedicina o seguimiento de tratamientos",
+    "Material informativo para pacientes (físico y digital)",
+    "Estrategia de captación de pacientes nuevos"
+  ],
+
+  "cta": {
+    "headline": "¿Lista tu marca de salud para ganarse la confianza desde el primer click?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño web para sector salud · Lucsan Design",
+    "description": "Branding, sitio web y marketing digital para clínicas, consultas médicas, telemedicina y marcas del sector salud. Confianza profesional sin perder calidez.",
+    "ogImage": "/og-sector-salud.png"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "nombre": "Mascotas",
+  "slug": "mascotas",
+  "orden": 10,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas para mascotas que conectan con tutores, no con clientes.",
+    "subhead": "Branding y experiencia digital para petfood, veterinarias, productos, servicios y plataformas para el mundo animal."
+  },
+
+  "contexto": "El mercado de mascotas es uno de los pocos que sigue creciendo a doble dígito en Latinoamérica. Los tutores tratan a sus animales como miembros de la familia y son extremadamente exigentes con las marcas que eligen. Confianza, transparencia de ingredientes y cuidado se ganan con marca, no con descuentos. Una marca cuidada en este sector se gana fans, no solo clientes.",
+
+  "desafios": [
+    "Transmitir seriedad sin perder calidez emocional hacia el tutor.",
+    "Diferenciarte de marcas industriales con presencia masiva en supermercados.",
+    "Construir confianza sobre ingredientes, procedencia y bienestar animal.",
+    "Convertir compras únicas en suscripciones o relaciones de largo plazo.",
+    "Generar contenido educativo que sume valor sin ser invasivo."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para marca de petfood, accesorios o servicios para mascotas",
+    "Sitio ecommerce con sistema de suscripción recurrente",
+    "Plataforma de telemedicina veterinaria o agendamiento",
+    "Diseño de packaging para alimento, snacks o productos pet",
+    "Estrategia de contenido para Instagram y TikTok con foco en tutores"
+  ],
+
+  "cta": {
+    "headline": "¿Lista tu marca para conquistar al tutor exigente?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño para mascotas · Lucsan Design",
+    "description": "Branding y diseño digital para marcas de petfood, veterinarias, productos y servicios para mascotas. Conecta con tutores que tratan a sus animales como familia.",
+    "ogImage": "/og-sector-mascotas.png"
+  }
+}

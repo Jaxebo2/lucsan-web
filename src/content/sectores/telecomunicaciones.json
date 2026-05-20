@@ -1,0 +1,43 @@
+{
+  "nombre": "Telecomunicaciones",
+  "slug": "telecomunicaciones",
+  "orden": 17,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas de telco que generan preferencia, no solo cobertura.",
+    "subhead": "Branding y experiencia digital para operadoras, MVNOs, proveedores de internet, ISPs locales y servicios de conectividad."
+  },
+
+  "contexto": "Las telcos compiten en un mercado donde el producto técnico es casi indistinguible entre proveedores. La diferencia entre ganar o perder al cliente está casi por completo en la marca, la experiencia digital y la atención. Una marca cuidada permite cobrar más, reduce churn y construye preferencia en una categoría que el cliente normalmente percibe como commodity.",
+
+  "desafios": [
+    "Diferenciarte cuando el servicio técnico es percibido como commodity.",
+    "Construir confianza emocional en una categoría con baja satisfacción promedio.",
+    "Convertir tráfico web en contrataciones reales sin depender del call center.",
+    "Reducir churn comunicando valor permanente, no solo promociones de entrada.",
+    "Modernizar marcas heredadas sin alienar a la base de clientes existente."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para operadora, MVNO o ISP regional",
+    "Sitio comercial con contratación online y portal de clientes",
+    "Campañas de adquisición y retención con embudo digital completo",
+    "Sistema de identidad para línea retail vs línea corporativa",
+    "Rediseño completo de comunicación de planes y propuestas"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca de telecomunicaciones se gana al cliente o solo lo retiene?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para telecomunicaciones · Lucsan Design",
+    "description": "Branding y experiencia digital para operadoras de telecomunicaciones, MVNOs e ISPs. Diferencia tu propuesta en una categoría percibida como commodity.",
+    "ogImage": "/og-sector-telco.png"
+  }
+}

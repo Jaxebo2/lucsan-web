@@ -1,0 +1,43 @@
+{
+  "nombre": "Inmobiliaria",
+  "slug": "inmobiliaria",
+  "orden": 7,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas inmobiliarias que venden el proyecto antes de la propiedad.",
+    "subhead": "Branding y experiencia digital para inmobiliarias, corredoras, proyectos residenciales, comerciales y proptech."
+  },
+
+  "contexto": "El comprador inmobiliario investiga online por meses antes de tomar contacto. En ese tiempo, lo que decide si te elige no es el precio: es la sensación de seriedad, modernidad y confianza que transmite tu marca. Un sitio anticuado, fotos malas o una propuesta confusa cuestan ventas reales. En un sector donde un solo cierre paga el rebranding completo, invertir en cómo te ves no es gasto.",
+
+  "desafios": [
+    "Comunicar el proyecto o propiedad antes de que el comprador agende visita.",
+    "Diferenciarte de portales generalistas y corredores tradicionales.",
+    "Construir reputación digital fuerte para que tu marca aparezca primero en búsquedas.",
+    "Convertir tráfico web en leads calificados, no solo en consultas tibias.",
+    "Mantener consistencia visual entre proyectos, redes, brochures y locales físicos."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para inmobiliaria, corredora o constructora",
+    "Sitio web con catálogo de proyectos, búsquedas y agendamiento de visitas",
+    "Landing dedicada por proyecto inmobiliario",
+    "Estrategia de captación de leads y nurturing",
+    "Material de venta: brochures, presentaciones, banners de obra"
+  ],
+
+  "cta": {
+    "headline": "¿Tu inmobiliaria proyecta el nivel del producto que vende?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño web inmobiliario · Lucsan Design",
+    "description": "Branding y experiencia digital para inmobiliarias, corredoras, proyectos residenciales y comerciales. Construye autoridad digital y convierte tráfico en visitas.",
+    "ogImage": "/og-sector-inmobiliaria.png"
+  }
+}

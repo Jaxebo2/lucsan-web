@@ -1,0 +1,43 @@
+{
+  "nombre": "Educación",
+  "slug": "educacion",
+  "orden": 9,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas educativas que comunican autoridad y proyectan futuro.",
+    "subhead": "Branding y plataformas digitales para colegios, institutos, academias online, edtech y formación profesional."
+  },
+
+  "contexto": "La decisión educativa es una de las más cuidadas: familias y profesionales investigan, comparan y agendan visitas o demos antes de elegir. Tu marca habla por ti durante todo ese proceso. Una identidad amateur, un sitio antiguo o material desordenado generan dudas que cuestan matrículas. Las instituciones que invierten en marca y experiencia digital crecen más, retienen mejor y atraen al perfil de alumno que buscan.",
+
+  "desafios": [
+    "Comunicar el método y el resultado educativo de forma clara, sin tecnicismos.",
+    "Diferenciarte de instituciones tradicionales y de cursos online genéricos.",
+    "Convertir leads en matrículas durante el proceso de admisión.",
+    "Construir comunidad de exalumnos como motor de recomendaciones.",
+    "Mantener una marca viva entre redes, plataforma educativa, materiales y campus físico."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para colegio, instituto, universidad o academia",
+    "Sitio web institucional con portal de admisión y postulaciones",
+    "Plataforma LMS para cursos online o blended learning",
+    "Campaña de admisión completa con embudo y landing",
+    "Material de captación: brochures, presentaciones, video institucional"
+  ],
+
+  "cta": {
+    "headline": "¿Tu institución educativa proyecta el nivel de su propuesta?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño web educativo · Lucsan Design",
+    "description": "Branding, sitio web y plataformas LMS para colegios, institutos, academias online y edtech. Comunica autoridad, capta alumnos y retiene comunidad.",
+    "ogImage": "/og-sector-educacion.png"
+  }
+}

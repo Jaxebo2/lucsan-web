@@ -1,0 +1,43 @@
+{
+  "nombre": "Manufactura industrial",
+  "slug": "manufactura-industrial",
+  "orden": 13,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas industriales que comunican capacidad técnica y confianza.",
+    "subhead": "Branding y plataforma digital para fabricantes, proveedores industriales, manufactureras y empresas B2B con producto técnico."
+  },
+
+  "contexto": "El sector industrial vendió durante décadas por relación directa, catálogo y feria. Hoy el comprador investiga online primero, compara proveedores y filtra antes de levantar el teléfono. Una marca antigua o un sitio confuso te dejan fuera de la lista corta antes de que sepas que estabas siendo evaluado. Una identidad industrial moderna, técnica y bien estructurada abre puertas que antes solo se ganaban con años de relación.",
+
+  "desafios": [
+    "Comunicar capacidad técnica sin caer en lenguaje incomprensible para el comprador inicial.",
+    "Diferenciarte de competidores con productos técnicamente similares.",
+    "Construir confianza B2B suficiente para entrar a procesos de licitación o evaluación.",
+    "Generar leads calificados desde el sitio, no solo desde ferias o referidos.",
+    "Mantener autoridad técnica en redes y contenido sin perder humanidad."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para fabricante, proveedor industrial o manufacturera",
+    "Sitio corporativo con catálogo técnico y formularios de cotización",
+    "Material comercial: brochures, fichas técnicas, presentaciones B2B",
+    "Estrategia digital con foco en captación B2B (LinkedIn, Search)",
+    "Sistema de identidad para empresa con múltiples líneas o divisiones"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca industrial proyecta el nivel técnico que tienes?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding industrial y B2B · Lucsan Design",
+    "description": "Branding y diseño web para manufactura industrial, fabricantes y proveedores B2B. Comunica capacidad técnica, genera leads y entra en procesos de evaluación.",
+    "ogImage": "/og-sector-industrial.png"
+  }
+}

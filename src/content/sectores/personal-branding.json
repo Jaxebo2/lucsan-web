@@ -1,0 +1,43 @@
+{
+  "nombre": "Personal branding",
+  "slug": "personal-branding",
+  "orden": 20,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas personales que abren puertas que el CV no abre.",
+    "subhead": "Branding y plataforma digital para founders, ejecutivos, líderes de opinión, creadores de contenido y profesionales que quieren posicionar su nombre."
+  },
+
+  "contexto": "Tu nombre puede ser un activo o un punto ciego. En un mundo donde decisiones de inversión, contratación, colaboración o cliente nuevo se toman buscando primero en Google y LinkedIn, lo que aparece sobre ti define qué tipo de oportunidades llegan. Una marca personal bien construida atrae inversión, partnerships, mejores clientes y mejores espacios de aparición pública sin que tengas que perseguirlos.",
+
+  "desafios": [
+    "Diferenciarte de cientos de profesionales con perfil similar al tuyo.",
+    "Construir autoridad sin necesidad de estar todo el día creando contenido.",
+    "Comunicar tu propuesta sin caer en autobombo ni en falsa modestia.",
+    "Convertir audiencia digital en oportunidades comerciales reales.",
+    "Mantener coherencia entre tu marca personal y la empresa donde trabajas o que lideras."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding personal completo para founder, ejecutivo o profesional",
+    "Sitio web personal con portafolio, conferencias y agenda",
+    "Sistema de identidad personal: logo, color, tipografía, tono",
+    "Estrategia de contenido para LinkedIn, podcast o newsletter",
+    "Diseño de keynote, presentaciones y material de divulgación"
+  ],
+
+  "cta": {
+    "headline": "¿Tu nombre está abriendo puertas o aún es un punto ciego?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Personal branding para founders y profesionales · Lucsan Design",
+    "description": "Branding personal, sitio web y estrategia de contenido para founders, ejecutivos y profesionales que quieren posicionar su nombre en el mercado.",
+    "ogImage": "/og-sector-personal.png"
+  }
+}

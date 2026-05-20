@@ -17,7 +17,9 @@
     { "titulo": "Landing pages", "descripcion": "Páginas de aterrizaje para campañas, lanzamientos y captación de leads." },
     { "titulo": "Diseño UX", "descripcion": "Arquitectura de información, flujos de usuario y validación con pruebas." },
     { "titulo": "Diseño UI", "descripcion": "Diseño gráfico de interfaces consistente con tu marca." },
-    { "titulo": "Estrategia web", "descripcion": "Creación e implementación de estrategia digital alineada al modelo de negocio." }
+    { "titulo": "Estrategia web", "descripcion": "Creación e implementación de estrategia digital alineada al modelo de negocio." },
+    { "titulo": "CRO (optimización de conversión)", "descripcion": "Análisis y mejora continua del embudo de tu sitio para que más visitas se conviertan en clientes." },
+    { "titulo": "Auditoría y rediseño de sitio existente", "descripcion": "Diagnóstico técnico, de UX y de conversión sobre tu sitio actual para identificar qué arreglar primero." }
   ],
 
   "paraQuien": [

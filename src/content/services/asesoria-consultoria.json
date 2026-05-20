@@ -2,7 +2,7 @@
   "title": "Asesoría y consultoría",
   "slug": "asesoria-consultoria",
   "keyword": "consultoría de marca y diseño",
-  "orden": 3,
+  "orden": 4,
   "publicado": true,
 
   "hero": {
@@ -16,7 +16,10 @@
     { "titulo": "Gestión de marca", "descripcion": "Asesoría sobre cómo operar la marca día a día, mantener consistencia y evolucionar con coherencia." },
     { "titulo": "Experiencia y percepción", "descripcion": "Análisis de cómo se percibe tu marca, productos y servicios, y plan para alinearla con la realidad." },
     { "titulo": "Posicionamiento de marca", "descripcion": "Consultoría estratégica sobre cómo posicionar tu marca frente a la competencia y la audiencia objetivo." },
-    { "titulo": "Lineamientos de marketing", "descripcion": "Definición de criterios y reglas para que tu equipo de marketing trabaje con foco y consistencia." }
+    { "titulo": "Lineamientos de marketing", "descripcion": "Definición de criterios y reglas para que tu equipo de marketing trabaje con foco y consistencia." },
+    { "titulo": "Brand audit y health check", "descripcion": "Diagnóstico profundo del estado actual de tu marca y su efectividad comercial." },
+    { "titulo": "Strategic design sprints", "descripcion": "Procesos cortos e intensivos de una semana para validar ideas, posicionamientos o conceptos." },
+    { "titulo": "Workshops para equipos internos", "descripcion": "Capacitación a equipos de marketing, ventas o producto sobre marca, diseño y estrategia." }
   ],
 
   "paraQuien": [

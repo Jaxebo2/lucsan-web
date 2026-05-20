@@ -22,7 +22,12 @@
     { "titulo": "Naming", "descripcion": "Creación y validación de nombres para marcas, productos o servicios." },
     { "titulo": "Marketing estratégico", "descripcion": "Plan de comunicación de marca, productos y servicios." },
     { "titulo": "UX Branding", "descripcion": "Diseño de servicios y experiencia de marca en cada punto de contacto." },
-    { "titulo": "Comunicación organizacional", "descripcion": "Diseño de comunicación y cultura interna y externa." }
+    { "titulo": "Comunicación organizacional", "descripcion": "Diseño de comunicación y cultura interna y externa." },
+    { "titulo": "Dirección de arte", "descripcion": "Lineamientos visuales para campañas, sesiones de foto, video y producción de contenido." },
+    { "titulo": "Diseño editorial", "descripcion": "Libros de marca, reportes anuales, revistas internas y publicaciones impresas." },
+    { "titulo": "Papelería corporativa", "descripcion": "Tarjetas, presentaciones, propuestas y materiales del día a día con sello de marca." },
+    { "titulo": "Diseño de presentaciones", "descripcion": "Investor decks, pitch decks y presentaciones internas que comunican con autoridad." },
+    { "titulo": "Diseño de eventos y activaciones", "descripcion": "Branding aplicado al mundo físico: stands, lanzamientos, experiencias presenciales." }
   ],
 
   "paraQuien": [

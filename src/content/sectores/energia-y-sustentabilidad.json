@@ -1,0 +1,43 @@
+{
+  "nombre": "Energía y sustentabilidad",
+  "slug": "energia-y-sustentabilidad",
+  "orden": 15,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas energéticas que comunican futuro, no solo eficiencia.",
+    "subhead": "Branding y plataforma digital para empresas de energía, renovables, eficiencia energética, electromovilidad y tecnologías limpias."
+  },
+
+  "contexto": "El sector energético está en plena transformación: nuevas empresas de renovables, electromovilidad y eficiencia compiten con incumbentes tradicionales que también buscan modernizarse. Tu marca define si eres percibido como parte del futuro o como parte del pasado. Empresas con identidad cuidada acceden a mejores partnerships, financiamiento sustentable y clientes que pagan más por proveedores alineados con sus compromisos ESG.",
+
+  "desafios": [
+    "Comunicar tecnología técnica sin perder accesibilidad para decisores no técnicos.",
+    "Diferenciarte de generadoras tradicionales si vienes del mundo renovable.",
+    "Construir autoridad para entrar a procesos corporativos y financiamiento ESG.",
+    "Educar al mercado sobre tecnologías nuevas (solar, EV, hidrógeno) sin sobre-tecnicismos.",
+    "Generar marca empleadora fuerte para atraer talento en un sector con escasez."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para empresa de energía solar, EV, eficiencia o tecnología limpia",
+    "Sitio corporativo con propuesta técnica y comercial",
+    "Reporte de sustentabilidad o memoria anual con diseño profesional",
+    "Estrategia digital con foco B2B y financiamiento institucional",
+    "Material para presentación a inversionistas y partners estratégicos"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca energética está construyendo el futuro o lo está vendiendo?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para energía y sustentabilidad · Lucsan Design",
+    "description": "Branding y diseño web para empresas de energía renovable, electromovilidad, eficiencia energética y tecnologías limpias. Comunica futuro con autoridad técnica.",
+    "ogImage": "/og-sector-energia.png"
+  }
+}

@@ -339,6 +339,15 @@ export default config({
           itemLabel: (p) => p.value,
         }),
 
+        notaEspecial: fields.object({
+          titulo: fields.text({ label: 'Título nota especial' }),
+          descripcion: fields.text({ label: 'Descripción', multiline: true }),
+          cta: fields.object({
+            texto: fields.text({ label: 'Texto botón (opcional)' }),
+            href: fields.text({ label: 'Link (opcional)' }),
+          }),
+        }),
+
         cta: fields.object({
           headline: fields.text({ label: 'Headline CTA' }),
           botonTexto: fields.text({ label: 'Texto botón', defaultValue: 'Conversemos' }),

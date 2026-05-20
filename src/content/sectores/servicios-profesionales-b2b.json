@@ -1,0 +1,43 @@
+{
+  "nombre": "Servicios profesionales B2B",
+  "slug": "servicios-profesionales-b2b",
+  "orden": 16,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas B2B que entran en la lista corta antes de la primera reunión.",
+    "subhead": "Branding y plataforma digital para consultoras, agencias, estudios profesionales, firmas de abogados y servicios B2B especializados."
+  },
+
+  "contexto": "El comprador B2B investiga proveedores online durante semanas antes de levantar el teléfono. Una marca débil te deja fuera del proceso sin que sepas que estabas siendo evaluado. Una marca cuidada en consultoras y servicios profesionales no es lujo: es el filtro que decide si llegas a la mesa de decisión o no. Y una vez que llegas, justifica honorarios superiores frente a competidores con propuestas técnicamente similares.",
+
+  "desafios": [
+    "Pasar el primer filtro de evaluación online cuando el comprador compara cinco proveedores.",
+    "Diferenciarte de firmas que ofrecen servicios técnicamente parecidos.",
+    "Justificar honorarios premium con una marca que respalde la percepción.",
+    "Generar leads calificados desde LinkedIn y Search, no solo desde referidos.",
+    "Mantener autoridad institucional sin perder el tono cercano que cierra ventas."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para consultora, agencia, estudio profesional o firma de servicios",
+    "Sitio corporativo con landing por servicio y formulario de contacto comercial",
+    "Material de propuestas comerciales y casos de éxito documentados",
+    "Estrategia de contenido B2B en LinkedIn y newsletter",
+    "Sistema de identidad para firma con múltiples prácticas o divisiones"
+  ],
+
+  "cta": {
+    "headline": "¿Tu firma B2B pasa el primer filtro o llega a la mesa de decisión?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para servicios profesionales B2B · Lucsan Design",
+    "description": "Branding y diseño web para consultoras, agencias, estudios profesionales y firmas B2B. Pasa el primer filtro de evaluación y justifica honorarios premium.",
+    "ogImage": "/og-sector-b2b.png"
+  }
+}

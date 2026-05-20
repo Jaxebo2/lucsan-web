@@ -1,0 +1,148 @@
+{
+  "title": "Marketing y publicidad digital",
+  "slug": "marketing-publicidad-digital",
+  "keyword": "agencia de marketing digital",
+  "orden": 3,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Campañas digitales con estrategia, no solo con presupuesto.",
+    "subhead": "Pauta en Meta, TikTok y Google, contenido para redes y embudos de conversión diseñados para mover el negocio, no solo las métricas de vanidad."
+  },
+
+  "incluye": [
+    { "titulo": "Pauta en Meta Ads", "descripcion": "Campañas de adquisición y remarketing en Facebook e Instagram con creatividades, segmentación y optimización constante." },
+    { "titulo": "Pauta en TikTok Ads", "descripcion": "Creatividades nativas y estrategias específicas para la plataforma con mayor crecimiento orgánico." },
+    { "titulo": "Pauta en Google Ads", "descripcion": "Search, Display, YouTube, Shopping y Performance Max según donde esté tu cliente." },
+    { "titulo": "Pauta en LinkedIn Ads", "descripcion": "Para negocios B2B que necesitan llegar a decisores de compra específicos." },
+    { "titulo": "Estrategia de contenido para redes", "descripcion": "Pilares, tópicos y temas que tu marca debe comunicar para construir audiencia con propósito." },
+    { "titulo": "Manejo de redes sociales", "descripcion": "Calendario editorial, producción, publicación y community management con foco comercial." },
+    { "titulo": "Branded content y video corto", "descripcion": "Contenido orgánico de marca con dirección creativa y producción ágil." },
+    { "titulo": "Motion graphics y animación 2D", "descripcion": "Piezas animadas para ads, redes y product launches que diferencian visualmente." },
+    { "titulo": "SEO técnico y de contenido", "descripcion": "Optimización para que tu marca aparezca cuando tu cliente busca lo que ofreces." },
+    { "titulo": "Email marketing y newsletters", "descripcion": "Secuencias de bienvenida, nurturing y reactivación. Tu audiencia, tu canal." },
+    { "titulo": "Embudos de conversión", "descripcion": "Landing pages, lead magnets y secuencias diseñados para convertir tráfico en clientes." },
+    { "titulo": "Influencer marketing y colaboraciones", "descripcion": "Selección, briefing y gestión de creadores de contenido alineados a tu marca." },
+    { "titulo": "Marketing automation", "descripcion": "Automatizaciones de captura, calificación y seguimiento de leads sin perder el toque humano." },
+    { "titulo": "Performance marketing y reporting", "descripcion": "Dashboards, optimización semanal y reportes mensuales con decisiones de negocio, no solo números." }
+  ],
+
+  "paraQuien": [
+    {
+      "perfil": "Marca con producto, sin canal de adquisición",
+      "descripcion": "Tu producto o servicio está validado, pero no tienes una máquina de captación predecible que escale."
+    },
+    {
+      "perfil": "Equipo de marketing in-house desbordado",
+      "descripcion": "Tienes un equipo interno que gestiona el día a día, pero falta una mano experta para creatividad de pauta y estrategia de canales."
+    },
+    {
+      "perfil": "Empresa que invierte en ads pero no ve retorno",
+      "descripcion": "Llevas meses pagando ads sin ver resultados claros. Sospechas que la creatividad o la estrategia están fallando."
+    }
+  ],
+
+  "problema": {
+    "titulo": "Señales de que tu marketing digital necesita ayuda",
+    "sintomas": [
+      "Gastas en ads pero no sabes cuánto cuesta realmente traer un cliente.",
+      "Tu contenido en redes es genérico y no construye comunidad propia.",
+      "Cada mes empiezas las campañas desde cero, sin un sistema que escale.",
+      "El equipo comercial recibe leads que no convierten porque están mal calificados.",
+      "Saturas los mismos canales con la misma creatividad hace meses.",
+      "Tu sitio recibe tráfico pero no convierte: el embudo está roto."
+    ]
+  },
+
+  "metodo": [
+    {
+      "fase": "Diagnóstico",
+      "descripcion": "Auditamos canales activos, creatividades, audiencias, embudos y métricas para identificar dónde está la fuga de valor.",
+      "entregables": ["Auditoría de canales activos", "Mapa de embudo actual", "Hallazgos y oportunidades"]
+    },
+    {
+      "fase": "Estrategia y plan",
+      "descripcion": "Definimos canales prioritarios, presupuesto, KPIs realistas y un calendario de ejecución para los próximos tres meses.",
+      "entregables": ["Plan estratégico", "Distribución de presupuesto por canal", "KPIs y métricas norte"]
+    },
+    {
+      "fase": "Producción creativa",
+      "descripcion": "Creamos las piezas, copys, videos y landings necesarios para lanzar campañas con sello de marca.",
+      "entregables": ["Banco de creatividades por canal", "Landing pages dedicadas", "Plan de iteración"]
+    },
+    {
+      "fase": "Lanzamiento y optimización",
+      "descripcion": "Activamos campañas, monitoreamos rendimiento diario y ajustamos creatividades, segmentaciones y presupuestos.",
+      "entregables": ["Campañas activas", "Optimización semanal", "Reporte mensual con decisiones de negocio"]
+    }
+  ],
+
+  "entregables": [
+    "Plan estratégico de marketing digital de tres meses",
+    "Banco de creatividades por canal y por etapa del embudo",
+    "Landing pages optimizadas para conversión",
+    "Dashboards de seguimiento en tiempo real",
+    "Reportes mensuales con análisis y próximos pasos",
+    "Optimización continua de campañas y embudos"
+  ],
+
+  "casosRelacionados": [],
+  "sectoresAplicables": [],
+
+  "frameworks": [
+    {
+      "titulo": "Embudo de adquisición",
+      "descripcion": "Mapeamos cómo tu cliente descubre, considera, decide y vuelve por tu marca."
+    },
+    {
+      "titulo": "Atribución multicanal",
+      "descripcion": "Entendemos qué canales realmente generan ventas, no solo clics."
+    },
+    {
+      "titulo": "Testeo continuo",
+      "descripcion": "Validamos cada decisión creativa con datos antes de escalar el presupuesto."
+    },
+    {
+      "titulo": "Análisis de cohortes",
+      "descripcion": "Medimos retención y valor de cliente a largo plazo, no solo el primer día."
+    },
+    {
+      "titulo": "Costo de adquisición y valor de cliente",
+      "descripcion": "Calculamos cuánto cuesta traer un cliente y cuánto vale para tu negocio."
+    }
+  ],
+
+  "faq": [
+    {
+      "pregunta": "¿Trabajan solo con un canal o gestionan varios?",
+      "respuesta": "Gestionamos todos los canales relevantes para tu negocio. Si la decisión correcta es enfocarse solo en Meta o solo en Google, lo decimos. No vendemos canales, vendemos resultados."
+    },
+    {
+      "pregunta": "¿Cuál es el presupuesto mínimo para trabajar con ustedes?",
+      "respuesta": "Trabajamos con presupuestos desde 1.500.000 CLP mensuales en pauta más fee de gestión. Por debajo de eso, el ruido estadístico no permite tomar decisiones con datos confiables."
+    },
+    {
+      "pregunta": "¿Garantizan resultados?",
+      "respuesta": "Garantizamos proceso, no resultados absolutos. Cualquier agencia que prometa un ROAS específico antes de conocer tu producto, mercado y operación está mintiendo. Sí garantizamos optimización continua y total transparencia."
+    },
+    {
+      "pregunta": "¿Cómo me reportan los avances?",
+      "respuesta": "Tienes acceso a un dashboard en tiempo real, reunión de optimización quincenal y reporte mensual con análisis cualitativo. Sin reportes inflados con métricas de vanidad."
+    },
+    {
+      "pregunta": "¿Hacen contratos largos?",
+      "respuesta": "El compromiso mínimo es de tres meses, porque antes de eso las campañas no tienen suficientes datos para optimizar. Después continuamos mes a mes."
+    }
+  ],
+
+  "cta": {
+    "headline": "¿Tu marketing digital necesita estrategia y resultados?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Marketing y publicidad digital · Lucsan Design",
+    "description": "Agencia de marketing y publicidad digital. Pauta en Meta, TikTok, Google y LinkedIn, estrategia de contenido, SEO y embudos diseñados para mover tu negocio.",
+    "ogImage": "/og-marketing.png"
+  }
+}

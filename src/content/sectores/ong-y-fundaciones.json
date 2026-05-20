@@ -1,0 +1,52 @@
+{
+  "nombre": "ONG y fundaciones",
+  "slug": "ong-y-fundaciones",
+  "orden": 19,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas con propósito que mueven recursos y comunidad.",
+    "subhead": "Branding y experiencia digital para ONGs, fundaciones, corporaciones sin fines de lucro y proyectos de impacto social."
+  },
+
+  "contexto": "Las ONGs compiten por algo más difícil que clientes: por confianza, por donantes recurrentes y por voluntarios comprometidos. Una marca débil te aleja del financiamiento institucional, te dificulta captar voluntarios calificados y reduce el impacto del mensaje que llevas. Una marca bien construida en este sector multiplica la capacidad de gestión de la organización: mismo presupuesto, mejores resultados.",
+
+  "desafios": [
+    "Construir credibilidad institucional para acceder a fondos públicos, privados y cooperación internacional.",
+    "Comunicar el impacto real de la organización sin caer en el clásico storytelling de pena.",
+    "Captar voluntarios y embajadores que se queden a largo plazo.",
+    "Convertir interés en donantes recurrentes, no solo en aportes únicos.",
+    "Mantener consistencia entre identidad institucional, campañas y materiales de operación."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding completo para ONG, fundación o corporación social",
+    "Sitio web institucional con sistema de donaciones recurrentes",
+    "Memoria anual o reporte de impacto con diseño editorial profesional",
+    "Campañas de captación de socios y voluntarios",
+    "Material de gestión para postulación a fondos y cooperación"
+  ],
+
+  "notaEspecial": {
+    "titulo": "Programa anual para ONGs y fundaciones",
+    "descripcion": "Una vez al año seleccionamos a una ONG o fundación de un pool de postulaciones para realizar su branding o rebranding completo con condiciones especiales. Es nuestra forma de aportar al desarrollo de las organizaciones que generan impacto real. Las postulaciones se abren a comienzos de cada año.",
+    "cta": {
+      "texto": "Quiero postular",
+      "href": "/contacto"
+    }
+  },
+
+  "cta": {
+    "headline": "¿Tu organización está lista para multiplicar su impacto?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para ONGs y fundaciones · Lucsan Design",
+    "description": "Branding y diseño web para ONGs, fundaciones y proyectos de impacto social. Programa especial anual con condiciones preferentes para una organización seleccionada.",
+    "ogImage": "/og-sector-ong.png"
+  }
+}

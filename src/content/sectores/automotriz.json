@@ -1,0 +1,43 @@
+{
+  "nombre": "Automotriz",
+  "slug": "automotriz",
+  "orden": 18,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas automotrices que venden el viaje, no solo el auto.",
+    "subhead": "Branding y experiencia digital para concesionarios, marcas, talleres, repuestos, servicios y nueva movilidad eléctrica."
+  },
+
+  "contexto": "El comprador de un vehículo investiga online durante semanas antes de pisar un concesionario. Tu marca y tu sitio web definen si entras o no en la lista de visitas. La nueva movilidad eléctrica, además, requiere educar al mercado sobre tecnologías y experiencias nuevas, lo que abre una ventana enorme para marcas que sepan comunicar bien. En automotriz, la marca cuidada acelera la decisión de compra.",
+
+  "desafios": [
+    "Diferenciarte de concesionarios y marcas tradicionales con presencia de décadas.",
+    "Comunicar tecnología y experiencia, no solo ficha técnica.",
+    "Convertir tráfico web en visitas reales al showroom o solicitudes de prueba.",
+    "Educar al mercado sobre electromovilidad o tecnologías nuevas.",
+    "Mantener identidad consistente entre showroom, sitio, redes y experiencia de servicio."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para concesionario, taller o servicio automotriz",
+    "Sitio web con catálogo de vehículos y agendamiento de test drives",
+    "Marca para empresa de electromovilidad, carga o servicios EV",
+    "Material comercial para showroom: brochures, banners, video product",
+    "Estrategia digital para captación de leads de venta y posventa"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca automotriz acelera o frena la decisión de compra?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para sector automotriz · Lucsan Design",
+    "description": "Branding y diseño web para concesionarios, marcas automotrices, talleres, repuestos y empresas de electromovilidad. Acelera la decisión de compra.",
+    "ogImage": "/og-sector-automotriz.png"
+  }
+}

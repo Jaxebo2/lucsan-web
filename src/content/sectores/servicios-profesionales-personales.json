@@ -1,0 +1,43 @@
+{
+  "nombre": "Servicios profesionales personales",
+  "slug": "servicios-profesionales-personales",
+  "orden": 12,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas para profesionales que cobran por su criterio.",
+    "subhead": "Branding y plataforma digital para psicólogos, coaches, abogados, contadores, terapeutas, nutricionistas y profesionales que trabajan por su cuenta."
+  },
+
+  "contexto": "Si tu negocio depende de tu nombre y tu criterio, tu marca personal y profesional son lo mismo. El cliente investiga online antes de agendar la primera consulta y decide rápido si te ves o no como la persona indicada. Una marca cuidada justifica honorarios superiores; una marca débil te obliga a competir por precio con quien recién empieza.",
+
+  "desafios": [
+    "Diferenciarte cuando hay decenas de profesionales con formación similar.",
+    "Comunicar tu enfoque metodológico sin caer en tecnicismos.",
+    "Justificar honorarios premium con una marca que respalde esa percepción.",
+    "Convertir tráfico web en primeras consultas o reuniones agendadas.",
+    "Construir reputación digital sin pasar todo el día creando contenido."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding profesional para consulta independiente o estudio personal",
+    "Sitio web con agendamiento online y portal de pagos",
+    "Marca personal completa para profesional que se está posicionando",
+    "Estrategia de contenido para LinkedIn, Instagram o newsletter",
+    "Material de propuesta y onboarding para nuevos clientes"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca refleja el nivel del profesional que eres?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para profesionales independientes · Lucsan Design",
+    "description": "Branding, sitio web y marca personal para psicólogos, coaches, abogados, terapeutas, contadores y profesionales que trabajan por su cuenta.",
+    "ogImage": "/og-sector-profesionales.png"
+  }
+}

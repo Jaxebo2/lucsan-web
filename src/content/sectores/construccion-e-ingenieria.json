@@ -1,0 +1,43 @@
+{
+  "nombre": "Construcción e ingeniería",
+  "slug": "construccion-e-ingenieria",
+  "orden": 14,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas constructoras que ganan licitaciones antes de presentar oferta.",
+    "subhead": "Branding y plataforma digital para constructoras, empresas de ingeniería, estudios de arquitectura y servicios de obra."
+  },
+
+  "contexto": "En construcción e ingeniería, la decisión de adjudicación combina capacidad técnica, trayectoria y percepción. Antes de que tu propuesta llegue al mandante, tu marca, tu sitio y tu portafolio ya pasaron por filtro. Empresas con marca moderna y portafolio bien presentado pasan el primer corte; empresas con marca anticuada quedan fuera incluso teniendo mejor capacidad técnica que la competencia.",
+
+  "desafios": [
+    "Comunicar trayectoria y capacidad sin caer en sitios saturados de fotos de obra mal editadas.",
+    "Presentar portafolio de proyectos con narrativa, no solo con galería.",
+    "Diferenciar tu propuesta de constructoras con servicios técnicamente similares.",
+    "Generar autoridad digital para entrar a procesos de licitación privados.",
+    "Mantener identidad consistente entre propuestas, sitio, oficina y obra."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para constructora, empresa de ingeniería o estudio de arquitectura",
+    "Sitio web con portafolio de proyectos y formularios de contacto comercial",
+    "Material de licitación y propuestas con identidad consistente",
+    "Plantillas Figma o InDesign para propuestas técnicas internas",
+    "Dirección de arte para fotografía de obra terminada y en proceso"
+  ],
+
+  "cta": {
+    "headline": "¿Tu constructora proyecta el nivel de obra que entrega?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para construcción e ingeniería · Lucsan Design",
+    "description": "Branding y diseño web para constructoras, estudios de ingeniería y arquitectura. Pasa el primer filtro de licitaciones y comunica trayectoria con autoridad.",
+    "ogImage": "/og-sector-construccion.png"
+  }
+}

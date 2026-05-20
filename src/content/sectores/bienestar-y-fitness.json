@@ -1,0 +1,43 @@
+{
+  "nombre": "Bienestar y fitness",
+  "slug": "bienestar-y-fitness",
+  "orden": 5,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas de bienestar que transmiten lo que prometen.",
+    "subhead": "Branding y experiencia digital para gimnasios, estudios, suplementación, apps de bienestar y profesionales de la salud holística."
+  },
+
+  "contexto": "El bienestar pasó de ser un nicho a una industria masiva. El cliente de hoy es más exigente: busca marcas que entiendan su estilo de vida completo, no solo el producto puntual. La diferencia entre una marca que crece y una que estanca está en la consistencia entre lo que comunica, cómo se ve, y cómo lo siente el usuario en cada interacción.",
+
+  "desafios": [
+    "Comunicar resultados reales sin caer en promesas exageradas de antes-y-después.",
+    "Construir confianza en una categoría llena de marcas que prometen lo mismo.",
+    "Diferenciarte de cadenas grandes con presupuesto de marketing mucho mayor.",
+    "Convertir clases de prueba o trials en membresías sostenidas en el tiempo.",
+    "Mantener autoridad sin perder cercanía con la audiencia."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "marketing-publicidad-digital", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding para gimnasio, box, estudio o cadena de bienestar",
+    "Sitio web con sistema de reservas y pagos integrado",
+    "App o plataforma para gestión de clases y membresías",
+    "Campaña de captación de socios con embudo completo",
+    "Identidad y empaque para suplementación o productos de bienestar"
+  ],
+
+  "cta": {
+    "headline": "¿Tu marca de bienestar comunica el valor que entrega?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño para bienestar y fitness · Lucsan Design",
+    "description": "Branding y diseño digital para gimnasios, estudios de fitness, marcas de suplementación, apps de bienestar y profesionales de la salud holística.",
+    "ogImage": "/og-sector-bienestar.png"
+  }
+}
