@@ -89,7 +89,14 @@ const schemas = [
         El mismo proceso para cada proyecto. Sin sorpresas, con entregables claros y check-points en cada fase.
       </Prose>
 
-      <div class="mt-16 grid gap-6 md:grid-cols-2">
+      <div
+        class:list={[
+          'mt-16 grid gap-6',
+          sobre.metodo.length === 3 && 'md:grid-cols-3',
+          sobre.metodo.length === 4 && 'md:grid-cols-2 lg:grid-cols-4',
+          sobre.metodo.length !== 3 && sobre.metodo.length !== 4 && 'md:grid-cols-2',
+        ]}
+      >
         {
           sobre.metodo.map((fase, i) => (
             <Card variant="filled" padding="lg" radius="xl">

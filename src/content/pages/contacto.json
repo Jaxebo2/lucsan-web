@@ -11,13 +11,13 @@
   "serviciosDisponibles": ["branding"],
   "rangosPresupuesto": [
     "Menos de $1.500.000 CLP",
-    "$1.500.000 — $5.000.000 CLP",
-    "$5.000.000 — $15.000.000 CLP",
+    "$1.500.000 a $5.000.000 CLP",
+    "$5.000.000 a $15.000.000 CLP",
     "Más de $15.000.000 CLP",
     "No estoy seguro"
   ],
   "seo": {
-    "title": "Contacto — Lucsan Design",
+    "title": "Contacto · Lucsan Design",
     "description": "Conversemos sobre tu proyecto de branding, diseño web o marketing. Respondemos en menos de 24 horas hábiles. Santiago, Chile y Latinoamérica.",
     "ogImage": "/og-default.png"
   }

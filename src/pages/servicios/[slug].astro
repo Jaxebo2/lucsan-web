@@ -146,7 +146,14 @@ const schemas = [
         El proceso, <span class="text-text-accent">paso a paso</span>.
       </Heading>
 
-      <div class="mt-16 grid gap-8 md:grid-cols-2">
+      <div
+        class:list={[
+          'mt-16 grid gap-8',
+          s.metodo.length === 3 && 'md:grid-cols-3',
+          s.metodo.length === 4 && 'md:grid-cols-2 lg:grid-cols-4',
+          s.metodo.length !== 3 && s.metodo.length !== 4 && 'md:grid-cols-2',
+        ]}
+      >
         {
           s.metodo.map((fase, i) => (
             <Card variant="inverse" padding="lg" radius="xl">

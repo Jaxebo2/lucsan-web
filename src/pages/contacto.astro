@@ -20,8 +20,6 @@ if (!entry || entry.data.tipo !== 'contacto') {
 }
 const c = entry.data;
 
-const whatsappUrl = `https://wa.me/${c.whatsapp.numero.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(c.whatsapp.mensajePreLlenado)}`;
-
 const schemas = [
   contactPageSchema({ email: c.email }),
   breadcrumbSchema([
@@ -60,39 +58,28 @@ const schemas = [
             Comparte qué necesitas y un par de líneas sobre tu proyecto. Te respondemos en menos de 24 horas hábiles.
           </Prose>
 
-          <div class="mt-8">
+          <div class="mt-8" transition:persist>
             <ContactForm
-              client:load
+              client:only="react"
               presupuestos={c.rangosPresupuesto}
               turnstileSiteKey={turnstileSiteKey}
-            />
+            >
+              <p class="text-sm text-text-muted">Cargando formulario…</p>
+            </ContactForm>
           </div>
         </Card>
 
         {/* Canales directos */}
         <div class="flex flex-col gap-4">
           <Card variant="inverse" padding="lg" radius="xl">
-            <Icon name="ph:whatsapp-logo-bold" class="h-10 w-10 text-text-accent" />
-            <Heading level={3} size="md" tone="inverse" class="mt-4">WhatsApp</Heading>
-            <Prose tone="inverse-secondary" class="mt-2">
-              La forma más rápida de empezar la conversación.
-            </Prose>
-            <div class="mt-6">
-              <Button href={whatsappUrl} target="_blank" variant="primary" iconRight="ph:arrow-up-right-bold">
-                Abrir WhatsApp
-              </Button>
-            </div>
-          </Card>
-
-          <Card variant="default" padding="lg" radius="xl">
             <Icon name="ph:envelope-simple-bold" class="h-10 w-10 text-text-accent" />
-            <Heading level={3} size="md" class="mt-4">Email</Heading>
-            <Prose tone="secondary" class="mt-2">
-              Si preferís dejar el contexto escrito antes de la primera reunión.
+            <Heading level={3} size="md" tone="inverse" class="mt-4">Email</Heading>
+            <Prose tone="inverse-secondary" class="mt-2">
+              Si prefieres dejar el contexto escrito antes de la primera reunión.
             </Prose>
             <a
               href={`mailto:${c.email}`}
-              class="mt-6 inline-flex items-center gap-2 font-medium text-text-primary transition-colors hover:text-text-accent"
+              class="mt-6 inline-flex items-center gap-2 font-medium text-text-inverse transition-colors hover:text-text-accent"
             >
               {c.email}
               <Icon name="ph:arrow-up-right-bold" class="h-4 w-4" />
@@ -104,6 +91,14 @@ const schemas = [
             <Heading level={3} size="md" class="mt-4">Dónde estamos</Heading>
             <Prose tone="secondary" class="mt-2">
               Santiago, Chile. Trabajamos en remoto con clientes en toda Latinoamérica.
+            </Prose>
+          </Card>
+
+          <Card variant="default" padding="lg" radius="xl">
+            <Icon name="ph:clock-bold" class="h-10 w-10 text-text-accent" />
+            <Heading level={3} size="md" class="mt-4">Tiempo de respuesta</Heading>
+            <Prose tone="secondary" class="mt-2">
+              {c.tiempoRespuesta}
             </Prose>
           </Card>
         </div>
