@@ -58,14 +58,12 @@ const schemas = [
             Comparte qué necesitas y un par de líneas sobre tu proyecto. Te respondemos en menos de 24 horas hábiles.
           </Prose>
 
-          <div class="mt-8" transition:persist>
+          <div class="mt-8">
             <ContactForm
-              client:only="react"
+              client:load
               presupuestos={c.rangosPresupuesto}
               turnstileSiteKey={turnstileSiteKey}
-            >
-              <p class="text-sm text-text-muted">Cargando formulario…</p>
-            </ContactForm>
+            />
           </div>
         </Card>
 
