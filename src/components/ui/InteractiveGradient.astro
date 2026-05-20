@@ -1,17 +1,13 @@
 ---
 /**
- * InteractiveGradient — fluid aurora mesh style (Framer cursor-mesh-gradient inspired).
+ * InteractiveGradient — bandas verticales de luz tipo aurora boreal.
  *
- * Composición de varias capas:
- * 1. Base oscura (brand-black o claro según variant)
- * 2. Dos capas de aurora coral con radial-gradients soft, blureadas, en
- *    movimiento orgánico constante (no blobs duros, sino "bandas de luz")
- * 3. Spotlight cursor: gran radial-gradient que sigue al mouse con transición
- *    suave de ~800ms (idle = se queda donde lo dejaste)
- * 4. Grain SVG inline sobre todo (textura sutil que da feel premium)
+ * 4 beams largos y angostos (cada uno = elipse 12-18% ancho × 130% alto)
+ * con blur 110px. Cada beam drift horizontal + rotación sutil con su
+ * propio ritmo. Cursor desplaza el conjunto con lag.
  *
- * Resultado: cuando movés el mouse, una luz coral grande se desplaza
- * suavemente. En idle, las capas siguen morphing constantemente.
+ * Resultado: bandas de luz coral fluyendo verticalmente como aurora,
+ * no blobs redondos.
  */
 
 type Variant = 'dark' | 'light';
@@ -22,81 +18,109 @@ interface Props {
   class?: string;
 }
 
-const { variant = 'dark', intensity = 0.6, class: className = '' } = Astro.props as Props;
+const { variant = 'dark', intensity = 0.7, class: className = '' } = Astro.props as Props;
 
-// Grain SVG inline (URL-encoded turbulence)
 const grainBg =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
 ---
 
 <div
-  class:list={[
-    'interactive-gradient pointer-events-none absolute inset-0 overflow-hidden',
-    `interactive-gradient--${variant}`,
-    className,
-  ]}
+  class:list={['interactive-gradient pointer-events-none absolute inset-0 overflow-hidden', `interactive-gradient--${variant}`, className]}
   aria-hidden="true"
   style={`--ig-intensity: ${intensity}`}
   data-interactive-gradient
 >
-  {/* Capa 1: aurora soft que morpha */}
-  <div class="ig-aurora ig-aurora--a"></div>
+  {/* Track con beams (sigue al mouse con lag) */}
+  <div class="ig-track">
+    <span class="ig-beam ig-beam--1"></span>
+    <span class="ig-beam ig-beam--2"></span>
+    <span class="ig-beam ig-beam--3"></span>
+    <span class="ig-beam ig-beam--4"></span>
+  </div>
 
-  {/* Capa 2: aurora soft con otro ritmo */}
-  <div class="ig-aurora ig-aurora--b"></div>
-
-  {/* Capa 3: spotlight cursor (sigue al mouse con transition smooth) */}
+  {/* Cursor spotlight */}
   <div class="ig-cursor"></div>
 
-  {/* Capa 4: grain overlay */}
+  {/* Grain overlay */}
   <div class="ig-grain" style={`background-image: ${grainBg}`}></div>
-
-  {/* Capa de captura de eventos del mouse */}
-  <div class="ig-capture pointer-events-auto absolute inset-0"></div>
 </div>
 
 <style>
   .interactive-gradient {
-    --ig-mx: 50%;
-    --ig-my: 50%;
+    --ig-mx: 0;
+    --ig-my: 0;
   }
-
-  /* Base */
   .interactive-gradient--dark { background-color: var(--color-brand-black); }
   .interactive-gradient--light { background-color: var(--color-neutral-50); }
 
-  /* ===== Aurora layers — bandas de luz sutiles ===== */
-  .ig-aurora {
+  /* ===== Track sigue al mouse ===== */
+  .ig-track {
     position: absolute;
-    inset: -50%;
-    filter: blur(90px);
+    inset: -20%;
+    transform: translate3d(calc(var(--ig-mx) * 3rem), 0, 0);
+    transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
   }
 
-  /* Bandas diagonales soft (no blobs gigantes) */
-  .ig-aurora--a {
-    background:
-      radial-gradient(ellipse 35% 80% at 15% 50%, rgb(255 85 72 / calc(0.32 * var(--ig-intensity))), transparent 65%),
-      radial-gradient(ellipse 25% 60% at 85% 70%, rgb(255 85 72 / calc(0.22 * var(--ig-intensity))), transparent 65%);
-    animation: aurora-morph-a 32s ease-in-out infinite;
-  }
-  .ig-aurora--b {
-    background:
-      radial-gradient(ellipse 40% 30% at 70% 15%, rgb(255 85 72 / calc(0.18 * var(--ig-intensity))), transparent 70%),
-      radial-gradient(ellipse 30% 50% at 25% 85%, rgb(255 85 72 / calc(0.2 * var(--ig-intensity))), transparent 70%);
-    animation: aurora-morph-b 44s ease-in-out infinite reverse;
+  /* ===== Beams verticales (aurora boreal) ===== */
+  .ig-beam {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    will-change: transform;
+    opacity: calc(0.5 * var(--ig-intensity));
+    background: var(--color-brand-coral);
   }
 
-  @keyframes aurora-morph-a {
-    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    25% { transform: translate(6%, -3%) rotate(8deg) scale(1.05); }
-    50% { transform: translate(8%, 5%) rotate(15deg) scale(1.1); }
-    75% { transform: translate(-3%, 4%) rotate(5deg) scale(1.02); }
+  .ig-beam--1 {
+    width: 16%;
+    height: 140%;
+    top: -20%;
+    left: 5%;
+    animation: drift-1 30s ease-in-out infinite;
   }
-  @keyframes aurora-morph-b {
-    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    33% { transform: translate(-5%, 4%) rotate(-12deg) scale(1.08); }
-    66% { transform: translate(4%, -5%) rotate(8deg) scale(0.96); }
+  .ig-beam--2 {
+    width: 12%;
+    height: 130%;
+    top: -15%;
+    left: 35%;
+    opacity: calc(0.38 * var(--ig-intensity));
+    animation: drift-2 38s ease-in-out infinite reverse;
+  }
+  .ig-beam--3 {
+    width: 18%;
+    height: 145%;
+    top: -25%;
+    left: 65%;
+    opacity: calc(0.4 * var(--ig-intensity));
+    animation: drift-3 34s ease-in-out infinite;
+  }
+  .ig-beam--4 {
+    width: 14%;
+    height: 135%;
+    top: -18%;
+    left: 85%;
+    opacity: calc(0.32 * var(--ig-intensity));
+    animation: drift-4 42s ease-in-out infinite reverse;
+  }
+
+  @keyframes drift-1 {
+    0%, 100% { transform: translateX(0) rotate(-3deg) scaleY(1); }
+    33% { transform: translateX(8%) rotate(2deg) scaleY(1.1); }
+    66% { transform: translateX(15%) rotate(-1deg) scaleY(0.95); }
+  }
+  @keyframes drift-2 {
+    0%, 100% { transform: translateX(0) rotate(2deg) scaleY(1); }
+    50% { transform: translateX(-10%) rotate(-4deg) scaleY(1.15); }
+  }
+  @keyframes drift-3 {
+    0%, 100% { transform: translateX(0) rotate(-2deg) scaleY(1); }
+    40% { transform: translateX(-12%) rotate(3deg) scaleY(0.9); }
+    70% { transform: translateX(5%) rotate(-1deg) scaleY(1.1); }
+  }
+  @keyframes drift-4 {
+    0%, 100% { transform: translateX(0) rotate(1deg) scaleY(1); }
+    50% { transform: translateX(-8%) rotate(-3deg) scaleY(1.08); }
   }
 
   /* ===== Cursor spotlight ===== */
@@ -104,9 +128,9 @@ const grainBg =
     position: absolute;
     inset: 0;
     background: radial-gradient(
-      400px circle at var(--ig-mx) var(--ig-my),
-      rgb(255 85 72 / calc(0.25 * var(--ig-intensity))),
-      rgb(255 85 72 / calc(0.08 * var(--ig-intensity))) 35%,
+      450px circle at var(--ig-cmx, 50%) var(--ig-cmy, 50%),
+      rgb(255 85 72 / calc(0.3 * var(--ig-intensity))),
+      rgb(255 85 72 / calc(0.1 * var(--ig-intensity))) 35%,
       transparent 65%
     );
     transition: background 800ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -117,19 +141,21 @@ const grainBg =
   .ig-grain {
     position: absolute;
     inset: 0;
-    opacity: 0.18;
+    opacity: 0.15;
     mix-blend-mode: overlay;
     pointer-events: none;
   }
   .interactive-gradient--light .ig-grain {
-    opacity: 0.12;
+    opacity: 0.1;
     mix-blend-mode: multiply;
   }
 
-  /* ===== Reduced motion ===== */
   @media (prefers-reduced-motion: reduce) {
-    .ig-aurora--a { animation-duration: 60s; }
-    .ig-aurora--b { animation-duration: 80s; }
+    .ig-track { transition: none; transform: none; }
+    .ig-beam--1 { animation-duration: 90s; }
+    .ig-beam--2 { animation-duration: 100s; }
+    .ig-beam--3 { animation-duration: 95s; }
+    .ig-beam--4 { animation-duration: 105s; }
     .ig-cursor { transition: none; }
   }
 </style>
@@ -137,14 +163,23 @@ const grainBg =
 <script>
   const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll<HTMLElement>('[data-interactive-gradient]').forEach((el) => {
+    if (!motionOk) return;
+    let mx = 0, tx = 0;
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
       if (e.clientY < rect.top || e.clientY > rect.bottom) return;
-      const mx = ((e.clientX - rect.left) / rect.width) * 100;
-      const my = ((e.clientY - rect.top) / rect.height) * 100;
-      el.style.setProperty('--ig-mx', `${mx}%`);
-      el.style.setProperty('--ig-my', `${my}%`);
+      const px = ((e.clientX - rect.left) / rect.width);
+      tx = Math.max(-1, Math.min(1, (px - 0.5) * 2));
+      // Cursor spotlight position en %
+      el.style.setProperty('--ig-cmx', `${px * 100}%`);
+      el.style.setProperty('--ig-cmy', `${((e.clientY - rect.top) / rect.height) * 100}%`);
     };
-    if (motionOk) window.addEventListener('mousemove', onMove);
+    window.addEventListener('mousemove', onMove);
+    const animate = () => {
+      mx += (tx - mx) * 0.05;
+      el.style.setProperty('--ig-mx', mx.toFixed(3));
+      requestAnimationFrame(animate);
+    };
+    animate();
   });
 </script>
