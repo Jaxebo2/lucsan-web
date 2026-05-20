@@ -332,9 +332,12 @@ const isActive = (href: string): boolean => {
 
   .nav-dropdown {
     position: absolute;
-    top: calc(100% + 16px);
+    top: 100%;
     left: 50%;
-    transform: translateX(-50%) translateY(-8px);
+    /* Invisible bridge entre trigger y card: el padding-top extiende el área
+       de hover para que el mouse no se pierda en el gap visual. */
+    padding-top: 14px;
+    transform: translateX(-50%) translateY(-6px);
     min-width: 280px;
     opacity: 0;
     visibility: hidden;
@@ -348,9 +351,12 @@ const isActive = (href: string): boolean => {
     min-width: 560px;
   }
 
-  /* Show dropdown on hover or focus of parent */
+  /* Show dropdown on hover or focus of parent.
+     También se mantiene cuando el mouse está sobre el .nav-dropdown mismo,
+     porque éste hereda el hover desde el padre. */
   .nav-item--has-dropdown:hover .nav-dropdown,
-  .nav-item--has-dropdown:focus-within .nav-dropdown {
+  .nav-item--has-dropdown:focus-within .nav-dropdown,
+  .nav-dropdown:hover {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;

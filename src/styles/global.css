@@ -148,8 +148,8 @@
   --color-text-secondary:  var(--color-neutral-600);
   --color-text-muted:      var(--color-neutral-500);
   --color-text-disabled:   var(--color-neutral-400);
-  --color-text-inverse:    var(--color-neutral-50);
-  --color-text-inverse-secondary: var(--color-neutral-400);
+  --color-text-inverse:    #ffffff;
+  --color-text-inverse-secondary: rgb(255 255 255 / 0.75);
   --color-text-accent:     var(--color-brand-coral);
   --color-text-link:       var(--color-brand-black);
   --color-text-link-hover: var(--color-brand-coral);
