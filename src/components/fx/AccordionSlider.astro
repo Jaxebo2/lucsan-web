@@ -1,0 +1,111 @@
+---
+/**
+ * AccordionSlider — paneles horizontales que se expanden al hover (desktop)
+ * o al click (mobile).
+ *
+ * Ideal para "¿Para quién?" en service pages.
+ */
+
+import { Icon } from 'astro-icon/components';
+
+interface Panel {
+  titulo: string;
+  descripcion: string;
+  /** Phosphor icon opcional. */
+  icon?: string;
+  /** URL imagen opcional. */
+  image?: string;
+}
+
+interface Props {
+  panels: Panel[];
+  class?: string;
+}
+
+const { panels, class: className = '' } = Astro.props as Props;
+---
+
+<div
+  class:list={[
+    'accordion-slider flex flex-col gap-2 md:h-[440px] md:flex-row md:gap-2',
+    className,
+  ]}
+  data-accordion-slider
+>
+  {
+    panels.map((panel, i) => (
+      <button
+        type="button"
+        class="accordion-slider__panel group relative flex-1 overflow-hidden rounded-2xl bg-brand-black text-left transition-[flex] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:flex-[1_1_0]"
+        data-panel-index={i}
+        aria-expanded={i === 0 ? 'true' : 'false'}
+      >
+        {panel.image ? (
+          <img
+            src={panel.image}
+            alt=""
+            class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-500 group-aria-expanded:opacity-80"
+          />
+        ) : (
+          <div class="absolute inset-0 bg-gradient-to-br from-brand-coral/40 via-brand-coral/10 to-brand-black"></div>
+        )}
+        <span aria-hidden="true" class="absolute inset-0 bg-brand-black/40"></span>
+
+        <div class="relative flex h-full flex-col justify-between p-6 md:p-8">
+          {/* Header: index + icon */}
+          <div class="flex items-start justify-between">
+            <span class="font-mono text-xs uppercase tracking-widest text-neutral-50/70">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            {panel.icon && (
+              <Icon name={panel.icon} class="h-7 w-7 text-text-accent" />
+            )}
+          </div>
+
+          {/* Bottom: title + descripcion */}
+          <div>
+            <h3 class="font-display text-2xl font-bold leading-tight text-neutral-50 md:text-3xl">
+              {panel.titulo}
+            </h3>
+            <p class="accordion-slider__desc mt-3 max-w-md text-sm text-neutral-50/80 opacity-0 transition-opacity duration-300 md:text-base">
+              {panel.descripcion}
+            </p>
+          </div>
+        </div>
+      </button>
+    ))
+  }
+</div>
+
+<style>
+  .accordion-slider__panel {
+    min-height: 200px;
+  }
+  @media (min-width: 768px) {
+    .accordion-slider__panel { min-height: 0; }
+    .accordion-slider__panel[aria-expanded='true'] {
+      flex: 3 1 0;
+    }
+    .accordion-slider__panel[aria-expanded='true'] .accordion-slider__desc {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-accordion-slider]').forEach((slider) => {
+    const panels = slider.querySelectorAll<HTMLButtonElement>('.accordion-slider__panel');
+
+    const setActive = (idx: number) => {
+      panels.forEach((p, i) => {
+        p.setAttribute('aria-expanded', i === idx ? 'true' : 'false');
+      });
+    };
+
+    panels.forEach((panel, idx) => {
+      panel.addEventListener('mouseenter', () => setActive(idx));
+      panel.addEventListener('focus', () => setActive(idx));
+      panel.addEventListener('click', () => setActive(idx));
+    });
+  });
+</script>

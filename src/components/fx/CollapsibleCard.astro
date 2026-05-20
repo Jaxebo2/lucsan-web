@@ -1,0 +1,78 @@
+---
+/**
+ * CollapsibleCard — testimonial card colapsable.
+ *
+ * Idle: cita corta + autor.
+ * Open: cita completa + más contexto en slot.
+ */
+
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  cita: string;
+  autor: string;
+  cargo?: string;
+  empresa?: string;
+  /** Foto opcional del autor. */
+  foto?: string;
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+
+const { cita, autor, cargo, empresa, foto, variant = 'light', class: className = '' } = Astro.props as Props;
+const isDark = variant === 'dark';
+---
+
+<details
+  class:list={[
+    'collapsible-card group cursor-pointer rounded-2xl p-6 transition-all md:p-8',
+    isDark
+      ? 'bg-surface-inverse-alt border border-border-inverse text-text-inverse'
+      : 'bg-surface-elevated border border-border-subtle shadow-sm',
+    className,
+  ]}
+>
+  <summary class="flex items-start gap-4">
+    {foto ? (
+      <img src={foto} alt={autor} class="h-12 w-12 flex-none rounded-full object-cover md:h-14 md:w-14" />
+    ) : (
+      <span class="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-brand-coral/15 text-brand-coral md:h-14 md:w-14">
+        <Icon name="ph:quotes-fill" class="h-5 w-5" />
+      </span>
+    )}
+
+    <div class="flex-1">
+      <blockquote class:list={['font-display text-lg leading-snug md:text-xl', isDark ? 'text-text-inverse' : 'text-text-primary']}>
+        "{cita}"
+      </blockquote>
+      <p class:list={['mt-3 text-sm', isDark ? 'text-text-inverse-secondary' : 'text-text-muted']}>
+        <span class="font-medium">{autor}</span>
+        {cargo && <span>, {cargo}</span>}
+        {empresa && <span> · {empresa}</span>}
+      </p>
+    </div>
+
+    <span class="collapsible-card__icon mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-full border border-current transition-transform duration-300 group-open:rotate-180">
+      <Icon name="ph:caret-down-bold" class="h-4 w-4" />
+    </span>
+  </summary>
+
+  <div class="collapsible-card__body mt-6 border-t border-current/10 pt-6">
+    <div class:list={[isDark ? 'text-text-inverse-secondary' : 'text-text-secondary', 'text-sm leading-relaxed md:text-base']}>
+      <slot />
+    </div>
+  </div>
+</details>
+
+<style>
+  .collapsible-card summary::-webkit-details-marker { display: none; }
+  .collapsible-card summary::marker { content: ''; }
+  .collapsible-card summary { list-style: none; }
+  .collapsible-card__body {
+    animation: collapsible-in 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes collapsible-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

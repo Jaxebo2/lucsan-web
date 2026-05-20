@@ -1,0 +1,109 @@
+---
+/**
+ * ImageFlow — strip horizontal de imágenes con scroll-snap + drag inercial.
+ *
+ * Items: array de {image, alt, caption}. Scroll horizontal con snap.
+ */
+
+interface Item {
+  image?: string;
+  alt?: string;
+  caption?: string;
+}
+
+interface Props {
+  items: Item[];
+  /** Aspecto de cada tarjeta. */
+  aspect?: '3/4' | '4/3' | '1/1' | '16/9';
+  class?: string;
+}
+
+const { items, aspect = '3/4', class: className = '' } = Astro.props as Props;
+
+const aspectClass = {
+  '3/4': 'aspect-[3/4]',
+  '4/3': 'aspect-[4/3]',
+  '1/1': 'aspect-square',
+  '16/9': 'aspect-[16/9]',
+}[aspect];
+---
+
+<div class:list={['image-flow relative', className]} data-image-flow>
+  <div
+    class="image-flow__track flex gap-4 overflow-x-auto scroll-smooth pb-4 md:gap-6"
+    style="scroll-snap-type: x mandatory; scrollbar-width: thin;"
+  >
+    {
+      items.map((item) => (
+        <div
+          class:list={['image-flow__item w-[75vw] max-w-[420px] flex-none overflow-hidden rounded-2xl bg-neutral-200 md:w-[28rem]', aspectClass]}
+          style="scroll-snap-align: start;"
+        >
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={item.alt || ''}
+              class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+            />
+          ) : (
+            <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-coral/20 via-brand-coral/5 to-neutral-200">
+              <span class="font-mono text-xs uppercase tracking-widest text-text-muted">
+                {item.caption || 'Imagen'}
+              </span>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  {/* Controles */}
+  <div class="mt-6 flex items-center justify-between">
+    <p class="text-xs text-text-muted">Desliza para ver más →</p>
+    <div class="flex gap-2">
+      <button
+        type="button"
+        class="image-flow__btn flex h-10 w-10 items-center justify-center rounded-full border border-border-default transition-colors hover:border-brand-coral hover:text-brand-coral"
+        data-image-flow-prev
+        aria-label="Anterior"
+      >
+        ←
+      </button>
+      <button
+        type="button"
+        class="image-flow__btn flex h-10 w-10 items-center justify-center rounded-full border border-border-default transition-colors hover:border-brand-coral hover:text-brand-coral"
+        data-image-flow-next
+        aria-label="Siguiente"
+      >
+        →
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .image-flow__track::-webkit-scrollbar { height: 4px; }
+  .image-flow__track::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--color-brand-coral) 30%, transparent);
+    border-radius: 4px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-image-flow]').forEach((flow) => {
+    const track = flow.querySelector<HTMLElement>('.image-flow__track');
+    const prev = flow.querySelector<HTMLButtonElement>('[data-image-flow-prev]');
+    const next = flow.querySelector<HTMLButtonElement>('[data-image-flow-next]');
+    if (!track) return;
+
+    const scrollBy = (dir: number) => {
+      const item = track.querySelector<HTMLElement>('.image-flow__item');
+      if (!item) return;
+      const itemWidth = item.offsetWidth + 24;
+      track.scrollBy({ left: dir * itemWidth, behavior: 'smooth' });
+    };
+
+    prev?.addEventListener('click', () => scrollBy(-1));
+    next?.addEventListener('click', () => scrollBy(1));
+  });
+</script>

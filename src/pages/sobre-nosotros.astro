@@ -10,6 +10,7 @@ import Card from '../components/ui/Card.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
 import InteractiveGradient from '../components/ui/InteractiveGradient.astro';
 import MediaSlot from '../components/ui/MediaSlot.astro';
+import PremiumTimeline from '../components/fx/PremiumTimeline.astro';
 import { Icon } from 'astro-icon/components';
 import { aboutPageSchema, breadcrumbSchema } from '../lib/seo';
 
@@ -107,35 +108,16 @@ const schemas = [
         El mismo proceso para cada proyecto. Sin sorpresas, con entregables claros y check-points en cada fase.
       </Prose>
 
-      <div
-        class:list={[
-          'mt-16 grid gap-6',
-          sobre.metodo.length === 3 && 'md:grid-cols-3',
-          sobre.metodo.length === 4 && 'md:grid-cols-2 lg:grid-cols-4',
-          sobre.metodo.length !== 3 && sobre.metodo.length !== 4 && 'md:grid-cols-2',
-        ]}
-      >
-        {
-          sobre.metodo.map((fase, i) => (
-            <Card variant="filled" padding="lg" radius="xl">
-              <div class="flex items-baseline gap-4">
-                <span class="font-display text-3xl font-bold text-text-accent">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <Heading level={3} size="md">{fase.fase.replace(/^\d+\.\s*/, '')}</Heading>
-              </div>
-              <Prose tone="secondary" class="mt-4">{fase.descripcion}</Prose>
-              <ul class="mt-6 flex flex-col gap-2">
-                {fase.entregables.map((e) => (
-                  <li class="flex items-start gap-2 text-sm text-text-secondary">
-                    <Icon name="ph:check-bold" class="mt-1 h-4 w-4 flex-none text-text-accent" />
-                    <span>{e}</span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          ))
-        }
+      <div class="mt-16 max-w-4xl" data-reveal>
+        <PremiumTimeline
+          variant="light"
+          items={sobre.metodo.map((fase, i) => ({
+            numero: String(i + 1).padStart(2, '0'),
+            titulo: fase.fase.replace(/^\d+\.\s*/, ''),
+            descripcion: fase.descripcion,
+            entregables: fase.entregables,
+          }))}
+        />
       </div>
     </Container>
   </Section>

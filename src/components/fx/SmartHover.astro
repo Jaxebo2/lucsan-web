@@ -1,0 +1,39 @@
+---
+/**
+ * SmartHover — script utilitario que aplica efecto magnético al hover.
+ * Selecciona TODOS los [data-smart-hover] y los hace seguir ligeramente
+ * al cursor cuando está cerca (efecto magnético sutil).
+ *
+ * Incluir UNA SOLA VEZ por página (en BaseLayout o donde corresponda).
+ */
+---
+
+<script>
+  const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (motionOk) {
+    document.querySelectorAll<HTMLElement>('[data-smart-hover]').forEach((el) => {
+      const strength = parseFloat(el.dataset.smartHover || '0.25');
+      let rafId: number | null = null;
+      let tx = 0, ty = 0, cx = 0, cy = 0;
+
+      const onMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const center = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        tx = (e.clientX - center.x) * strength;
+        ty = (e.clientY - center.y) * strength;
+      };
+      const onLeave = () => { tx = 0; ty = 0; };
+
+      el.addEventListener('mousemove', onMove);
+      el.addEventListener('mouseleave', onLeave);
+
+      const animate = () => {
+        cx += (tx - cx) * 0.15;
+        cy += (ty - cy) * 0.15;
+        el.style.transform = `translate(${cx.toFixed(2)}px, ${cy.toFixed(2)}px)`;
+        rafId = requestAnimationFrame(animate);
+      };
+      animate();
+    });
+  }
+</script>

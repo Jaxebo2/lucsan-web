@@ -6,6 +6,7 @@ import Footer from '../components/nav/Footer.astro';
 import SchemaOrg from '../components/seo/SchemaOrg.astro';
 import Analytics from '../components/analytics/Analytics.astro';
 import GTMNoscript from '../components/analytics/GTMNoscript.astro';
+import SmartHover from '../components/fx/SmartHover.astro';
 import { organizationSchema, websiteSchema } from '../lib/seo';
 
 interface Props {
@@ -113,5 +114,8 @@ const ogImageUrl = ogImage.startsWith('http')
     </main>
 
     <Footer />
+
+    {/* SmartHover utility — efecto magnético en cualquier elemento con [data-smart-hover] */}
+    <SmartHover />
   </body>
 </html>

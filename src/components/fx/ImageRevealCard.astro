@@ -1,0 +1,84 @@
+---
+/**
+ * ImageRevealCard — card que revela una imagen al hover desde abajo.
+ *
+ * Estado idle: muestra título + tag + flecha sobre fondo plano.
+ * Estado hover: la imagen se revela con clip-path desde abajo + título
+ * se desplaza hacia arriba.
+ */
+
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  titulo: string;
+  /** Tag superior (sector, cliente, categoría). */
+  tag?: string;
+  /** URL de imagen. Si no hay, fondo coral con texto. */
+  image?: string;
+  imageAlt?: string;
+  aspect?: '4/3' | '16/9' | '3/4' | '1/1';
+  class?: string;
+}
+
+const {
+  href,
+  titulo,
+  tag,
+  image,
+  imageAlt = '',
+  aspect = '4/3',
+  class: className = '',
+} = Astro.props as Props;
+
+const aspectClass = {
+  '4/3': 'aspect-[4/3]',
+  '16/9': 'aspect-[16/9]',
+  '3/4': 'aspect-[3/4]',
+  '1/1': 'aspect-square',
+}[aspect];
+---
+
+<a
+  href={href}
+  class:list={[
+    'image-reveal-card group relative block overflow-hidden rounded-2xl bg-brand-black',
+    aspectClass,
+    className,
+  ]}
+>
+  {/* Imagen / placeholder de fondo */}
+  {image ? (
+    <img
+      src={image}
+      alt={imageAlt}
+      class="absolute inset-0 h-full w-full scale-110 object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-100"
+    />
+  ) : (
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-coral/30 via-brand-coral/10 to-brand-black"></div>
+  )}
+
+  {/* Overlay que se levanta en hover */}
+  <span
+    aria-hidden="true"
+    class="image-reveal-card__overlay absolute inset-0 bg-brand-black/70 transition-opacity duration-500 group-hover:opacity-0"
+  ></span>
+
+  {/* Contenido */}
+  <div class="relative flex h-full flex-col justify-between p-6 md:p-8">
+    <div class="flex items-center justify-between">
+      {tag && (
+        <span class="inline-flex items-center rounded-full bg-neutral-50/15 px-3 py-1 text-xs font-medium uppercase tracking-widest text-neutral-50 backdrop-blur-sm">
+          {tag}
+        </span>
+      )}
+      <span class="image-reveal-card__arrow flex h-10 w-10 items-center justify-center rounded-full border border-neutral-50/30 text-neutral-50 backdrop-blur-sm transition-all duration-300 group-hover:bg-brand-coral group-hover:border-brand-coral">
+        <Icon name="ph:arrow-up-right-bold" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+      </span>
+    </div>
+
+    <h3 class="image-reveal-card__title font-display text-2xl font-bold leading-tight tracking-tight text-neutral-50 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1 md:text-3xl">
+      {titulo}
+    </h3>
+  </div>
+</a>

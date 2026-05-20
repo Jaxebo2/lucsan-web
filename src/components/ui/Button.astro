@@ -98,6 +98,8 @@ const iconBoxSize = iconEm[size];
 
 const allClass = [base, variantClass, sizeClass, fullWidth && 'w-full', className];
 const isLink = !!href;
+// Solo aplicar magnético en primary CTAs (no en links secundarios)
+const magnetic = variant === 'primary' || variant === 'secondary';
 const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
 const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
@@ -105,7 +107,7 @@ const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
 {
   isLink ? (
-    <a href={href} target={target} rel={rel} aria-label={ariaLabel} class:list={allClass}>
+    <a href={href} target={target} rel={rel} aria-label={ariaLabel} class:list={allClass} data-smart-hover={magnetic ? '0.18' : undefined}>
       <span
         aria-hidden="true"
         class:list={[
@@ -147,7 +149,7 @@ const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
       </span>
     </a>
   ) : (
-    <button type={type} disabled={disabled} aria-label={ariaLabel} class:list={allClass}>
+    <button type={type} disabled={disabled} aria-label={ariaLabel} class:list={allClass} data-smart-hover={magnetic ? '0.18' : undefined}>
       <span
         aria-hidden="true"
         class:list={[

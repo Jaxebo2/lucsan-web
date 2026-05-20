@@ -1,0 +1,141 @@
+---
+/**
+ * ServiceHoverReveal — lista de items donde al hover sobre cada uno
+ * aparece una imagen flotante cerca del cursor.
+ *
+ * Items se reciben como prop con {label, href, image?, icon?}.
+ * Si no hay imagen, usa MediaSlot como placeholder.
+ */
+
+import { Icon } from 'astro-icon/components';
+
+interface Item {
+  label: string;
+  href: string;
+  /** URL de imagen opcional. Si no, se muestra placeholder. */
+  image?: string;
+  /** Phosphor icon name opcional. */
+  icon?: string;
+  /** Descripción corta opcional para mostrar al hover. */
+  descripcion?: string;
+}
+
+interface Props {
+  items: Item[];
+  /** Aspecto de la imagen flotante. */
+  imageAspect?: '4/3' | '16/9' | '3/4' | '1/1';
+  class?: string;
+}
+
+const { items, imageAspect = '4/3', class: className = '' } = Astro.props as Props;
+
+const aspectClass = {
+  '4/3': 'aspect-[4/3]',
+  '16/9': 'aspect-[16/9]',
+  '3/4': 'aspect-[3/4]',
+  '1/1': 'aspect-square',
+}[imageAspect];
+---
+
+<div class:list={['hover-reveal-group relative', className]} data-hover-reveal>
+  <ul class="flex flex-col">
+    {
+      items.map((item, i) => (
+        <li class="border-b border-border-subtle last:border-b-0">
+          <a
+            href={item.href}
+            class="hover-reveal-item group flex items-center justify-between gap-6 py-8 transition-colors hover:text-text-accent md:py-10"
+            data-image={item.image || ''}
+            data-index={i}
+          >
+            <span class="flex items-baseline gap-6">
+              <span class="font-mono text-xs text-text-muted">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                {item.label}
+              </span>
+            </span>
+            <Icon
+              name="ph:arrow-up-right-bold"
+              class="hover-reveal-arrow h-6 w-6 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 md:h-8 md:w-8"
+            />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  {/* Imagen flotante que se posiciona al hacer hover */}
+  <div
+    class:list={['hover-reveal-image pointer-events-none absolute z-20 hidden w-[340px] overflow-hidden rounded-xl bg-neutral-200 shadow-2xl md:block', aspectClass]}
+    data-hover-image
+  >
+    {
+      items.map((item, i) => (
+        item.image ? (
+          <img
+            src={item.image}
+            alt=""
+            class="hover-reveal-img absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300"
+            data-item-image={i}
+          />
+        ) : (
+          <div
+            class="hover-reveal-img absolute inset-0 flex items-center justify-center bg-brand-coral/10 opacity-0 transition-opacity duration-300"
+            data-item-image={i}
+          >
+            {item.icon && <Icon name={item.icon} class="h-20 w-20 text-text-accent" />}
+          </div>
+        )
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .hover-reveal-image {
+    transform: translate(-50%, -50%);
+    transition: opacity 250ms ease, transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0;
+  }
+  .hover-reveal-image[data-visible='true'] {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-hover-reveal]').forEach((group) => {
+    const items = group.querySelectorAll<HTMLAnchorElement>('.hover-reveal-item');
+    const imageBox = group.querySelector<HTMLElement>('[data-hover-image]');
+    const images = group.querySelectorAll<HTMLElement>('[data-item-image]');
+    if (!imageBox) return;
+
+    let mx = 0, my = 0;
+
+    const onItemEnter = (e: Event) => {
+      const target = e.currentTarget as HTMLAnchorElement;
+      const idx = target.dataset.index;
+      imageBox.dataset.visible = 'true';
+      images.forEach((img) => {
+        (img as HTMLElement).style.opacity = img.dataset.itemImage === idx ? '1' : '0';
+      });
+    };
+    const onItemLeave = () => {
+      imageBox.dataset.visible = 'false';
+    };
+    const onMove = (e: MouseEvent) => {
+      const rect = group.getBoundingClientRect();
+      mx = e.clientX - rect.left;
+      my = e.clientY - rect.top;
+      imageBox.style.left = `${mx}px`;
+      imageBox.style.top = `${my}px`;
+    };
+
+    items.forEach((item) => {
+      item.addEventListener('mouseenter', onItemEnter);
+      item.addEventListener('mouseleave', onItemLeave);
+    });
+    group.addEventListener('mousemove', onMove);
+  });
+</script>

@@ -1,0 +1,114 @@
+---
+/**
+ * PremiumTimeline — timeline vertical animada que se dibuja al scroll.
+ *
+ * Items con {numero, titulo, descripcion, entregables?}.
+ * Línea coral se rellena progresivamente al hacer scroll.
+ */
+
+import { Icon } from 'astro-icon/components';
+
+interface Item {
+  numero: string;
+  titulo: string;
+  descripcion: string;
+  entregables?: string[];
+}
+
+interface Props {
+  items: Item[];
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+
+const { items, variant = 'light', class: className = '' } = Astro.props as Props;
+
+const isDark = variant === 'dark';
+---
+
+<div class:list={['premium-timeline relative', className]} data-premium-timeline>
+  {/* Línea vertical de fondo */}
+  <span
+    class:list={[
+      'absolute left-[18px] top-0 h-full w-px md:left-[22px]',
+      isDark ? 'bg-neutral-700' : 'bg-border-default',
+    ]}
+    aria-hidden="true"
+  ></span>
+
+  {/* Línea de progreso coral animada */}
+  <span
+    class="premium-timeline__progress absolute left-[18px] top-0 w-px bg-brand-coral md:left-[22px]"
+    data-timeline-progress
+    aria-hidden="true"
+  ></span>
+
+  <ol class="flex flex-col gap-12 md:gap-16">
+    {
+      items.map((item) => (
+        <li class="premium-timeline__item relative pl-16 md:pl-20" data-timeline-item>
+          {/* Marker numerado */}
+          <span
+            class:list={[
+              'absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border-2 font-mono text-xs font-bold md:h-11 md:w-11 md:text-sm',
+              isDark
+                ? 'border-brand-coral bg-brand-black text-text-inverse'
+                : 'border-brand-coral bg-surface-page text-text-accent',
+            ]}
+          >
+            {item.numero}
+          </span>
+
+          <h3 class:list={['font-display text-2xl font-bold tracking-tight md:text-3xl', isDark ? 'text-text-inverse' : 'text-text-primary']}>
+            {item.titulo}
+          </h3>
+          <p class:list={['mt-3 max-w-2xl text-base md:text-lg', isDark ? 'text-text-inverse-secondary' : 'text-text-secondary']}>
+            {item.descripcion}
+          </p>
+
+          {item.entregables && item.entregables.length > 0 && (
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {item.entregables.map((e) => (
+                <li
+                  class:list={[
+                    'inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium',
+                    isDark
+                      ? 'bg-neutral-800 text-text-inverse-secondary'
+                      : 'bg-surface-muted text-text-secondary',
+                  ]}
+                >
+                  <Icon name="ph:check-bold" class="h-3 w-3 text-text-accent" />
+                  {e}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-premium-timeline]').forEach((timeline) => {
+    const progress = timeline.querySelector<HTMLElement>('[data-timeline-progress]');
+    if (!progress) return;
+
+    const onScroll = () => {
+      const rect = timeline.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      // Fill from when timeline top hits 60% viewport to when bottom hits 30% viewport
+      const startY = viewportH * 0.6;
+      const endY = viewportH * 0.3;
+      const total = rect.height;
+      const progressFromTop = Math.max(0, startY - rect.top);
+      const progressFromBottom = Math.max(0, viewportH - rect.bottom + endY);
+      const filled = Math.min(total, Math.max(progressFromTop, total - progressFromBottom));
+      const visible = Math.min(total, Math.max(0, startY - rect.top));
+      progress.style.height = `${Math.min(visible, total)}px`;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  });
+</script>

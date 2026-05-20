@@ -1,0 +1,80 @@
+---
+/**
+ * CardExpand — card que se expande al hacer click revelando más contenido.
+ *
+ * Usa <details>/<summary> nativos con animación CSS sobre max-height + opacity.
+ */
+
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  titulo: string;
+  /** Texto corto que se ve siempre. */
+  resumen?: string;
+  /** Icono Phosphor opcional. */
+  icon?: string;
+  /** Numeración decorativa opcional, ej "01". */
+  numero?: string;
+  variant?: 'default' | 'filled' | 'elevated' | 'inverse';
+  class?: string;
+}
+
+const {
+  titulo,
+  resumen,
+  icon,
+  numero,
+  variant = 'default',
+  class: className = '',
+} = Astro.props as Props;
+
+const variantClass = {
+  default: 'bg-surface-page border border-border-subtle',
+  filled: 'bg-surface-muted',
+  elevated: 'bg-surface-elevated shadow-sm',
+  inverse: 'bg-surface-inverse-alt border border-border-inverse text-text-inverse',
+}[variant];
+---
+
+<details class:list={['card-expand group cursor-pointer rounded-2xl p-7 transition-all duration-300 md:p-8', variantClass, className]}>
+  <summary class="card-expand__head flex items-start justify-between gap-4">
+    <div class="flex-1">
+      {numero && (
+        <span class="font-display text-3xl font-bold text-text-accent">{numero}</span>
+      )}
+      {icon && !numero && (
+        <Icon name={icon} class="h-8 w-8 text-text-accent" />
+      )}
+      <h3 class:list={['mt-4 font-display text-xl font-bold tracking-tight md:text-2xl', variant === 'inverse' ? 'text-text-inverse' : 'text-text-primary']}>
+        {titulo}
+      </h3>
+      {resumen && (
+        <p class:list={['mt-2 text-sm', variant === 'inverse' ? 'text-text-inverse-secondary' : 'text-text-secondary']}>{resumen}</p>
+      )}
+    </div>
+    <span class="card-expand__icon mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-full border border-current transition-transform duration-300 group-open:rotate-45">
+      <Icon name="ph:plus-bold" class="h-4 w-4" />
+    </span>
+  </summary>
+
+  <div class="card-expand__body mt-6 border-t border-current/10 pt-6">
+    <div class:list={['prose-sm md:prose-base', variant === 'inverse' ? 'text-text-inverse-secondary' : 'text-text-secondary']}>
+      <slot />
+    </div>
+  </div>
+</details>
+
+<style>
+  /* Hide native marker */
+  .card-expand summary::-webkit-details-marker { display: none; }
+  .card-expand summary::marker { content: ''; }
+  .card-expand summary { list-style: none; }
+
+  .card-expand__body {
+    animation: card-expand-in 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes card-expand-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

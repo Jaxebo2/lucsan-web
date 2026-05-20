@@ -13,6 +13,8 @@ import FAQItem from '../../components/ui/FAQItem.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import MediaSlot from '../../components/ui/MediaSlot.astro';
 import InteractiveGradient from '../../components/ui/InteractiveGradient.astro';
+import CardExpand from '../../components/fx/CardExpand.astro';
+import AccordionSlider from '../../components/fx/AccordionSlider.astro';
 import { Icon } from 'astro-icon/components';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
 
@@ -82,16 +84,16 @@ const schemas = [
         Todas las <span class="text-text-accent">disciplinas</span> que cubrimos.
       </Heading>
 
-      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+      <div class="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
         {
-          s.incluye.map((item) => (
-            <Card variant="default" padding="lg" radius="xl">
-              <Icon name="ph:check-bold" class="h-6 w-6 text-text-accent" />
-              <Heading level={3} size="sm" class="mt-4">{item.titulo}</Heading>
-              {item.descripcion && (
-                <Prose tone="secondary" size="sm" class="mt-3">{item.descripcion}</Prose>
-              )}
-            </Card>
+          s.incluye.map((item, i) => (
+            <CardExpand
+              titulo={item.titulo}
+              numero={String(i + 1).padStart(2, '0')}
+              variant="filled"
+            >
+              {item.descripcion || `Más información sobre ${item.titulo}.`}
+            </CardExpand>
           ))
         }
       </div>
@@ -106,16 +108,14 @@ const schemas = [
         ¿Te suena <span class="text-text-accent">familiar</span>?
       </Heading>
 
-      <div class="mt-16 grid gap-6 md:grid-cols-3" data-reveal-stagger>
-        {
-          s.paraQuien.map((p) => (
-            <Card variant="filled" padding="lg" radius="xl">
-              <Icon name="ph:user-focus-bold" class="h-8 w-8 text-text-accent" />
-              <Heading level={3} size="sm" class="mt-5">{p.perfil}</Heading>
-              <Prose tone="secondary" class="mt-3">{p.descripcion}</Prose>
-            </Card>
-          ))
-        }
+      <div class="mt-16" data-reveal>
+        <AccordionSlider
+          panels={s.paraQuien.map((p) => ({
+            titulo: p.perfil,
+            descripcion: p.descripcion,
+            icon: 'ph:user-focus-bold',
+          }))}
+        />
       </div>
     </Container>
   </Section>

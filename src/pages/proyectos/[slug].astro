@@ -9,6 +9,7 @@ import Prose from '../../components/ui/Prose.astro';
 import Badge from '../../components/ui/Badge.astro';
 import MetricBadge from '../../components/ui/MetricBadge.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
+import CollapsibleCard from '../../components/fx/CollapsibleCard.astro';
 import { Icon } from 'astro-icon/components';
 import { caseStudySchema, breadcrumbSchema } from '../../lib/seo';
 
@@ -215,23 +216,22 @@ const sectorLabels: Record<string, string> = {
     </Container>
   </Section>
 
-  {/* TESTIMONIO — light */}
+  {/* TESTIMONIO — light, collapsible */}
   {
     p.caso.testimonio && (
       <Section surface="page">
         <Container size="md">
-          <figure class="text-center">
-            <Icon name="ph:quotes-fill" class="mx-auto h-10 w-10 text-text-accent" />
-            <blockquote class="mt-6">
-              <p class="font-display text-2xl leading-snug text-text-primary md:text-4xl">
-                "{p.caso.testimonio.cita}"
-              </p>
-            </blockquote>
-            <figcaption class="mt-8 text-sm">
-              <span class="font-medium text-text-primary">{p.caso.testimonio.autor}</span>
-              <span class="text-text-muted">, {p.caso.testimonio.cargo}</span>
-            </figcaption>
-          </figure>
+          <CollapsibleCard
+            cita={p.caso.testimonio.cita}
+            autor={p.caso.testimonio.autor}
+            cargo={p.caso.testimonio.cargo}
+            empresa={p.cliente}
+          >
+            <p>
+              Más contexto sobre la colaboración con {p.cliente} disponible al expandir.
+              Los resultados del proyecto se documentan en las métricas anteriores.
+            </p>
+          </CollapsibleCard>
         </Container>
       </Section>
     )
