@@ -71,11 +71,11 @@ export default function ContactForm({ presupuestos, turnstileSiteKey }: Props) {
         }
       } else {
         setStatus('error');
-        setErrorMsg(data.error ?? 'Algo salió mal. Probá de nuevo.');
+        setErrorMsg(data.error ?? 'Algo salió mal. Inténtalo de nuevo.');
       }
     } catch {
       setStatus('error');
-      setErrorMsg('No pudimos conectar con el servidor. Intentá otra vez.');
+      setErrorMsg('No pudimos conectar con el servidor. Inténtalo de nuevo.');
     }
   };
 
@@ -87,8 +87,8 @@ export default function ContactForm({ presupuestos, turnstileSiteKey }: Props) {
           ¡Mensaje enviado!
         </h3>
         <p className="mt-3 text-text-secondary">
-          Te respondemos en menos de 24 horas hábiles. Mientras tanto, revisá tu inbox por si
-          tenés un correo de confirmación.
+          Te respondemos en menos de 24 horas hábiles. Mientras tanto, revisa tu bandeja de
+          entrada por si tienes un correo de confirmación.
         </p>
         <button
           type="button"
@@ -183,7 +183,7 @@ export default function ContactForm({ presupuestos, turnstileSiteKey }: Props) {
       </label>
 
       <label className="flex flex-col gap-2 text-sm">
-        <span className="font-medium">Contanos sobre el proyecto</span>
+        <span className="font-medium">Cuéntanos sobre el proyecto</span>
         <textarea
           name="mensaje"
           required
@@ -204,7 +204,7 @@ export default function ContactForm({ presupuestos, turnstileSiteKey }: Props) {
 
       <div className="mt-2 flex items-center justify-between gap-4">
         <p className="text-xs text-text-muted">
-          Al enviar aceptás nuestra{' '}
+          Al enviar aceptas nuestra{' '}
           <a href="/legal/privacidad" className="underline hover:text-text-accent">
             política de privacidad
           </a>

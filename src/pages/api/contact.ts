@@ -133,7 +133,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (error) {
       console.error('Resend send error:', error);
       return new Response(
-        JSON.stringify({ ok: false, error: 'No pudimos enviar el mensaje. Intentá de nuevo o escribinos por WhatsApp.' }),
+        JSON.stringify({ ok: false, error: 'No pudimos enviar el mensaje. Inténtalo de nuevo o escríbenos por WhatsApp.' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } },
       );
     }
@@ -145,7 +145,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   } catch (err) {
     console.error('Contact form error:', err);
     return new Response(
-      JSON.stringify({ ok: false, error: 'Error interno. Probá de nuevo.' }),
+      JSON.stringify({ ok: false, error: 'Error interno. Inténtalo de nuevo.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
