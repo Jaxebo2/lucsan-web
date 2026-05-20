@@ -1,9 +1,8 @@
 ---
 /**
- * PremiumTimeline — timeline vertical animada que se dibuja al scroll.
- *
- * Items con {numero, titulo, descripcion, entregables?}.
- * Línea coral se rellena progresivamente al hacer scroll.
+ * PremiumTimeline — timeline vertical premium con número grande, línea de
+ * progreso animada al scroll, items con scale-in al entrar al viewport
+ * y hover effect.
  */
 
 import { Icon } from 'astro-icon/components';
@@ -22,7 +21,6 @@ interface Props {
 }
 
 const { items, variant = 'light', class: className = '' } = Astro.props as Props;
-
 const isDark = variant === 'dark';
 ---
 
@@ -30,85 +28,143 @@ const isDark = variant === 'dark';
   {/* Línea vertical de fondo */}
   <span
     class:list={[
-      'absolute left-[18px] top-0 h-full w-px md:left-[22px]',
+      'absolute left-7 top-12 h-[calc(100%-3rem)] w-px md:left-10',
       isDark ? 'bg-neutral-700' : 'bg-border-default',
     ]}
     aria-hidden="true"
   ></span>
 
-  {/* Línea de progreso coral animada */}
+  {/* Línea de progreso coral animada con scroll */}
   <span
-    class="premium-timeline__progress absolute left-[18px] top-0 w-px bg-brand-coral md:left-[22px]"
+    class="premium-timeline__progress absolute left-7 top-12 w-px bg-brand-coral md:left-10"
     data-timeline-progress
     aria-hidden="true"
   ></span>
 
-  <ol class="flex flex-col gap-12 md:gap-16">
+  <ol class="flex flex-col gap-16 md:gap-20">
     {
-      items.map((item) => (
-        <li class="premium-timeline__item relative pl-16 md:pl-20" data-timeline-item>
-          {/* Marker numerado */}
-          <span
-            class:list={[
-              'absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border-2 font-mono text-xs font-bold md:h-11 md:w-11 md:text-sm',
-              isDark
-                ? 'border-brand-coral bg-brand-black text-text-inverse'
-                : 'border-brand-coral bg-surface-page text-text-accent',
-            ]}
-          >
-            {item.numero}
-          </span>
+      items.map((item, i) => (
+        <li
+          class="premium-timeline__item group relative flex gap-6 md:gap-10"
+          data-timeline-item
+        >
+          {/* Número grande con círculo coral */}
+          <div class="relative flex-none">
+            <span
+              class:list={[
+                'flex h-14 w-14 items-center justify-center rounded-full border-2 font-display text-lg font-bold transition-transform duration-500 group-hover:scale-110 md:h-20 md:w-20 md:text-2xl',
+                isDark
+                  ? 'border-brand-coral bg-brand-black text-text-inverse'
+                  : 'border-brand-coral bg-surface-page text-text-accent',
+              ]}
+            >
+              {item.numero}
+            </span>
+            {/* Pulso decorativo */}
+            <span
+              class="absolute inset-0 -z-10 animate-ping rounded-full border-2 border-brand-coral opacity-0 group-hover:opacity-30"
+              aria-hidden="true"
+            ></span>
+          </div>
 
-          <h3 class:list={['font-display text-2xl font-bold tracking-tight md:text-3xl', isDark ? 'text-text-inverse' : 'text-text-primary']}>
-            {item.titulo}
-          </h3>
-          <p class:list={['mt-3 max-w-2xl text-base md:text-lg', isDark ? 'text-text-inverse-secondary' : 'text-text-secondary']}>
-            {item.descripcion}
-          </p>
+          {/* Contenido */}
+          <div class="flex-1 pt-2 md:pt-4">
+            <p class:list={['mb-2 font-mono text-xs uppercase tracking-widest', isDark ? 'text-text-inverse-secondary' : 'text-text-muted']}>
+              Fase {item.numero}
+            </p>
+            <h3
+              class:list={[
+                'font-display text-3xl font-bold leading-tight tracking-tight transition-colors duration-300 group-hover:text-text-accent md:text-5xl',
+                isDark ? 'text-text-inverse' : 'text-text-primary',
+              ]}
+            >
+              {item.titulo}
+            </h3>
+            <p
+              class:list={[
+                'mt-4 max-w-2xl text-base leading-relaxed md:text-lg',
+                isDark ? 'text-text-inverse-secondary' : 'text-text-secondary',
+              ]}
+            >
+              {item.descripcion}
+            </p>
 
-          {item.entregables && item.entregables.length > 0 && (
-            <ul class="mt-5 flex flex-wrap gap-2">
-              {item.entregables.map((e) => (
-                <li
-                  class:list={[
-                    'inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium',
-                    isDark
-                      ? 'bg-neutral-800 text-text-inverse-secondary'
-                      : 'bg-surface-muted text-text-secondary',
-                  ]}
-                >
-                  <Icon name="ph:check-bold" class="h-3 w-3 text-text-accent" />
-                  {e}
-                </li>
-              ))}
-            </ul>
-          )}
+            {item.entregables && item.entregables.length > 0 && (
+              <ul class="mt-6 flex flex-wrap gap-2">
+                {item.entregables.map((e) => (
+                  <li
+                    class:list={[
+                      'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors',
+                      isDark
+                        ? 'border-neutral-700 bg-neutral-800/50 text-text-inverse'
+                        : 'border-border-default bg-surface-elevated text-text-primary',
+                    ]}
+                  >
+                    <Icon name="ph:check-bold" class="h-3.5 w-3.5 text-text-accent" />
+                    {e}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </li>
       ))
     }
   </ol>
 </div>
 
+<style>
+  .premium-timeline__item {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .premium-timeline__item[data-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .premium-timeline__item {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
 <script>
   document.querySelectorAll<HTMLElement>('[data-premium-timeline]').forEach((timeline) => {
     const progress = timeline.querySelector<HTMLElement>('[data-timeline-progress]');
-    if (!progress) return;
+    const items = timeline.querySelectorAll<HTMLElement>('[data-timeline-item]');
 
-    const onScroll = () => {
-      const rect = timeline.getBoundingClientRect();
-      const viewportH = window.innerHeight;
-      // Fill from when timeline top hits 60% viewport to when bottom hits 30% viewport
-      const startY = viewportH * 0.6;
-      const endY = viewportH * 0.3;
-      const total = rect.height;
-      const progressFromTop = Math.max(0, startY - rect.top);
-      const progressFromBottom = Math.max(0, viewportH - rect.bottom + endY);
-      const filled = Math.min(total, Math.max(progressFromTop, total - progressFromBottom));
-      const visible = Math.min(total, Math.max(0, startY - rect.top));
-      progress.style.height = `${Math.min(visible, total)}px`;
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    onScroll();
+    // Progress fill al scroll
+    if (progress) {
+      const onScroll = () => {
+        const rect = timeline.getBoundingClientRect();
+        const viewportH = window.innerHeight;
+        const startY = viewportH * 0.55;
+        const total = rect.height - 48; // -3rem para no llegar a tope
+        const visible = Math.min(total, Math.max(0, startY - rect.top));
+        progress.style.height = `${visible}px`;
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+    }
+
+    // Reveal items con stagger
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).dataset.visible = 'true';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -15% 0px' },
+    );
+    items.forEach((item) => observer.observe(item));
   });
 </script>

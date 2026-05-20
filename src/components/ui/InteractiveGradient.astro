@@ -22,7 +22,7 @@ interface Props {
   class?: string;
 }
 
-const { variant = 'dark', intensity = 1, class: className = '' } = Astro.props as Props;
+const { variant = 'dark', intensity = 0.6, class: className = '' } = Astro.props as Props;
 
 // Grain SVG inline (URL-encoded turbulence)
 const grainBg =
@@ -65,26 +65,26 @@ const grainBg =
   .interactive-gradient--dark { background-color: var(--color-brand-black); }
   .interactive-gradient--light { background-color: var(--color-neutral-50); }
 
-  /* ===== Aurora layers (continuous morph) ===== */
+  /* ===== Aurora layers — bandas de luz sutiles ===== */
   .ig-aurora {
     position: absolute;
-    inset: -30%;
-    filter: blur(70px);
+    inset: -50%;
+    filter: blur(90px);
     will-change: transform;
   }
 
+  /* Bandas diagonales soft (no blobs gigantes) */
   .ig-aurora--a {
     background:
-      radial-gradient(ellipse 60% 80% at 25% 30%, rgb(255 85 72 / calc(0.55 * var(--ig-intensity))), transparent 60%),
-      radial-gradient(ellipse 70% 50% at 75% 70%, rgb(255 85 72 / calc(0.4 * var(--ig-intensity))), transparent 65%);
-    animation: aurora-morph-a 28s ease-in-out infinite;
+      radial-gradient(ellipse 35% 80% at 15% 50%, rgb(255 85 72 / calc(0.32 * var(--ig-intensity))), transparent 65%),
+      radial-gradient(ellipse 25% 60% at 85% 70%, rgb(255 85 72 / calc(0.22 * var(--ig-intensity))), transparent 65%);
+    animation: aurora-morph-a 32s ease-in-out infinite;
   }
   .ig-aurora--b {
     background:
-      radial-gradient(ellipse 80% 40% at 65% 20%, rgb(255 85 72 / calc(0.35 * var(--ig-intensity))), transparent 60%),
-      radial-gradient(ellipse 50% 70% at 30% 80%, rgb(255 85 72 / calc(0.45 * var(--ig-intensity))), transparent 60%),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgb(255 85 72 / calc(0.25 * var(--ig-intensity))), transparent 70%);
-    animation: aurora-morph-b 36s ease-in-out infinite reverse;
+      radial-gradient(ellipse 40% 30% at 70% 15%, rgb(255 85 72 / calc(0.18 * var(--ig-intensity))), transparent 70%),
+      radial-gradient(ellipse 30% 50% at 25% 85%, rgb(255 85 72 / calc(0.2 * var(--ig-intensity))), transparent 70%);
+    animation: aurora-morph-b 44s ease-in-out infinite reverse;
   }
 
   @keyframes aurora-morph-a {
@@ -104,10 +104,10 @@ const grainBg =
     position: absolute;
     inset: 0;
     background: radial-gradient(
-      550px circle at var(--ig-mx) var(--ig-my),
-      rgb(255 85 72 / calc(0.45 * var(--ig-intensity))),
-      rgb(255 85 72 / calc(0.18 * var(--ig-intensity))) 30%,
-      transparent 60%
+      400px circle at var(--ig-mx) var(--ig-my),
+      rgb(255 85 72 / calc(0.25 * var(--ig-intensity))),
+      rgb(255 85 72 / calc(0.08 * var(--ig-intensity))) 35%,
+      transparent 65%
     );
     transition: background 800ms cubic-bezier(0.22, 1, 0.36, 1);
     will-change: background;

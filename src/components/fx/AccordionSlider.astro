@@ -26,17 +26,14 @@ const { panels, class: className = '' } = Astro.props as Props;
 ---
 
 <div
-  class:list={[
-    'accordion-slider flex flex-col gap-2 md:h-[440px] md:flex-row md:gap-2',
-    className,
-  ]}
+  class:list={['accordion-slider flex flex-col gap-2 md:h-[440px] md:flex-row md:gap-3', className]}
   data-accordion-slider
 >
   {
     panels.map((panel, i) => (
       <button
         type="button"
-        class="accordion-slider__panel group relative flex-1 overflow-hidden rounded-2xl bg-brand-black text-left transition-[flex] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:flex-[1_1_0]"
+        class="accordion-slider__panel group relative overflow-hidden rounded-2xl bg-brand-black text-left"
         data-panel-index={i}
         aria-expanded={i === 0 ? 'true' : 'false'}
       >
@@ -44,30 +41,26 @@ const { panels, class: className = '' } = Astro.props as Props;
           <img
             src={panel.image}
             alt=""
-            class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-500 group-aria-expanded:opacity-80"
+            class="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-500"
           />
         ) : (
           <div class="absolute inset-0 bg-gradient-to-br from-brand-coral/40 via-brand-coral/10 to-brand-black"></div>
         )}
-        <span aria-hidden="true" class="absolute inset-0 bg-brand-black/40"></span>
+        <span aria-hidden="true" class="absolute inset-0 bg-brand-black/40 transition-opacity duration-500 group-aria-[expanded=true]:opacity-30"></span>
 
         <div class="relative flex h-full flex-col justify-between p-6 md:p-8">
-          {/* Header: index + icon */}
           <div class="flex items-start justify-between">
             <span class="font-mono text-xs uppercase tracking-widest text-neutral-50/70">
               {String(i + 1).padStart(2, '0')}
             </span>
-            {panel.icon && (
-              <Icon name={panel.icon} class="h-7 w-7 text-text-accent" />
-            )}
+            {panel.icon && <Icon name={panel.icon} class="h-7 w-7 text-text-accent" />}
           </div>
 
-          {/* Bottom: title + descripcion */}
           <div>
-            <h3 class="font-display text-2xl font-bold leading-tight text-neutral-50 md:text-3xl">
+            <h3 class="accordion-slider__title font-display text-2xl font-bold leading-tight text-neutral-50 md:text-3xl">
               {panel.titulo}
             </h3>
-            <p class="accordion-slider__desc mt-3 max-w-md text-sm text-neutral-50/80 opacity-0 transition-opacity duration-300 md:text-base">
+            <p class="accordion-slider__desc mt-3 max-w-md text-sm text-neutral-50/85 md:text-base">
               {panel.descripcion}
             </p>
           </div>
@@ -79,15 +72,46 @@ const { panels, class: className = '' } = Astro.props as Props;
 
 <style>
   .accordion-slider__panel {
-    min-height: 200px;
+    flex: 1 1 0;
+    min-height: 220px;
   }
+
+  /* En mobile todos los paneles tienen min-height fijo, sin animación horizontal */
+
+  /* Desktop: animación horizontal smooth con flex-grow */
   @media (min-width: 768px) {
-    .accordion-slider__panel { min-height: 0; }
+    .accordion-slider__panel {
+      flex-grow: 1;
+      min-height: 0;
+      transition: flex-grow 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
     .accordion-slider__panel[aria-expanded='true'] {
-      flex: 3 1 0;
+      flex-grow: 4;
+    }
+    /* Cuando el panel está colapsado, escondemos la descripción */
+    .accordion-slider__desc {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transform: translateY(8px);
+      transition:
+        opacity 350ms ease,
+        max-height 500ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 350ms ease;
     }
     .accordion-slider__panel[aria-expanded='true'] .accordion-slider__desc {
       opacity: 1;
+      max-height: 12rem;
+      transform: translateY(0);
+      transition-delay: 200ms;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-slider__panel,
+    .accordion-slider__desc,
+    .accordion-slider__title {
+      transition: none;
     }
   }
 </style>
