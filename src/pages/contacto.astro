@@ -10,7 +10,7 @@ import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import { Icon } from 'astro-icon/components';
 import { contactPageSchema, breadcrumbSchema } from '../lib/seo';
-import ContactForm from '../components/forms/ContactForm';
+import ContactForm from '../components/forms/ContactFormAstro.astro';
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
@@ -60,7 +60,6 @@ const schemas = [
 
           <div class="mt-8">
             <ContactForm
-              client:load
               presupuestos={c.rangosPresupuesto}
               turnstileSiteKey={turnstileSiteKey}
             />

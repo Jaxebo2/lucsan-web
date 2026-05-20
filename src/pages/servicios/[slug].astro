@@ -12,7 +12,7 @@ import FAQ from '../../components/ui/FAQ.astro';
 import FAQItem from '../../components/ui/FAQItem.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import MediaSlot from '../../components/ui/MediaSlot.astro';
-import AnimatedMark from '../../components/ui/AnimatedMark.astro';
+import InteractiveGradient from '../../components/ui/InteractiveGradient.astro';
 import { Icon } from 'astro-icon/components';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
 
@@ -49,9 +49,7 @@ const schemas = [
 <BaseLayout title={s.seo.title} description={s.seo.description} ogImage={s.seo.ogImage} schemas={schemas}>
   {/* HERO — dark */}
   <Section surface="inverse" spacing="none" class="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28">
-    <div class="pointer-events-none absolute -right-32 top-20 hidden opacity-40 lg:block">
-      <AnimatedMark variant="coral" size="lg" />
-    </div>
+    <InteractiveGradient variant="dark" intensity={0.65} />
     <Container class="relative z-10">
       <p class="text-sm text-text-inverse-secondary">
         <a href="/servicios" class="hover:text-text-accent">Servicios</a>
@@ -219,22 +217,31 @@ const schemas = [
 
   {/* ENTREGABLES — muted */}
   <Section surface="muted">
-    <Container size="md">
-      <Eyebrow>Qué te llevas</Eyebrow>
-      <Heading level={2} size="2xl" class="mt-3">
-        Todo lo que entregamos al cerrar el proyecto.
-      </Heading>
+    <Container>
+      <div data-reveal>
+        <Eyebrow>Qué te llevas</Eyebrow>
+        <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+          Activos concretos, <span class="text-text-accent">no archivos sueltos</span>.
+        </Heading>
+        <Prose tone="secondary" size="lg" class="mt-6 max-w-2xl">
+          Cada proyecto se cierra con activos que tu equipo puede usar el lunes siguiente.
+          Sistemas, plantillas y guías pensadas para operar, no para guardar en una carpeta.
+        </Prose>
+      </div>
 
-      <ul class="mt-12 grid gap-3 md:grid-cols-2" data-reveal-stagger>
+      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
         {
-          s.entregables.map((e) => (
-            <li class="flex items-start gap-3 rounded-lg bg-surface-muted p-4">
-              <Icon name="ph:check-circle-fill" class="mt-0.5 h-5 w-5 flex-none text-text-accent" />
-              <span class="text-text-primary">{e}</span>
-            </li>
+          s.entregables.map((e, i) => (
+            <Card variant="elevated" padding="lg" radius="xl" class="relative overflow-hidden">
+              <span class="absolute right-6 top-6 font-display text-3xl font-bold text-text-accent/20">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <Icon name="ph:check-circle-fill" class="h-7 w-7 text-text-accent" />
+              <p class="mt-5 text-lg font-medium leading-snug text-text-primary md:text-xl">{e}</p>
+            </Card>
           ))
         }
-      </ul>
+      </div>
     </Container>
   </Section>
 

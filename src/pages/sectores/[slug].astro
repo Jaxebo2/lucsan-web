@@ -8,7 +8,7 @@ import Heading from '../../components/ui/Heading.astro';
 import Prose from '../../components/ui/Prose.astro';
 import Card from '../../components/ui/Card.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
-import AnimatedMark from '../../components/ui/AnimatedMark.astro';
+import InteractiveGradient from '../../components/ui/InteractiveGradient.astro';
 import { Icon } from 'astro-icon/components';
 import { breadcrumbSchema } from '../../lib/seo';
 
@@ -51,9 +51,7 @@ const schemas = [
 <BaseLayout title={sec.seo.title} description={sec.seo.description} ogImage={sec.seo.ogImage} schemas={schemas}>
   {/* HERO — dark */}
   <Section surface="inverse" spacing="none" class="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-28">
-    <div class="pointer-events-none absolute -right-32 top-20 hidden opacity-30 lg:block">
-      <AnimatedMark variant="coral" size="lg" />
-    </div>
+    <InteractiveGradient variant="dark" intensity={0.6} />
     <Container class="relative z-10">
       <p class="text-sm text-text-inverse-secondary">
         <a href="/sectores" class="hover:text-text-accent">Sectores</a>

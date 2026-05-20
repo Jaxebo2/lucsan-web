@@ -1,24 +1,28 @@
 ---
+import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Button from '../ui/Button.astro';
 
 /**
- * Navbar — floating glass pill (Dynamic Island-inspired).
+ * Navbar — floating glass pill con dropdowns en Servicios y Sectores.
  *
- * - Centered, floats with margin from top
- * - Glass background adapts to underlying section (data-theme="light|dark")
- * - Logo swaps + nav link colors adapt
- * - Active link: coral text + animated dot indicator
- * - Mobile: compact pill with logo + hamburger; drawer is fullscreen
+ * Adapta tema (light/dark) según la sección visible debajo.
+ * Servicios y Sectores muestran un dropdown al hacer hover (desktop) o tap (mobile).
  */
 
-const navLinks: { label: string; href: string }[] = [
-  { label: 'Servicios', href: '/servicios' },
-  { label: 'Sectores', href: '/sectores' },
+const navLinks: { label: string; href: string; hasDropdown?: boolean }[] = [
+  { label: 'Servicios', href: '/servicios', hasDropdown: true },
+  { label: 'Sectores', href: '/sectores', hasDropdown: true },
   { label: 'Proyectos', href: '/proyectos' },
   { label: 'Sobre nosotros', href: '/sobre-nosotros' },
   { label: 'Contacto', href: '/contacto' },
 ];
+
+// Cargar servicios + sectores publicados para los dropdowns
+const servicios = (await getCollection('services', (s) => s.data.publicado))
+  .sort((a, b) => a.data.orden - b.data.orden);
+const sectores = (await getCollection('sectores', (s) => s.data.publicado))
+  .sort((a, b) => a.data.orden - b.data.orden);
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string): boolean => {
@@ -64,15 +68,73 @@ const isActive = (href: string): boolean => {
       {
         navLinks.map((link) => {
           const active = isActive(link.href);
+          const hasDropdown = link.hasDropdown;
           return (
-            <a
-              href={link.href}
-              data-active={active ? 'true' : 'false'}
-              aria-current={active ? 'page' : undefined}
-              class="nav-link relative inline-flex items-center px-4 py-2 text-sm font-medium"
-            >
-              <span class="nav-link__label relative inline-block">{link.label}</span>
-            </a>
+            <div class:list={['nav-item relative', hasDropdown && 'nav-item--has-dropdown']}>
+              <a
+                href={link.href}
+                data-active={active ? 'true' : 'false'}
+                aria-current={active ? 'page' : undefined}
+                class="nav-link relative inline-flex items-center gap-1 px-4 py-2 text-sm font-medium"
+              >
+                <span class="nav-link__label relative inline-block">{link.label}</span>
+                {hasDropdown && (
+                  <Icon name="ph:caret-down-bold" class="nav-link__caret h-3 w-3" />
+                )}
+              </a>
+
+              {hasDropdown && link.label === 'Servicios' && (
+                <div class="nav-dropdown" role="menu">
+                  <div class="nav-dropdown__inner">
+                    <div class="grid gap-1">
+                      {servicios.map((s) => (
+                        <a
+                          href={`/servicios/${s.data.slug}`}
+                          class="nav-dropdown__link group"
+                          role="menuitem"
+                        >
+                          <span class="nav-dropdown__label">{s.data.title}</span>
+                          <Icon
+                            name="ph:arrow-right-bold"
+                            class="nav-dropdown__arrow h-4 w-4 transition-transform group-hover:translate-x-1"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                    <a href="/servicios" class="nav-dropdown__footer">
+                      Ver todos los servicios
+                      <Icon name="ph:arrow-right-bold" class="h-3 w-3" />
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {hasDropdown && link.label === 'Sectores' && (
+                <div class="nav-dropdown nav-dropdown--wide" role="menu">
+                  <div class="nav-dropdown__inner">
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-1">
+                      {sectores.map((sec) => (
+                        <a
+                          href={`/sectores/${sec.data.slug}`}
+                          class="nav-dropdown__link group"
+                          role="menuitem"
+                        >
+                          <span class="nav-dropdown__label">{sec.data.nombre}</span>
+                          <Icon
+                            name="ph:arrow-right-bold"
+                            class="nav-dropdown__arrow h-4 w-4 transition-transform group-hover:translate-x-1"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                    <a href="/sectores" class="nav-dropdown__footer">
+                      Ver todos los sectores
+                      <Icon name="ph:arrow-right-bold" class="h-3 w-3" />
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
           );
         })
       }
@@ -101,7 +163,7 @@ const isActive = (href: string): boolean => {
   {/* Mobile drawer */}
   <div
     id="nav-drawer"
-    class="fixed inset-0 z-50 hidden bg-brand-black text-neutral-50"
+    class="fixed inset-0 z-50 hidden overflow-y-auto bg-brand-black text-neutral-50"
     aria-hidden="true"
   >
     <div class="flex h-16 items-center justify-between px-6">
@@ -114,16 +176,11 @@ const isActive = (href: string): boolean => {
           height="32"
         />
       </a>
-      <button
-        id="nav-close"
-        type="button"
-        class="text-neutral-50"
-        aria-label="Cerrar menú"
-      >
+      <button id="nav-close" type="button" class="text-neutral-50" aria-label="Cerrar menú">
         <Icon name="ph:x-bold" class="h-7 w-7" />
       </button>
     </div>
-    <nav class="flex flex-col gap-2 px-6 py-8" aria-label="Móvil">
+    <nav class="flex flex-col gap-1 px-6 py-8 pb-24" aria-label="Móvil">
       {
         navLinks.map((link) => {
           const active = isActive(link.href);
@@ -132,7 +189,7 @@ const isActive = (href: string): boolean => {
               href={link.href}
               aria-current={active ? 'page' : undefined}
               class:list={[
-                'border-b border-neutral-700 py-4 font-display text-3xl font-medium transition-colors',
+                'border-b border-neutral-700 py-4 font-display text-2xl font-medium transition-colors',
                 active ? 'text-brand-coral' : 'text-neutral-50 hover:text-brand-coral',
               ]}
             >
@@ -141,7 +198,49 @@ const isActive = (href: string): boolean => {
           );
         })
       }
+
+      {/* Sub-links de servicios en mobile */}
       <div class="mt-6">
+        <p class="text-xs font-medium uppercase tracking-widest text-neutral-500">
+          Servicios
+        </p>
+        <ul class="mt-3 flex flex-col gap-2">
+          {
+            servicios.map((s) => (
+              <li>
+                <a
+                  href={`/servicios/${s.data.slug}`}
+                  class="text-sm text-neutral-300 transition-colors hover:text-brand-coral"
+                >
+                  {s.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="mt-6">
+        <p class="text-xs font-medium uppercase tracking-widest text-neutral-500">
+          Sectores
+        </p>
+        <ul class="mt-3 grid grid-cols-2 gap-2">
+          {
+            sectores.slice(0, 12).map((sec) => (
+              <li>
+                <a
+                  href={`/sectores/${sec.data.slug}`}
+                  class="text-sm text-neutral-300 transition-colors hover:text-brand-coral"
+                >
+                  {sec.data.nombre}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="mt-8">
         <Button href="/contacto" variant="primary" size="lg" fullWidth iconRight="ph:arrow-right-bold">
           Conversemos
         </Button>
@@ -165,7 +264,6 @@ const isActive = (href: string): boolean => {
     will-change: background-color;
   }
 
-  /* Light theme (over light sections) */
   #site-navbar.nav--light .nav-pill {
     background-color: color-mix(in oklab, var(--color-neutral-50) 72%, transparent);
     border: 1px solid color-mix(in oklab, var(--color-neutral-300) 60%, transparent);
@@ -173,14 +271,11 @@ const isActive = (href: string): boolean => {
       0 8px 24px color-mix(in oklab, var(--color-brand-black) 8%, transparent),
       0 1px 0 color-mix(in oklab, white 50%, transparent) inset;
   }
-  #site-navbar.nav--light .nav-link {
-    color: var(--color-brand-black);
-  }
+  #site-navbar.nav--light .nav-link { color: var(--color-brand-black); }
   #site-navbar.nav--light .nav-logo--dark { display: block; }
   #site-navbar.nav--light .nav-logo--light { display: none; }
   #site-navbar.nav--light .nav-toggle { color: var(--color-brand-black); }
 
-  /* Dark theme (over dark sections) */
   #site-navbar.nav--dark .nav-pill {
     background-color: color-mix(in oklab, var(--color-brand-black) 55%, transparent);
     border: 1px solid color-mix(in oklab, var(--color-neutral-50) 12%, transparent);
@@ -188,27 +283,23 @@ const isActive = (href: string): boolean => {
       0 8px 24px color-mix(in oklab, var(--color-brand-black) 30%, transparent),
       0 1px 0 color-mix(in oklab, white 8%, transparent) inset;
   }
-  #site-navbar.nav--dark .nav-link {
-    color: var(--color-neutral-50);
-  }
+  #site-navbar.nav--dark .nav-link { color: var(--color-neutral-50); }
   #site-navbar.nav--dark .nav-logo--dark { display: none; }
   #site-navbar.nav--dark .nav-logo--light { display: block; }
   #site-navbar.nav--dark .nav-toggle { color: var(--color-neutral-50); }
 
   /* ============================================================
-     Nav link animation — color + dot indicator
+     Nav link animation + underline
      ============================================================ */
 
   .nav-link {
     transition: color 250ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-
   .nav-link:hover,
   .nav-link[data-active='true'] {
     color: var(--color-brand-coral) !important;
   }
 
-  /* Underline indicator under label text — scales from center */
   .nav-link__label::after {
     content: '';
     position: absolute;
@@ -227,7 +318,106 @@ const isActive = (href: string): boolean => {
     transform: scaleX(1);
   }
 
-  /* Hamburger hover hint */
+  .nav-link__caret {
+    transition: transform 250ms ease;
+  }
+  .nav-item--has-dropdown:hover .nav-link__caret,
+  .nav-item--has-dropdown:focus-within .nav-link__caret {
+    transform: rotate(180deg);
+  }
+
+  /* ============================================================
+     Dropdowns
+     ============================================================ */
+
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 16px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    min-width: 280px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 200ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 200ms;
+  }
+  .nav-dropdown--wide {
+    min-width: 560px;
+  }
+
+  /* Show dropdown on hover or focus of parent */
+  .nav-item--has-dropdown:hover .nav-dropdown,
+  .nav-item--has-dropdown:focus-within .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .nav-dropdown__inner {
+    background-color: color-mix(in oklab, var(--color-neutral-50) 92%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid color-mix(in oklab, var(--color-neutral-300) 50%, transparent);
+    border-radius: 1rem;
+    padding: 0.75rem;
+    box-shadow:
+      0 16px 40px color-mix(in oklab, var(--color-brand-black) 12%, transparent),
+      0 1px 0 color-mix(in oklab, white 50%, transparent) inset;
+  }
+  #site-navbar.nav--dark .nav-dropdown__inner {
+    background-color: color-mix(in oklab, var(--color-brand-black) 85%, transparent);
+    border-color: color-mix(in oklab, var(--color-neutral-50) 15%, transparent);
+  }
+
+  .nav-dropdown__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-brand-black);
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+  #site-navbar.nav--dark .nav-dropdown__link { color: var(--color-neutral-50); }
+  .nav-dropdown__link:hover {
+    background-color: color-mix(in oklab, var(--color-brand-coral) 8%, transparent);
+    color: var(--color-brand-coral);
+  }
+  .nav-dropdown__arrow {
+    opacity: 0;
+    transition: opacity 150ms ease, transform 150ms ease;
+  }
+  .nav-dropdown__link:hover .nav-dropdown__arrow {
+    opacity: 1;
+  }
+
+  .nav-dropdown__footer {
+    margin-top: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-neutral-300) 60%, transparent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-brand-coral);
+    transition: opacity 150ms ease;
+  }
+  #site-navbar.nav--dark .nav-dropdown__footer {
+    border-top-color: color-mix(in oklab, var(--color-neutral-50) 15%, transparent);
+  }
+  .nav-dropdown__footer:hover { opacity: 0.8; }
+
+  /* Hamburger hover */
   #site-navbar.nav--light .nav-toggle:hover {
     background-color: color-mix(in oklab, var(--color-brand-black) 6%, transparent);
   }
@@ -238,16 +428,16 @@ const isActive = (href: string): boolean => {
   @media (prefers-reduced-motion: reduce) {
     .nav-pill,
     .nav-link,
-    .nav-link__label::after {
+    .nav-link__label::after,
+    .nav-link__caret,
+    .nav-dropdown {
       transition: none !important;
     }
   }
 </style>
 
 <script>
-  // ============================================================
   // Adaptive theme — IntersectionObserver on [data-theme] sections
-  // ============================================================
   const navbar = document.getElementById('site-navbar');
   if (navbar) {
     const sections = document.querySelectorAll<HTMLElement>('[data-theme]');
@@ -277,9 +467,7 @@ const isActive = (href: string): boolean => {
     }
   }
 
-  // ============================================================
   // Mobile drawer
-  // ============================================================
   const toggle = document.getElementById('nav-toggle');
   const close = document.getElementById('nav-close');
   const drawer = document.getElementById('nav-drawer');
@@ -302,7 +490,6 @@ const isActive = (href: string): boolean => {
 
   toggle?.addEventListener('click', openDrawer);
   close?.addEventListener('click', closeDrawer);
-
   drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeDrawer));
 
   document.addEventListener('keydown', (e) => {

@@ -1,0 +1,268 @@
+---
+/**
+ * ContactFormAstro — formulario de contacto sin React.
+ *
+ * Render 100% server-side. Submit AJAX via vanilla JS para enviar a
+ * /api/contact sin recargar página. Sin React, sin hidratación, sin
+ * el bug de "se renderiza por un microsegundo y queda blanco".
+ *
+ * Estado manejado con clases data-state en el wrapper.
+ */
+
+interface Props {
+  presupuestos: string[];
+  turnstileSiteKey?: string;
+}
+
+const { presupuestos, turnstileSiteKey = '' } = Astro.props as Props;
+---
+
+<div
+  class="contact-form-wrapper"
+  data-state="idle"
+  data-turnstile-key={turnstileSiteKey}
+>
+  {/* Estado: éxito */}
+  <div
+    class="contact-form-success hidden rounded-xl border border-success/30 bg-success-bg p-8 text-center"
+    data-form-success
+  >
+    <p class="text-3xl">✓</p>
+    <h3 class="mt-4 font-display text-2xl font-bold text-brand-black">¡Mensaje enviado!</h3>
+    <p class="mt-3 text-text-secondary">
+      Te respondemos en menos de 24 horas hábiles. Mientras tanto, revisa tu bandeja de
+      entrada por si tienes un correo de confirmación.
+    </p>
+    <button
+      type="button"
+      class="mt-6 text-sm font-medium text-text-accent hover:underline"
+      data-form-reset
+    >
+      Enviar otro mensaje
+    </button>
+  </div>
+
+  {/* Estado: form */}
+  <form
+    class="contact-form flex flex-col gap-5"
+    action="/api/contact"
+    method="POST"
+    novalidate
+    data-form
+  >
+    {/* Honeypot oculto */}
+    <input
+      type="text"
+      name="website"
+      tabindex={-1}
+      autocomplete="off"
+      class="absolute left-[-9999px] h-0 w-0 opacity-0"
+      aria-hidden="true"
+    />
+
+    <div class="grid gap-5 md:grid-cols-2">
+      <label class="flex flex-col gap-2 text-sm">
+        <span class="font-medium">Nombre</span>
+        <input
+          type="text"
+          name="nombre"
+          required
+          minlength="2"
+          autocomplete="name"
+          class="rounded-md border border-border-default bg-surface-page px-4 py-3 text-base transition-colors focus:border-border-accent focus:outline-none"
+          placeholder="Tu nombre"
+        />
+      </label>
+      <label class="flex flex-col gap-2 text-sm">
+        <span class="font-medium">Email</span>
+        <input
+          type="email"
+          name="email"
+          required
+          autocomplete="email"
+          class="rounded-md border border-border-default bg-surface-page px-4 py-3 text-base transition-colors focus:border-border-accent focus:outline-none"
+          placeholder="tu@correo.com"
+        />
+      </label>
+    </div>
+
+    <label class="flex flex-col gap-2 text-sm">
+      <span class="font-medium">
+        Empresa <span class="text-text-muted">(opcional)</span>
+      </span>
+      <input
+        type="text"
+        name="empresa"
+        autocomplete="organization"
+        class="rounded-md border border-border-default bg-surface-page px-4 py-3 text-base transition-colors focus:border-border-accent focus:outline-none"
+        placeholder="Nombre de tu empresa"
+      />
+    </label>
+
+    <label class="flex flex-col gap-2 text-sm">
+      <span class="font-medium">¿En qué te podemos ayudar?</span>
+      <select
+        name="servicio"
+        required
+        class="rounded-md border border-border-default bg-surface-page px-4 py-3 text-base transition-colors focus:border-border-accent focus:outline-none"
+      >
+        <option value="" disabled selected>Elegí un servicio</option>
+        <option value="branding">Branding y diseño de marca</option>
+        <option value="diseno-web">Diseño web</option>
+        <option value="marketing-publicidad-digital">Marketing y publicidad digital</option>
+        <option value="asesoria-consultoria">Asesoría y consultoría</option>
+        <option value="otro">Otro / no estoy seguro</option>
+      </select>
+    </label>
+
+    <label class="flex flex-col gap-2 text-sm">
+      <span class="font-medium">
+        Presupuesto aproximado <span class="text-text-muted">(opcional)</span>
+      </span>
+      <select
+        name="presupuesto"
+        class="rounded-md border border-border-default bg-surface-page px-4 py-3 text-base transition-colors focus:border-border-accent focus:outline-none"
+      >
+        <option value="">No estoy seguro</option>
+        {presupuestos.map((r) => <option value={r}>{r}</option>)}
+      </select>
+    </label>
+
+    <label class="flex flex-col gap-2 text-sm">
+      <span class="font-medium">Cuéntanos sobre el proyecto</span>
+      <textarea
+        name="mensaje"
+        required
+        minlength="20"
+        rows="5"
+        class="rounded-md border border-border-default bg-surface-page px-4 py-3 text-base transition-colors focus:border-border-accent focus:outline-none"
+        placeholder="Objetivo, plazo aproximado, contexto relevante…"
+      ></textarea>
+    </label>
+
+    {turnstileSiteKey && (
+      <div class="mt-2 contact-turnstile" data-sitekey={turnstileSiteKey}></div>
+    )}
+
+    <p
+      class="hidden rounded-md border border-error/30 bg-error-bg px-4 py-3 text-sm text-error"
+      data-form-error
+    ></p>
+
+    <div class="mt-2 flex items-center justify-between gap-4">
+      <p class="text-xs text-text-muted">
+        Al enviar aceptas nuestra{' '}
+        <a href="/legal/privacidad" class="underline hover:text-text-accent">
+          política de privacidad
+        </a>.
+      </p>
+      <button
+        type="submit"
+        class="inline-flex items-center gap-2 rounded-full bg-brand-coral px-6 py-3 font-medium text-neutral-50 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
+        data-form-submit
+      >
+        <span data-submit-idle>Enviar mensaje</span>
+        <span data-submit-loading class="hidden">Enviando…</span>
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Vanilla JS form handler — sin React, sin hydration drama
+  type FormState = 'idle' | 'submitting' | 'success' | 'error';
+
+  document.querySelectorAll<HTMLElement>('.contact-form-wrapper').forEach((wrapper) => {
+    const form = wrapper.querySelector<HTMLFormElement>('[data-form]');
+    const successBox = wrapper.querySelector<HTMLElement>('[data-form-success]');
+    const errorBox = wrapper.querySelector<HTMLElement>('[data-form-error]');
+    const submitBtn = wrapper.querySelector<HTMLButtonElement>('[data-form-submit]');
+    const idleLabel = wrapper.querySelector<HTMLElement>('[data-submit-idle]');
+    const loadingLabel = wrapper.querySelector<HTMLElement>('[data-submit-loading]');
+    const resetBtn = wrapper.querySelector<HTMLButtonElement>('[data-form-reset]');
+    const turnstileKey = wrapper.dataset.turnstileKey || '';
+    const turnstileEl = wrapper.querySelector<HTMLElement>('.contact-turnstile');
+
+    if (!form || !successBox || !errorBox || !submitBtn || !idleLabel || !loadingLabel)
+      return;
+
+    const setState = (state: FormState, errorMsg?: string) => {
+      wrapper.dataset.state = state;
+      if (state === 'success') {
+        form.classList.add('hidden');
+        successBox.classList.remove('hidden');
+        errorBox.classList.add('hidden');
+      } else if (state === 'error') {
+        form.classList.remove('hidden');
+        successBox.classList.add('hidden');
+        if (errorMsg) {
+          errorBox.textContent = errorMsg;
+          errorBox.classList.remove('hidden');
+        }
+        idleLabel.classList.remove('hidden');
+        loadingLabel.classList.add('hidden');
+        submitBtn.disabled = false;
+      } else if (state === 'submitting') {
+        errorBox.classList.add('hidden');
+        idleLabel.classList.add('hidden');
+        loadingLabel.classList.remove('hidden');
+        submitBtn.disabled = true;
+      } else {
+        form.classList.remove('hidden');
+        successBox.classList.add('hidden');
+        errorBox.classList.add('hidden');
+        idleLabel.classList.remove('hidden');
+        loadingLabel.classList.add('hidden');
+        submitBtn.disabled = false;
+      }
+    };
+
+    // Load Turnstile if configured
+    let turnstileWidgetId: string | null = null;
+    if (turnstileKey && turnstileEl) {
+      const renderWidget = () => {
+        const w = (window as any).turnstile;
+        if (w && turnstileEl) {
+          turnstileWidgetId = w.render(turnstileEl, { sitekey: turnstileKey, theme: 'light' });
+        }
+      };
+      if ((window as any).turnstile) {
+        renderWidget();
+      } else {
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+        script.async = true;
+        script.defer = true;
+        script.onload = renderWidget;
+        document.head.appendChild(script);
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setState('submitting');
+      const data = Object.fromEntries(new FormData(form).entries());
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = (await res.json()) as { ok: boolean; error?: string };
+        if (json.ok) {
+          setState('success');
+          form.reset();
+          const w = (window as any).turnstile;
+          if (turnstileKey && w && turnstileWidgetId) w.reset(turnstileWidgetId);
+        } else {
+          setState('error', json.error || 'Algo salió mal. Inténtalo de nuevo.');
+        }
+      } catch {
+        setState('error', 'No pudimos conectar con el servidor. Inténtalo de nuevo.');
+      }
+    });
+
+    resetBtn?.addEventListener('click', () => setState('idle'));
+  });
+</script>

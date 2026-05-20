@@ -1,0 +1,153 @@
+---
+/**
+ * InteractiveGradient — gradient mesh que sigue al mouse con lag suave.
+ *
+ * 4 blobs grandes blureados (coral, blue, green, yellow) flotando.
+ * En desktop siguen al cursor con interpolación lineal (efecto lag).
+ * En móvil + reduced-motion, animación ambiente sin tracking.
+ *
+ * Diseñado para hero sections (posicionar dentro de Section con
+ * spacing="none" + overflow-hidden).
+ */
+
+type Variant = 'dark' | 'light';
+
+interface Props {
+  variant?: Variant;
+  /** Intensidad (0-1). Más alto = más visible. */
+  intensity?: number;
+  class?: string;
+}
+
+const { variant = 'dark', intensity = 0.7, class: className = '' } = Astro.props as Props;
+---
+
+<div
+  class:list={['interactive-gradient pointer-events-none absolute inset-0 overflow-hidden', `interactive-gradient--${variant}`, className]}
+  aria-hidden="true"
+  style={`--ig-opacity: ${intensity}`}
+  data-interactive-gradient
+>
+  <span class="ig-blob ig-blob--coral"></span>
+  <span class="ig-blob ig-blob--blue"></span>
+  <span class="ig-blob ig-blob--green"></span>
+  <span class="ig-blob ig-blob--yellow"></span>
+
+  {/* Capa interactiva (cubre la sección entera para captar el mouse) */}
+  <div class="interactive-gradient__capture pointer-events-auto absolute inset-0"></div>
+</div>
+
+<style>
+  .interactive-gradient {
+    /* CSS variables controladas por JS al mover el mouse */
+    --ig-mx: 0.5;
+    --ig-my: 0.5;
+  }
+  .ig-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: var(--ig-opacity);
+    will-change: transform;
+    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Colores brand */
+  .ig-blob--coral  { background: var(--color-brand-coral); }
+  .ig-blob--blue   { background: var(--color-brand-blue); }
+  .ig-blob--green  { background: var(--color-brand-green); }
+  .ig-blob--yellow { background: var(--color-brand-yellow); }
+
+  /* Tamaños y posiciones base — cada blob responde al mouse con factor distinto */
+  .ig-blob--coral {
+    width: 45rem; height: 45rem;
+    top: 0; left: 0;
+    transform: translate(
+      calc(var(--ig-mx) * 60% - 20%),
+      calc(var(--ig-my) * 40% - 10%)
+    );
+  }
+  .ig-blob--blue {
+    width: 38rem; height: 38rem;
+    bottom: 0; right: 0;
+    transform: translate(
+      calc(var(--ig-mx) * -40% + 10%),
+      calc(var(--ig-my) * -50% + 20%)
+    );
+  }
+  .ig-blob--green {
+    width: 28rem; height: 28rem;
+    top: 30%; left: 50%;
+    transform: translate(
+      calc(var(--ig-mx) * 70% - 35%),
+      calc(var(--ig-my) * 60% - 30%)
+    );
+  }
+  .ig-blob--yellow {
+    width: 22rem; height: 22rem;
+    bottom: 20%; left: 30%;
+    transform: translate(
+      calc(var(--ig-mx) * -50% + 25%),
+      calc(var(--ig-my) * 50% - 25%)
+    );
+  }
+
+  /* Variant dark — más opaco, blobs visibles sobre fondo oscuro */
+  .interactive-gradient--dark .ig-blob { mix-blend-mode: screen; }
+
+  /* Variant light — más sutiles, blobs sobre fondo claro */
+  .interactive-gradient--light .ig-blob {
+    opacity: calc(var(--ig-opacity) * 0.55);
+    mix-blend-mode: multiply;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ig-blob {
+      transition: none;
+      animation: ig-ambient 18s ease-in-out infinite;
+    }
+    .ig-blob--blue   { animation-delay: -4s; }
+    .ig-blob--green  { animation-delay: -8s; }
+    .ig-blob--yellow { animation-delay: -12s; }
+  }
+  @keyframes ig-ambient {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(2rem, -2rem); }
+  }
+</style>
+
+<script>
+  // Tracking del mouse con interpolación lineal suave
+  const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (motionOk) {
+    document.querySelectorAll<HTMLElement>('[data-interactive-gradient]').forEach((el) => {
+      let mx = 0.5, my = 0.5, tx = 0.5, ty = 0.5;
+      const capture = el.querySelector<HTMLElement>('.interactive-gradient__capture');
+      if (!capture) return;
+
+      const onMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        tx = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        ty = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+      };
+      capture.addEventListener('mousemove', onMove);
+      // También capturar movimiento de mouse a nivel ventana para que arrastre incluso si pasamos por arriba de otros elementos del hero
+      const onWindowMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        if (e.clientY < rect.top || e.clientY > rect.bottom) return;
+        tx = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        ty = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+      };
+      window.addEventListener('mousemove', onWindowMove);
+
+      let rafId: number;
+      const animate = () => {
+        mx += (tx - mx) * 0.06;
+        my += (ty - my) * 0.06;
+        el.style.setProperty('--ig-mx', mx.toFixed(3));
+        el.style.setProperty('--ig-my', my.toFixed(3));
+        rafId = requestAnimationFrame(animate);
+      };
+      animate();
+    });
+  }
+</script>
