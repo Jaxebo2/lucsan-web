@@ -83,6 +83,20 @@ const services = defineCollection({
     /** Sectores en los que aplica el servicio (cruce SEO). */
     sectoresAplicables: z.array(reference('sectores')).default([]),
 
+    /**
+     * "frameworks" — metodologías y herramientas que usamos en el servicio.
+     * Renderizado como grid de cards después del método, demuestra profundidad técnica.
+     */
+    frameworks: z
+      .array(
+        z.object({
+          titulo: z.string(),
+          descripcion: z.string(),
+          autor: z.string().optional().default(''),
+        }),
+      )
+      .default([]),
+
     faq: z
       .array(
         z.object({

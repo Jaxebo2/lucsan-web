@@ -78,6 +78,36 @@ const schemas = [
     )
   }
 
+  {/* MODELO META-ANÁLISIS — page */}
+  <Section surface="page">
+    <Container>
+      <Eyebrow>Nuestro modelo</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+        Antes de proponer, <span class="text-text-accent">analizamos</span>.
+      </Heading>
+      <Prose tone="secondary" size="lg" class="mt-6 max-w-2xl">
+        Investigamos cuatro dimensiones para entender dónde la organización, la categoría y el
+        usuario se alinean para crear valor real. De ese cruce salen la ventaja, la relevancia y
+        las oportunidades de marca.
+      </Prose>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {[
+          { num: '01', titulo: 'Marca', desc: 'Estado actual desde lo estratégico, su significado y expresión.' },
+          { num: '02', titulo: 'Categoría', desc: 'Industria, competencia directa, indirecta, referentes e industrias relacionadas.' },
+          { num: '03', titulo: 'Usuario', desc: 'Relación del usuario con la industria y la marca, basado en tendencias actuales.' },
+          { num: '04', titulo: 'Tendencias', desc: 'Tendencias actuales y emergentes que definen el escenario donde se desarrollará la marca.' },
+        ].map((d) => (
+          <Card variant="default" padding="lg" radius="xl">
+            <span class="font-display text-3xl font-bold text-text-accent">{d.num}</span>
+            <Heading level={3} size="sm" class="mt-4">{d.titulo}</Heading>
+            <Prose tone="secondary" size="sm" class="mt-3">{d.desc}</Prose>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </Section>
+
   {/* MÉTODO — muted */}
   <Section surface="muted">
     <Container>

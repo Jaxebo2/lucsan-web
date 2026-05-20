@@ -179,8 +179,41 @@ const schemas = [
     </Container>
   </Section>
 
-  {/* ENTREGABLES — light */}
-  <Section surface="page">
+  {/* FRAMEWORKS — light (opcional) */}
+  {
+    s.frameworks.length > 0 && (
+      <Section surface="page">
+        <Container>
+          <Eyebrow>Frameworks que usamos</Eyebrow>
+          <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+            Las <span class="text-text-accent">herramientas</span> detrás de cada decisión.
+          </Heading>
+          <Prose tone="secondary" size="lg" class="mt-6 max-w-2xl">
+            Nada es improvisado. Trabajamos con modelos validados que estructuran cómo entendemos
+            tu marca, tu mercado y tu cliente.
+          </Prose>
+
+          <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {s.frameworks.map((fw) => (
+              <Card variant="filled" padding="lg" radius="xl">
+                <Icon name="ph:compass-bold" class="h-8 w-8 text-text-accent" />
+                <Heading level={3} size="sm" class="mt-5">{fw.titulo}</Heading>
+                <Prose tone="secondary" size="sm" class="mt-3">{fw.descripcion}</Prose>
+                {fw.autor && (
+                  <p class="mt-4 text-xs uppercase tracking-widest text-text-muted">
+                    Por {fw.autor}
+                  </p>
+                )}
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    )
+  }
+
+  {/* ENTREGABLES — muted */}
+  <Section surface="muted">
     <Container size="md">
       <Eyebrow>Qué te llevas</Eyebrow>
       <Heading level={2} size="2xl" class="mt-3">
@@ -200,10 +233,10 @@ const schemas = [
     </Container>
   </Section>
 
-  {/* CASOS RELACIONADOS — muted */}
+  {/* CASOS RELACIONADOS — light */}
   {
     proyectosRelacionados.length > 0 && (
-      <Section surface="muted">
+      <Section surface="page">
         <Container>
           <Eyebrow>Casos relacionados</Eyebrow>
           <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
@@ -228,8 +261,8 @@ const schemas = [
     )
   }
 
-  {/* FAQ — light */}
-  <Section surface="page">
+  {/* FAQ — muted */}
+  <Section surface="muted">
     <Container size="md">
       <Eyebrow>Preguntas frecuentes</Eyebrow>
       <Heading level={2} size="2xl" class="mt-3">

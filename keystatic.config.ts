@@ -272,6 +272,15 @@ export default config({
           { label: 'Sectores aplicables', itemLabel: (p) => p.value ?? '' },
         ),
 
+        frameworks: fields.array(
+          fields.object({
+            titulo: fields.text({ label: 'Título' }),
+            descripcion: fields.text({ label: 'Descripción', multiline: true }),
+            autor: fields.text({ label: 'Autor (opcional)' }),
+          }),
+          { label: 'Frameworks y metodologías', itemLabel: (p) => p.fields.titulo.value },
+        ),
+
         faq: fields.array(
           fields.object({
             pregunta: fields.text({ label: 'Pregunta' }),
