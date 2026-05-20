@@ -1,0 +1,106 @@
+{
+  "title": "Asesoría y consultoría",
+  "slug": "asesoria-consultoria",
+  "keyword": "consultoría de marca y diseño",
+  "orden": 3,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Orientación experta en marca, diseño y estrategia comunicacional.",
+    "subhead": "Colaboramos contigo para fortalecer tu identidad, optimizar tus productos y servicios, y mejorar la percepción que tu cliente tiene de tu marca."
+  },
+
+  "incluye": [
+    { "titulo": "Estrategias comunicativas", "descripcion": "Asesoría técnica en diseño de estrategias de comunicación efectivas para tu audiencia." },
+    { "titulo": "Diseño visual para marcas", "descripcion": "Revisión y orientación técnica sobre dirección de arte, sistema visual y aplicaciones." },
+    { "titulo": "Gestión de marca", "descripcion": "Asesoría sobre cómo operar la marca día a día, mantener consistencia y evolucionar con coherencia." },
+    { "titulo": "Experiencia y percepción", "descripcion": "Análisis de cómo se percibe tu marca, productos y servicios, y plan para alinearla con la realidad." },
+    { "titulo": "Posicionamiento de marca", "descripcion": "Consultoría estratégica sobre cómo posicionar tu marca frente a la competencia y la audiencia objetivo." },
+    { "titulo": "Lineamientos de marketing", "descripcion": "Definición de criterios y reglas para que tu equipo de marketing trabaje con foco y consistencia." }
+  ],
+
+  "paraQuien": [
+    {
+      "perfil": "Empresa con marca propia que necesita validación externa",
+      "descripcion": "Tienes equipo interno, pero quieres una mirada experta antes de lanzar una decisión importante."
+    },
+    {
+      "perfil": "Gerencia de marketing que necesita criterio",
+      "descripcion": "Tu equipo está bien, pero falta una guía estratégica que ordene las decisiones diarias."
+    },
+    {
+      "perfil": "Líder que enfrenta una decisión clave",
+      "descripcion": "Estás por entrar a un mercado nuevo, lanzar un producto o redefinir el posicionamiento. Necesitas pensar con alguien."
+    }
+  ],
+
+  "problema": {
+    "titulo": "Cuándo conviene una asesoría",
+    "sintomas": [
+      "Tu equipo discute decisiones de marca sin un criterio compartido.",
+      "Tienes inversión en marketing, pero los resultados no son los esperados.",
+      "La marca se percibe distinta a como tú la imaginas.",
+      "Falta documentación clara sobre cómo usar y comunicar la marca.",
+      "Estás por tomar una decisión estratégica y quieres una segunda opinión calificada."
+    ]
+  },
+
+  "metodo": [
+    {
+      "fase": "Diagnóstico",
+      "descripcion": "Entrevistas con stakeholders clave, revisión de materiales actuales y análisis del entorno competitivo.",
+      "entregables": ["Informe diagnóstico", "Mapa de hallazgos", "Identificación de oportunidades"]
+    },
+    {
+      "fase": "Recomendaciones",
+      "descripcion": "Plan estratégico con acciones priorizadas, criterios para tomar decisiones futuras y guías de implementación.",
+      "entregables": ["Plan estratégico", "Recomendaciones priorizadas", "Criterios de decisión"]
+    },
+    {
+      "fase": "Implementación acompañada",
+      "descripcion": "Acompañamos al equipo durante la ejecución, revisamos avances y ajustamos la estrategia según los resultados.",
+      "entregables": ["Sesiones de revisión", "Documentación viva", "Reportes de avance"]
+    }
+  ],
+
+  "entregables": [
+    "Diagnóstico estratégico documentado",
+    "Plan de acción priorizado",
+    "Criterios y lineamientos para el equipo",
+    "Sesiones de acompañamiento periódicas",
+    "Acceso directo para consultas durante el proyecto"
+  ],
+
+  "casosRelacionados": [],
+  "sectoresAplicables": [],
+
+  "faq": [
+    {
+      "pregunta": "¿En qué se diferencia de un proyecto de branding completo?",
+      "respuesta": "La asesoría es para empresas que ya tienen una marca operando y necesitan orientación, no rediseño. Trabajamos sobre lo existente y guiamos al equipo interno."
+    },
+    {
+      "pregunta": "¿Cómo se cobra la asesoría?",
+      "respuesta": "Ofrecemos modalidades: por proyecto definido (con alcance cerrado), por horas o como retainer mensual. Definimos la mejor según tu necesidad."
+    },
+    {
+      "pregunta": "¿Cuánto dura una consultoría típica?",
+      "respuesta": "Entre cuatro y doce semanas según el alcance. Una consultoría puntual de posicionamiento, cuatro semanas. Un acompañamiento estratégico extendido, varios meses."
+    },
+    {
+      "pregunta": "¿Necesito tener brief o información previa?",
+      "respuesta": "Idealmente sí, pero parte del trabajo es ayudarte a articularlo. La primera fase de diagnóstico lo construye contigo."
+    }
+  ],
+
+  "cta": {
+    "headline": "¿Necesitas una mirada experta antes de decidir?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Asesoría y consultoría de marca — Lucsan Design",
+    "description": "Consultoría de marca, posicionamiento y estrategia comunicacional. Orientación experta para equipos de marketing y líderes que necesitan criterio.",
+    "ogImage": "/og-asesoria.png"
+  }
+}

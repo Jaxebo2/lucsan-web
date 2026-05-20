@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Section from '../../components/ui/Section.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Heading from '../../components/ui/Heading.astro';
+import Prose from '../../components/ui/Prose.astro';
+import Card from '../../components/ui/Card.astro';
+import CTABlock from '../../components/ui/CTABlock.astro';
+import { Icon } from 'astro-icon/components';
+
+const sectores = (await getCollection('sectores', (s) => s.data.publicado))
+  .sort((a, b) => a.data.orden - b.data.orden);
+
+const iconForSector: Record<string, string> = {
+  ecommerce: 'ph:shopping-cart-bold',
+  'saas-tecnologia': 'ph:cube-bold',
+  gastronomia: 'ph:fork-knife-bold',
+  salud: 'ph:heartbeat-bold',
+  educacion: 'ph:graduation-cap-bold',
+  inmobiliaria: 'ph:buildings-bold',
+  finanzas: 'ph:bank-bold',
+};
+
+const seoTitle = 'Sectores que trabajamos — Lucsan Design';
+const seoDescription =
+  'Especialización por industria: ecommerce, SaaS, gastronomía y más. Cada sector tiene sus propios desafíos. Conoce cómo trabajamos en el tuyo.';
+---
+
+<BaseLayout title={seoTitle} description={seoDescription}>
+  {/* HERO — dark */}
+  <Section surface="inverse" spacing="none" class="relative pt-32 pb-20 md:pt-44 md:pb-28">
+    <Container>
+      <Eyebrow tone="inverse">Sectores</Eyebrow>
+      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
+        Cada industria tiene sus <span class="text-text-accent">propias reglas</span>.
+      </Heading>
+      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
+        No diseñamos branding y web genérico. Conocemos los desafíos específicos de cada sector
+        y los puntos donde la marca y el sitio realmente impactan en el negocio.
+      </Prose>
+    </Container>
+  </Section>
+
+  {/* GRID — light */}
+  <Section surface="page">
+    <Container>
+      {
+        sectores.length === 0 ? (
+          <Prose tone="secondary" size="lg">
+            Aún no hay sectores publicados.
+          </Prose>
+        ) : (
+          <div class="grid gap-6 md:grid-cols-2">
+            {sectores.map((sec) => (
+              <Card href={`/sectores/${sec.data.slug}`} variant="default" padding="lg" radius="xl">
+                <Icon
+                  name={iconForSector[sec.data.slug] ?? 'ph:sparkle-bold'}
+                  class="h-12 w-12 text-text-accent"
+                />
+                <Heading level={2} size="md" class="mt-6">{sec.data.nombre}</Heading>
+                <Prose tone="secondary" size="base" class="mt-3">{sec.data.hero.subhead}</Prose>
+                <span class="mt-8 inline-flex items-center gap-2 text-sm font-medium text-text-primary transition-colors group-hover:text-text-accent">
+                  Ver sector
+                  <Icon name="ph:arrow-right-bold" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Card>
+            ))}
+          </div>
+        )
+      }
+    </Container>
+  </Section>
+
+  {/* CTA */}
+  <Section surface="page" spacing="base">
+    <Container>
+      <CTABlock
+        eyebrow="¿Tu sector no está acá?"
+        headline="Conversemos. Trabajamos en múltiples industrias."
+        primaryCta={{ texto: 'Conversemos', href: '/contacto' }}
+        surface="inverse"
+      />
+    </Container>
+  </Section>
+</BaseLayout>

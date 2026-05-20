@@ -1,0 +1,43 @@
+{
+  "nombre": "Gastronomía y hospitalidad",
+  "slug": "gastronomia",
+  "orden": 3,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Branding para restaurantes, bares y experiencias gastronómicas.",
+    "subhead": "Diseñamos marcas, sistemas visuales y experiencias digitales para locales que entienden que la marca es parte de lo que se sirve."
+  },
+
+  "contexto": "El cliente decide dónde comer antes de llegar al local: en Instagram, en Google Maps, en una recomendación. Una marca débil, fotos amateur o un menú mal diseñado son razones reales por las que pierdes mesas. Y cuando el cliente llega, la experiencia de marca (carta, mantel, uniforme, redes) define si vuelve o no.",
+
+  "desafios": [
+    "Diferenciarte en una categoría saturada (gastronomía es uno de los rubros con más competencia).",
+    "Que tu marca funcione desde Instagram hasta el menú impreso, pasando por delivery apps.",
+    "Comunicar el concepto y la propuesta de valor antes de que el cliente entre.",
+    "Mantener consistencia entre tu local físico, redes sociales y tu canal digital.",
+    "Optimizar la presencia en Google Maps y delivery apps para captar tráfico de descubrimiento."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding completo para restaurante, café o bar",
+    "Diseño de menú, papelería y aplicaciones impresas",
+    "Sitio web con sistema de reservas y delivery",
+    "Sistema visual para cadena con varios locales",
+    "Estrategia de contenido y dirección de arte para redes sociales"
+  ],
+
+  "cta": {
+    "headline": "¿Tu local vale más de lo que muestra tu marca?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding para restaurantes y gastronomía — Lucsan Design",
+    "description": "Estudio de branding y diseño para restaurantes, bares y experiencias gastronómicas. Identidad, menú, sitio web y dirección de arte para redes.",
+    "ogImage": "/og-sector-gastronomia.png"
+  }
+}

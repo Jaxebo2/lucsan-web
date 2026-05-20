@@ -1,0 +1,118 @@
+{
+  "title": "Diseño web",
+  "slug": "diseno-web",
+  "keyword": "diseño web profesional",
+  "orden": 2,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Sitios y tiendas online rápidos, escalables y diseñados para convertir.",
+    "subhead": "Diseñamos e implementamos experiencias web fundamentadas en estrategia, optimizadas para SEO y pensadas para resolver objetivos de negocio."
+  },
+
+  "incluye": [
+    { "titulo": "Tiendas online (e-commerce)", "descripcion": "Implementación de tiendas digitales rápidas, escalables y optimizadas para conversión." },
+    { "titulo": "Sitios web educativos (LMS)", "descripcion": "Plataformas para academias, cursos online y formación corporativa." },
+    { "titulo": "Sitios web informativos", "descripcion": "Webs corporativas, institucionales y de servicios con foco en posicionamiento." },
+    { "titulo": "Landing pages", "descripcion": "Páginas de aterrizaje para campañas, lanzamientos y captación de leads." },
+    { "titulo": "Diseño UX", "descripcion": "Arquitectura de información, flujos de usuario y validación con pruebas." },
+    { "titulo": "Diseño UI", "descripcion": "Diseño gráfico de interfaces consistente con tu marca." },
+    { "titulo": "Estrategia web", "descripcion": "Creación e implementación de estrategia digital alineada al modelo de negocio." }
+  ],
+
+  "paraQuien": [
+    {
+      "perfil": "Comercio que quiere vender en línea",
+      "descripcion": "Tienes producto o servicio y necesitas un canal digital que funcione, no una tarjeta de presentación."
+    },
+    {
+      "perfil": "Empresa con sitio antiguo",
+      "descripcion": "Tu web tiene varios años, carga lenta, no se ve bien en móvil y no genera consultas."
+    },
+    {
+      "perfil": "Marca lanzando algo nuevo",
+      "descripcion": "Vas a lanzar un producto, servicio o campaña y necesitas una landing potente que mida resultados."
+    }
+  ],
+
+  "problema": {
+    "titulo": "Señales de que tu sitio necesita rediseñarse",
+    "sintomas": [
+      "Carga lenta y los usuarios se van antes de ver el contenido.",
+      "No aparece en Google por las palabras clave que importan.",
+      "Funciona mal en móvil, donde está la mayoría del tráfico.",
+      "No genera consultas, leads ni ventas medibles.",
+      "Es difícil de actualizar y dependes del desarrollador para cualquier cambio.",
+      "No comunica la marca real de la empresa."
+    ]
+  },
+
+  "metodo": [
+    {
+      "fase": "Estrategia",
+      "descripcion": "Definimos objetivos del sitio, audiencia, journey del usuario y los KPI con los que vamos a medir éxito.",
+      "entregables": ["Brief estratégico", "Mapa de usuario", "Definición de KPI", "Arquitectura de información"]
+    },
+    {
+      "fase": "Diseño UX/UI",
+      "descripcion": "Wireframes, prototipos navegables y diseño visual de todas las pantallas. Validamos con feedback real antes de codear.",
+      "entregables": ["Wireframes de baja y alta fidelidad", "Diseño UI completo", "Prototipo interactivo"]
+    },
+    {
+      "fase": "Desarrollo",
+      "descripcion": "Implementación con stack moderno, optimización de rendimiento, SEO técnico y CMS para que puedas editar sin nosotros.",
+      "entregables": ["Sitio implementado", "Performance y SEO optimizados", "CMS configurado", "Capacitación del equipo"]
+    },
+    {
+      "fase": "Lanzamiento y soporte",
+      "descripcion": "Migración de contenido, pruebas finales, analítica conectada y soporte post-lanzamiento.",
+      "entregables": ["Migración completa", "Analytics y Search Console", "Treinta días de soporte"]
+    }
+  ],
+
+  "entregables": [
+    "Sitio web o tienda online completo",
+    "Diseño UX/UI documentado",
+    "CMS configurado para edición autónoma",
+    "Performance optimizado (Lighthouse > 90)",
+    "SEO técnico y Schema.org implementados",
+    "Capacitación del equipo y treinta días de soporte"
+  ],
+
+  "casosRelacionados": [],
+  "sectoresAplicables": [],
+
+  "faq": [
+    {
+      "pregunta": "¿Cuánto demora un proyecto web?",
+      "respuesta": "Entre seis y doce semanas según complejidad. Una landing simple, seis semanas. Una tienda online con catálogo amplio, doce."
+    },
+    {
+      "pregunta": "¿Qué tecnología utilizan?",
+      "respuesta": "Trabajamos con Webflow, Astro, Next.js y plataformas e-commerce modernas. Elegimos el stack en función de tu caso, no al revés."
+    },
+    {
+      "pregunta": "¿Puedo editar yo el sitio después?",
+      "respuesta": "Sí. Todos nuestros sitios incluyen un CMS configurado y una sesión de capacitación. Editas contenido, imágenes y bloques sin tocar código."
+    },
+    {
+      "pregunta": "¿Hacen mantenimiento mensual?",
+      "respuesta": "Sí, ofrecemos planes de mantenimiento con actualizaciones, monitoreo de performance y mejoras continuas."
+    },
+    {
+      "pregunta": "¿Trabajan con e-commerce internacional?",
+      "respuesta": "Sí. Implementamos multi-moneda, multi-idioma y pasarelas de pago según el mercado objetivo."
+    }
+  ],
+
+  "cta": {
+    "headline": "¿Tu sitio actual no convierte? Hablemos.",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Diseño web profesional: sitios y e-commerce — Lucsan Design",
+    "description": "Diseño e implementación de sitios web, tiendas online, landings y plataformas educativas. Performance, SEO y experiencia de usuario optimizados.",
+    "ogImage": "/og-diseno-web.png"
+  }
+}

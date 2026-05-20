@@ -50,7 +50,7 @@ export default config({
     },
     navigation: {
       'Páginas singleton': ['home', 'sobre', 'contacto'],
-      'Contenido dinámico': ['services', 'projects'],
+      'Contenido dinámico': ['services', 'sectores', 'projects'],
     },
   },
 
@@ -130,6 +130,14 @@ export default config({
       schema: {
         tipo: fields.text({ label: 'Tipo', defaultValue: 'sobre' }),
         manifiesto: fields.text({ label: 'Manifiesto', multiline: true }),
+        vision: fields.text({ label: 'Visión', multiline: true }),
+        principios: fields.array(
+          fields.object({
+            titulo: fields.text({ label: 'Título' }),
+            descripcion: fields.text({ label: 'Descripción', multiline: true }),
+          }),
+          { label: 'Principios', itemLabel: (p) => p.fields.titulo.value },
+        ),
         metodo: fields.array(
           fields.object({
             fase: fields.text({ label: 'Fase' }),
@@ -213,6 +221,14 @@ export default config({
           { label: 'Hero' },
         ),
 
+        incluye: fields.array(
+          fields.object({
+            titulo: fields.text({ label: 'Título' }),
+            descripcion: fields.text({ label: 'Descripción', multiline: true }),
+          }),
+          { label: 'Qué incluye', itemLabel: (p) => p.fields.titulo.value },
+        ),
+
         paraQuien: fields.array(
           fields.object({
             perfil: fields.text({ label: 'Perfil' }),
@@ -251,6 +267,11 @@ export default config({
           { label: 'Casos relacionados', itemLabel: (p) => p.value ?? '' },
         ),
 
+        sectoresAplicables: fields.array(
+          fields.relationship({ label: 'Sector', collection: 'sectores' }),
+          { label: 'Sectores aplicables', itemLabel: (p) => p.value ?? '' },
+        ),
+
         faq: fields.array(
           fields.object({
             pregunta: fields.text({ label: 'Pregunta' }),
@@ -261,6 +282,56 @@ export default config({
 
         cta: fields.object({
           headline: fields.text({ label: 'Headline' }),
+          botonTexto: fields.text({ label: 'Texto botón', defaultValue: 'Conversemos' }),
+        }),
+
+        seo: seoFields,
+      },
+    }),
+
+    sectores: collection({
+      label: 'Sectores',
+      slugField: 'slug',
+      path: 'src/content/sectores/*',
+      format: { data: 'json' },
+      schema: {
+        nombre: fields.text({ label: 'Nombre del sector' }),
+        slug: fields.slug({ name: { label: 'Slug', description: 'kebab-case (ej. ecommerce, saas-tecnologia)' } }),
+        orden: fields.integer({ label: 'Orden en listado', defaultValue: 99 }),
+        publicado: fields.checkbox({ label: 'Publicado', defaultValue: false }),
+
+        hero: fields.object(
+          {
+            headline: fields.text({ label: 'Headline', multiline: true }),
+            subhead: fields.text({ label: 'Subhead', multiline: true }),
+          },
+          { label: 'Hero' },
+        ),
+
+        contexto: fields.text({ label: 'Contexto del sector', multiline: true }),
+
+        desafios: fields.array(fields.text({ label: 'Desafío', multiline: true }), {
+          label: 'Desafíos típicos',
+          itemLabel: (p) => p.value,
+        }),
+
+        serviciosAplicables: fields.array(
+          fields.relationship({ label: 'Servicio', collection: 'services' }),
+          { label: 'Servicios aplicables', itemLabel: (p) => p.value ?? '' },
+        ),
+
+        casosRelacionados: fields.array(
+          fields.relationship({ label: 'Proyecto', collection: 'projects' }),
+          { label: 'Casos del sector', itemLabel: (p) => p.value ?? '' },
+        ),
+
+        ejemplosTrabajo: fields.array(fields.text({ label: 'Ejemplo' }), {
+          label: 'Ejemplos de trabajo típicos',
+          itemLabel: (p) => p.value,
+        }),
+
+        cta: fields.object({
+          headline: fields.text({ label: 'Headline CTA' }),
           botonTexto: fields.text({ label: 'Texto botón', defaultValue: 'Conversemos' }),
         }),
 

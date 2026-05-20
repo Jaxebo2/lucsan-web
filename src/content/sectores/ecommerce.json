@@ -1,0 +1,43 @@
+{
+  "nombre": "Ecommerce y retail digital",
+  "slug": "ecommerce",
+  "orden": 1,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Branding y diseño para tiendas digitales que venden.",
+    "subhead": "Construimos marcas y experiencias web para comercios electrónicos que necesitan diferenciarse y convertir, no solo verse bien."
+  },
+
+  "contexto": "El comercio digital en Latinoamérica creció más en los últimos cuatro años que en las dos décadas anteriores. Hoy compites contra marketplaces gigantes, marcas internacionales y cientos de tiendas locales. La diferenciación visual, la velocidad del sitio y la experiencia de compra ya no son ventajas: son requisitos mínimos para sobrevivir.",
+
+  "desafios": [
+    "Diferenciarte de cientos de tiendas con productos similares o iguales.",
+    "Lograr que tu marca se reconozca cuando el cliente compra desde un marketplace.",
+    "Mantener consistencia visual entre tu sitio, redes y empaque al recibir el producto.",
+    "Convertir tráfico pagado en ventas sin depender solo del descuento.",
+    "Aparecer en búsquedas orgánicas frente a competidores con presupuestos diez veces mayores."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding completo para una marca DTC (direct-to-consumer)",
+    "Implementación de tienda Shopify con experiencia de marca diferenciada",
+    "Rediseño de packaging y unboxing experience",
+    "Sistema de identidad para multimarca o marketplace propio",
+    "Landing pages para campañas de lanzamiento o estacionalidad"
+  ],
+
+  "cta": {
+    "headline": "¿Lista tu tienda para crecer con marca, no con descuento?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño web para ecommerce — Lucsan Design",
+    "description": "Estudio especializado en branding y diseño web para tiendas online y marcas DTC en Latinoamérica. Identidad, e-commerce y experiencia de compra.",
+    "ogImage": "/og-sector-ecommerce.png"
+  }
+}

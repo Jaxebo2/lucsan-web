@@ -7,12 +7,14 @@ const year = new Date().getFullYear();
 const servicios: { label: string; href: string }[] = [
   { label: 'Branding', href: '/servicios/branding' },
   { label: 'Diseño web', href: '/servicios/diseno-web' },
-  { label: 'Marketing digital', href: '/servicios/marketing-digital' },
-  { label: 'Identidad visual', href: '/servicios/identidad-visual' },
-  { label: 'Rediseño de marca', href: '/servicios/rediseno-de-marca' },
-  { label: 'Estrategia de marca', href: '/servicios/estrategia-de-marca' },
-  { label: 'Diseño UX/UI', href: '/servicios/diseno-ux-ui' },
-  { label: 'Contenido para redes', href: '/servicios/contenido-redes-sociales' },
+  { label: 'Asesoría y consultoría', href: '/servicios/asesoria-consultoria' },
+];
+
+const sectores: { label: string; href: string }[] = [
+  { label: 'Ecommerce', href: '/sectores/ecommerce' },
+  { label: 'SaaS y tecnología', href: '/sectores/saas-tecnologia' },
+  { label: 'Gastronomía', href: '/sectores/gastronomia' },
+  { label: 'Ver todos', href: '/sectores' },
 ];
 
 const estudio: { label: string; href: string }[] = [
@@ -48,8 +50,8 @@ const redes: { label: string; href: string; icon: string }[] = [
       </div>
     </div>
 
-    {/* Middle: 4 columns */}
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-4 md:gap-8">
+    {/* Middle: 5 columns */}
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 md:gap-8">
       {/* Brand col */}
       <div class="col-span-2 md:col-span-1">
         <img
@@ -72,6 +74,27 @@ const redes: { label: string; href: string; icon: string }[] = [
         <ul class="mt-4 space-y-2">
           {
             servicios.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  class="text-sm text-neutral-50 transition-colors hover:text-brand-coral"
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {/* Sectores */}
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-widest text-neutral-400">
+          Sectores
+        </h3>
+        <ul class="mt-4 space-y-2">
+          {
+            sectores.map((s) => (
               <li>
                 <a
                   href={s.href}

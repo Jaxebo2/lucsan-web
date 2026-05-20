@@ -1,0 +1,43 @@
+{
+  "nombre": "SaaS y tecnología",
+  "slug": "saas-tecnologia",
+  "orden": 2,
+  "publicado": true,
+
+  "hero": {
+    "headline": "Marcas para empresas de tecnología que crecen rápido.",
+    "subhead": "Branding y diseño web para SaaS, fintech, healthtech y productos digitales que necesitan transmitir seriedad, escalar y ganar la confianza de su mercado."
+  },
+
+  "contexto": "Las empresas de tecnología compiten en mercados saturados, con audiencias técnicas, ciclos de compra largos y muchos puntos de contacto. Una marca débil te cuesta credibilidad ante prospectos B2B, te frena en rondas de inversión y dificulta atraer talento. Un sitio web mal armado afecta directamente la tasa de conversión a demo o prueba gratuita.",
+
+  "desafios": [
+    "Comunicar un producto técnico de forma clara para audiencias no técnicas (CEO, marketing, compras).",
+    "Construir credibilidad frente a competidores globales con mucha más exposición.",
+    "Lograr que la marca acompañe el crecimiento desde startup hasta scale-up sin tener que rediseñar todo.",
+    "Optimizar la conversión a demo, trial o reunión comercial en cada página del sitio.",
+    "Mantener consistencia visual entre producto, sitio, redes y materiales comerciales."
+  ],
+
+  "serviciosAplicables": ["branding", "diseno-web", "asesoria-consultoria"],
+  "casosRelacionados": [],
+
+  "ejemplosTrabajo": [
+    "Branding completo para producto SaaS en pre-Series A",
+    "Rebranding antes de una ronda de inversión",
+    "Sitio web con foco en conversión a demo o trial",
+    "Sistema visual escalable para producto con múltiples módulos",
+    "Estrategia de posicionamiento contra competidores globales"
+  ],
+
+  "cta": {
+    "headline": "¿Tu producto vale más de lo que comunica tu marca?",
+    "botonTexto": "Conversemos"
+  },
+
+  "seo": {
+    "title": "Branding y diseño web para SaaS y tecnología — Lucsan Design",
+    "description": "Estudio especializado en branding y diseño web para empresas SaaS, fintech y productos digitales. Identidad, sitio y conversión a demo.",
+    "ogImage": "/og-sector-saas.png"
+  }
+}

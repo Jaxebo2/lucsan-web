@@ -37,15 +37,53 @@ const schemas = [
       <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
         {sobre.manifiesto}
       </Prose>
+      {
+        sobre.vision && (
+          <div class="mt-12 max-w-3xl border-l-2 border-brand-coral pl-6">
+            <p class="text-xs font-medium uppercase tracking-widest text-text-inverse-secondary">
+              Visión
+            </p>
+            <Prose tone="inverse" size="lg" class="mt-3">
+              {sobre.vision}
+            </Prose>
+          </div>
+        )
+      }
     </Container>
   </Section>
 
-  {/* MÉTODO — light */}
-  <Section surface="page">
+  {/* PRINCIPIOS — light */}
+  {
+    sobre.principios.length > 0 && (
+      <Section surface="page">
+        <Container>
+          <Eyebrow>Principios</Eyebrow>
+          <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+            Las ideas que <span class="text-text-accent">guían</span> nuestro trabajo.
+          </Heading>
+
+          <div class="mt-16 grid gap-8 md:grid-cols-3">
+            {sobre.principios.map((p, i) => (
+              <div>
+                <span class="font-display text-4xl font-bold text-text-accent">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <Heading level={3} size="md" class="mt-4">{p.titulo}</Heading>
+                <Prose tone="secondary" class="mt-3">{p.descripcion}</Prose>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    )
+  }
+
+  {/* MÉTODO — muted */}
+  <Section surface="muted">
     <Container>
       <Eyebrow>Cómo trabajamos</Eyebrow>
       <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
-        Un método con <span class="text-text-accent">cuatro fases</span>.
+        Un método con <span class="text-text-accent">tres fases</span>.
       </Heading>
       <Prose tone="secondary" size="lg" class="mt-6 max-w-2xl">
         El mismo proceso para cada proyecto. Sin sorpresas, con entregables claros y check-points en cada fase.
@@ -77,8 +115,8 @@ const schemas = [
     </Container>
   </Section>
 
-  {/* VALORES — muted */}
-  <Section surface="muted">
+  {/* VALORES — light */}
+  <Section surface="page">
     <Container>
       <Eyebrow>Lo que nos define</Eyebrow>
       <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
@@ -98,10 +136,10 @@ const schemas = [
     </Container>
   </Section>
 
-  {/* EQUIPO — light */}
+  {/* EQUIPO — muted */}
   {
     sobre.equipo.length > 0 && (
-      <Section surface="page">
+      <Section surface="muted">
         <Container>
           <Eyebrow>Equipo</Eyebrow>
           <Heading level={2} size="2xl" class="mt-3 max-w-3xl">

@@ -37,6 +37,19 @@ const services = defineCollection({
       imagen: imageSchema.optional(),
     }),
 
+    /**
+     * "incluye" — disciplinas/áreas que cubre el servicio.
+     * Renderizado como grid de tarjetas en la página del servicio.
+     */
+    incluye: z
+      .array(
+        z.object({
+          titulo: z.string(),
+          descripcion: z.string().optional().default(''),
+        }),
+      )
+      .min(3),
+
     paraQuien: z
       .array(
         z.object({
@@ -67,6 +80,9 @@ const services = defineCollection({
 
     casosRelacionados: z.array(reference('projects')).default([]),
 
+    /** Sectores en los que aplica el servicio (cruce SEO). */
+    sectoresAplicables: z.array(reference('sectores')).default([]),
+
     faq: z
       .array(
         z.object({
@@ -76,6 +92,41 @@ const services = defineCollection({
       )
       .min(3)
       .max(10),
+
+    cta: z.object({
+      headline: z.string(),
+      botonTexto: z.string().default('Conversemos'),
+    }),
+
+    seo: seoSchema,
+  }),
+});
+
+// ============================================================
+// SECTORES — /sectores/[slug]
+// (Opción C: dimensión paralela a servicios para SEO por industria)
+// ============================================================
+
+const sectores = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx,json}', base: './src/content/sectores' }),
+  schema: z.object({
+    nombre: z.string(),
+    slug: z.string().regex(/^[a-z0-9-]+$/),
+    orden: z.number().int().nonnegative().default(99),
+    publicado: z.boolean().default(false),
+
+    hero: z.object({
+      headline: z.string(),
+      subhead: z.string(),
+    }),
+
+    contexto: z.string(),
+    desafios: z.array(z.string()).min(2),
+
+    serviciosAplicables: z.array(reference('services')).min(1),
+    casosRelacionados: z.array(reference('projects')).default([]),
+
+    ejemplosTrabajo: z.array(z.string()).default([]),
 
     cta: z.object({
       headline: z.string(),
@@ -201,6 +252,15 @@ const homeSchema = z.object({
 const sobreSchema = z.object({
   tipo: z.literal('sobre'),
   manifiesto: z.string(),
+  vision: z.string().optional().default(''),
+  principios: z
+    .array(
+      z.object({
+        titulo: z.string(),
+        descripcion: z.string(),
+      }),
+    )
+    .default([]),
   metodo: z.array(
     z.object({
       fase: z.string(),
@@ -249,4 +309,4 @@ const pages = defineCollection({
 // EXPORT
 // ============================================================
 
-export const collections = { services, projects, pages };
+export const collections = { services, projects, sectores, pages };

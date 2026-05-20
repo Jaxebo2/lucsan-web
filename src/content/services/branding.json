@@ -1,95 +1,107 @@
 {
   "title": "Branding",
   "slug": "branding",
-  "keyword": "diseño de marca chile",
+  "keyword": "branding y diseño de marca",
   "orden": 1,
   "publicado": true,
 
   "hero": {
-    "headline": "Tu marca no se parece a lo que vendes. Arreglémoslo.",
-    "subhead": "Construimos marcas que tu equipo sabe explicar, tu cliente reconoce y tu competencia respeta."
+    "headline": "Diseñamos marcas que comunican quién eres, qué ofreces y qué te diferencia.",
+    "subhead": "Identidades de marca con estrategia, sistemas que escalan y experiencias que refuerzan la marca en cada punto de contacto."
   },
+
+  "incluye": [
+    { "titulo": "Identidad visual", "descripcion": "Logo, color, tipografía, sistema gráfico y aplicaciones." },
+    { "titulo": "Identidad verbal", "descripcion": "Naming, tagline, tono y voz, narrativa de marca." },
+    { "titulo": "Identidad sonora", "descripcion": "Audio branding e identidad sonora para marcas con presencia auditiva." },
+    { "titulo": "Manuales de marca", "descripcion": "Documentación accionable para que tu equipo use la marca con consistencia." },
+    { "titulo": "Sistemas de marca e identidad", "descripcion": "Arquitectura escalable para marcas con varios productos, líneas o submarcas." },
+    { "titulo": "Refresh de marca (rebranding)", "descripcion": "Modernizamos identidades existentes sin perder el equity construido." },
+    { "titulo": "Estrategia de marca y comunicación", "descripcion": "Plataforma estratégica: propósito, posicionamiento, valores, promesa." },
+    { "titulo": "Packaging y labeling", "descripcion": "Diseño de envases y etiquetas que conectan con el consumidor en el punto de venta." },
+    { "titulo": "Naming", "descripcion": "Creación y validación de nombres para marcas, productos o servicios." },
+    { "titulo": "Marketing estratégico", "descripcion": "Plan de comunicación de marca, productos y servicios." },
+    { "titulo": "UX Branding", "descripcion": "Diseño de servicios y experiencia de marca en cada punto de contacto." },
+    { "titulo": "Comunicación organizacional", "descripcion": "Diseño de comunicación y cultura interna y externa." }
+  ],
 
   "paraQuien": [
     {
-      "perfil": "Founder lanzando una empresa nueva",
-      "descripcion": "Necesitas una marca que se vea seria desde el día uno, sin gastar lo que no tienes."
+      "perfil": "Empresa nueva o startup",
+      "descripcion": "Vas a lanzar tu marca al mercado y necesitas que se vea seria, diferenciada y consistente desde el primer día."
     },
     {
-      "perfil": "Pyme con 3+ años que se quedó atrás",
-      "descripcion": "Tu marca creció a tropezones. Hoy parece improvisada al lado de tu competencia."
+      "perfil": "Pyme establecida que se quedó atrás",
+      "descripcion": "Llevas años operando pero tu marca creció a tropezones. Hoy parece improvisada al lado de tu competencia."
     },
     {
-      "perfil": "Empresa que va a expandirse",
-      "descripcion": "Vas a entrar a un mercado nuevo o subir de liga. Tu marca actual no aguanta."
+      "perfil": "Empresa que está por escalar",
+      "descripcion": "Entras a un mercado nuevo, lanzas una línea de productos o subes de liga. Tu identidad actual no soporta el próximo paso."
     }
   ],
 
   "problema": {
-    "titulo": "Síntomas de que tu marca necesita atención",
+    "titulo": "Señales de que tu marca necesita atención",
     "sintomas": [
-      "Tus colaboradores no usan la marca igual: cada uno hace lo suyo en Canva.",
-      "Tu logo se ve bien en Instagram pero terrible en una factura.",
-      "Tienes que explicar dos veces qué hace tu empresa.",
-      "Tu sitio web, tarjetas y redes parecen de empresas distintas.",
-      "Cuando piensas en cambiar el logo, te bloqueas porque no sabes por dónde."
+      "Tu equipo no usa la marca de la misma forma: cada uno improvisa en Canva.",
+      "Tu logo se ve bien en redes pero terrible en una factura o presentación corporativa.",
+      "Tienes que explicar dos veces qué hace tu empresa y por qué.",
+      "Tu sitio web, redes y papelería parecen de empresas distintas.",
+      "Cuando piensas en cambiar el logo te bloqueas porque no sabes por dónde empezar.",
+      "Tu marca no se parece a lo que vendes ni a quién se lo vendes."
     ]
   },
 
   "metodo": [
     {
-      "fase": "1. Descubrimiento",
-      "descripcion": "Entrevistas, auditoría visual, análisis de competencia y mapeo de cliente.",
-      "entregables": ["Brief estratégico", "Mapa de posicionamiento", "Insights clave"]
+      "fase": "Objetivos",
+      "descripcion": "Asesoramiento inicial, definición de objetivos, presentación y aceptación del presupuesto. La fase donde nos aseguramos de que estamos resolviendo el problema correcto.",
+      "entregables": ["Brief inicial", "Propuesta y alcance", "Cronograma"]
     },
     {
-      "fase": "2. Estrategia",
-      "descripcion": "Definimos territorio, personalidad, promesa y arquitectura de marca.",
-      "entregables": ["Plataforma de marca", "Manifiesto", "Tono y voz"]
+      "fase": "Prototipado",
+      "descripcion": "Investigación profunda del sector, audiencia y competencia. Análisis de hallazgos y construcción de la estrategia de marca que guiará todas las decisiones visuales.",
+      "entregables": ["Investigación de sector y competencia", "Mapa de buyer persona", "Plataforma estratégica de marca", "Tono y personalidad"]
     },
     {
-      "fase": "3. Identidad visual",
-      "descripcion": "Logo, tipografía, color, sistema gráfico y aplicaciones críticas.",
-      "entregables": ["Sistema visual completo", "Manual de marca", "Plantillas operacionales"]
-    },
-    {
-      "fase": "4. Activación",
-      "descripcion": "Llevamos la marca a tus puntos de contacto reales: web, redes, papelería, presentaciones.",
-      "entregables": ["Roadmap de implementación", "Capacitación al equipo", "Soporte 30 días post-entrega"]
+      "fase": "Finalización",
+      "descripcion": "Diseño de identidad, presentación al cliente (máximo dos rondas de revisión), desarrollo de aplicaciones críticas, manualización y entrega final.",
+      "entregables": ["Identidad visual completa", "Sistema gráfico", "Aplicaciones críticas", "Manual de marca", "Archivos finales en todos los formatos"]
     }
   ],
 
   "entregables": [
     "Plataforma estratégica de marca",
-    "Identidad visual completa (logo + sistema)",
+    "Identidad visual completa (logo + sistema gráfico)",
     "Manual de marca aplicable",
-    "Plantillas para redes, presentaciones y papelería",
+    "Plantillas operacionales para redes, presentaciones y papelería",
     "Sesión de capacitación al equipo",
-    "30 días de soporte post-entrega"
+    "Treinta días de soporte post-entrega"
   ],
 
   "casosRelacionados": [],
+  "sectoresAplicables": [],
 
   "faq": [
     {
       "pregunta": "¿Cuánto demora un proyecto de branding?",
-      "respuesta": "Entre 6 y 10 semanas según alcance. Un branding básico para startup: 6 semanas. Un rediseño completo con sistema gráfico extenso: 10 semanas."
+      "respuesta": "Entre seis y diez semanas, según el alcance. Un branding básico para una startup toma seis semanas. Un rediseño completo con sistema gráfico extenso, alrededor de diez."
     },
     {
       "pregunta": "¿Cuánto cuesta?",
-      "respuesta": "Los proyectos parten desde 2.500.000 CLP + IVA y escalan según alcance. Te pasamos una propuesta concreta con valor cerrado tras la primera reunión."
+      "respuesta": "Los proyectos parten desde 2.500.000 CLP + IVA y escalan según alcance. Tras la primera reunión te enviamos una propuesta concreta con valor cerrado."
     },
     {
       "pregunta": "¿Qué necesito tener listo antes de empezar?",
-      "respuesta": "Claridad sobre qué vendes, a quién y por qué. Si no la tienes, la primera fase del proyecto la construye contigo."
+      "respuesta": "Claridad sobre qué vendes, a quién y por qué. Si todavía no la tienes, la primera fase del proyecto la construye contigo."
     },
     {
       "pregunta": "¿Trabajan con empresas fuera de Chile?",
-      "respuesta": "Sí. Hemos trabajado con clientes en Argentina, Perú y México de manera 100% remota."
+      "respuesta": "Sí. Hemos trabajado con clientes en distintos países de Latinoamérica de manera completamente remota."
     },
     {
       "pregunta": "¿Qué pasa después de la entrega?",
-      "respuesta": "30 días de soporte incluido para resolver dudas, ajustes menores y aplicar la marca a piezas adicionales. Después podemos seguir con un retainer mensual si lo necesitas."
+      "respuesta": "Incluimos treinta días de soporte para resolver dudas, ajustes menores y aplicar la marca a piezas adicionales. Después podemos continuar con un retainer mensual si lo necesitas."
     }
   ],
 
@@ -99,8 +111,8 @@
   },
 
   "seo": {
-    "title": "Branding y diseño de marca en Chile — Lucsan Design",
-    "description": "Estudio chileno especializado en branding estratégico. Identidad visual, manuales de marca y sistemas que tu equipo sabe usar. Pyme y startup.",
+    "title": "Branding y diseño de marca — Lucsan Design",
+    "description": "Estudio de branding con estrategia. Identidad visual, verbal y sonora, manuales de marca, rebranding, naming y experiencia de marca para empresas en Latinoamérica.",
     "ogImage": "/og-branding.png"
   }
 }

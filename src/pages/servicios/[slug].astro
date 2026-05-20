@@ -71,8 +71,32 @@ const schemas = [
     </Container>
   </Section>
 
-  {/* PARA QUIÉN — light */}
+  {/* QUÉ INCLUYE — light */}
   <Section surface="page">
+    <Container>
+      <Eyebrow>Qué incluye este servicio</Eyebrow>
+      <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
+        Todas las <span class="text-text-accent">disciplinas</span> que cubrimos.
+      </Heading>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          s.incluye.map((item) => (
+            <Card variant="default" padding="lg" radius="xl">
+              <Icon name="ph:check-bold" class="h-6 w-6 text-text-accent" />
+              <Heading level={3} size="sm" class="mt-4">{item.titulo}</Heading>
+              {item.descripcion && (
+                <Prose tone="secondary" size="sm" class="mt-3">{item.descripcion}</Prose>
+              )}
+            </Card>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  {/* PARA QUIÉN — muted */}
+  <Section surface="muted">
     <Container>
       <Eyebrow>Para quién</Eyebrow>
       <Heading level={2} size="2xl" class="mt-3 max-w-3xl">
@@ -93,8 +117,8 @@ const schemas = [
     </Container>
   </Section>
 
-  {/* PROBLEMA — muted */}
-  <Section surface="muted">
+  {/* PROBLEMA — light */}
+  <Section surface="page">
     <Container size="md">
       <Eyebrow>El problema</Eyebrow>
       <Heading level={2} size="2xl" class="mt-3">

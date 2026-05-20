@@ -1,56 +1,72 @@
 {
   "tipo": "sobre",
-  "manifiesto": "Creemos que el diseño es una herramienta de negocio, no decoración. Cada marca que construimos, cada sitio que diseñamos y cada campaña que lanzamos responde primero a una pregunta: ¿esto le sirve al negocio de nuestro cliente? Si la respuesta es no, no lo hacemos.",
-  "metodo": [
+  "manifiesto": "Somos un estudio de diseño especializado en branding, sistemas de identidad y diseño web, guiados por estrategia. Desarrollamos marcas y, en el proceso, a las personas y comunidades detrás de cada una de ellas. Creemos que diseño y negocio no son cosas separadas: un buen diseño es uno que aporta al desarrollo de las personas, las empresas y las instituciones que confían en nosotros.",
+
+  "vision": "Ser una empresa que aporte al desarrollo de las personas, empresas e instituciones a través del diseño guiado por estrategia.",
+
+  "principios": [
     {
-      "fase": "1. Entender antes de proponer",
-      "descripcion": "La mitad de los proyectos fallidos arrancan con el brief equivocado. Por eso dedicamos las primeras dos semanas a entender tu negocio, no a presentar moodboards.",
-      "entregables": ["Brief estratégico", "Mapa de cliente", "Análisis competitivo"]
+      "titulo": "Las marcas son para personas",
+      "descripcion": "Las marcas se construyen sobre relaciones, no sobre transacciones. El valor social genera valor financiero, y no al revés. Por eso entendemos primero a quién hablamos antes de pensar cómo lucimos."
     },
     {
-      "fase": "2. Estrategia antes que estética",
-      "descripcion": "Definimos qué tiene que comunicar la marca, a quién y por qué. La parte visual es consecuencia, no punto de partida.",
-      "entregables": ["Plataforma de marca", "Tono y voz", "Sistema de mensajes"]
+      "titulo": "Hay más en una marca de lo que se puede ver",
+      "descripcion": "Una marca es lo que la gente piensa y siente sobre algo. Las imágenes son una gran parte, sí, pero también lo son las palabras, las experiencias y las ideas. Diseñamos los seis frentes, no solo el visual."
     },
     {
-      "fase": "3. Diseño con propósito",
-      "descripcion": "Cada decisión visual tiene una razón comercial detrás. Si una pieza no aporta al objetivo, no entra.",
-      "entregables": ["Identidad completa", "Sistema gráfico", "Aplicaciones críticas"]
-    },
-    {
-      "fase": "4. Activación y soporte",
-      "descripcion": "El proyecto no termina al entregar. Acompañamos la implementación para que el equipo sepa usar lo que construimos.",
-      "entregables": ["Manual de marca", "Plantillas operacionales", "30 días de soporte"]
+      "titulo": "Las categorías son para desafiar y cambiar",
+      "descripcion": "Una marca poderosa es una marca diferenciada. Para diferenciarse hay que ir más allá de las convenciones de la categoría. Es difícil, a veces incómodo, pero necesario si quieres hacer algo significativo."
     }
   ],
+
+  "metodo": [
+    {
+      "fase": "Objetivos",
+      "descripcion": "Asesoramiento inicial, definición clara de objetivos, presentación y aceptación del presupuesto. Nos aseguramos de estar resolviendo el problema correcto antes de empezar.",
+      "entregables": ["Brief inicial", "Propuesta con alcance", "Cronograma compartido"]
+    },
+    {
+      "fase": "Prototipado",
+      "descripcion": "Investigación profunda del sector y la audiencia, análisis de hallazgos y construcción de la estrategia que guiará todas las decisiones de diseño.",
+      "entregables": ["Investigación de sector y competencia", "Mapa de buyer persona", "Plataforma estratégica de marca"]
+    },
+    {
+      "fase": "Finalización",
+      "descripcion": "Diseño, presentación al cliente (máximo dos rondas de revisión), aplicaciones críticas, manualización y entrega final.",
+      "entregables": ["Sistema visual completo", "Aplicaciones críticas", "Manual de marca aplicable", "Archivos finales en todos los formatos"]
+    }
+  ],
+
   "equipo": [
     {
       "nombre": "Lucio Santana",
       "rol": "Founder + Director creativo",
-      "bioCorta": "10+ años diseñando marcas y experiencias digitales para pymes y startups en Chile y Latinoamérica."
+      "bioCorta": "Diez años diseñando marcas y experiencias digitales para empresas e instituciones en Chile y Latinoamérica."
     }
   ],
+
   "valores": [
     {
-      "titulo": "Honestidad sobre simpatía",
-      "descripcion": "Preferimos decirte que algo no va a funcionar antes que cobrarte por hacerlo."
+      "titulo": "Construimos marcas que perduran",
+      "descripcion": "Diferentes proyectos requieren diferentes enfoques, pero trabajamos mejor cuando el resultado se prioriza sobre la urgencia. Nos preocupamos por los detalles, la experiencia y el impacto, porque así se construye lo que dura en el tiempo."
     },
     {
-      "titulo": "Proceso visible",
-      "descripcion": "Sabes en qué fase está tu proyecto, qué viene después y por qué. Nada de cajas negras."
+      "titulo": "El trabajo debería mejorar tu vida",
+      "descripcion": "El trabajo es parte de la vida, no la vida entera. Queremos asegurarnos de que lo que hacemos —y lo que hace nuestro equipo— amplíe y mejore su experiencia, no que la consuma."
     },
     {
-      "titulo": "Decisiones con argumento",
-      "descripcion": "Cada propuesta viene con el porqué. No tienes que adivinar nuestra cabeza."
+      "titulo": "Pensar fuera del estudio",
+      "descripcion": "Nuestro trabajo se basa en encontrar soluciones novedosas, y hay pocas novedades dentro de una oficina. Necesitamos estar sobre el terreno, conociendo gente y absorbiendo conocimiento, para hacer un buen trabajo."
     },
     {
-      "titulo": "Calidad sobre cantidad",
-      "descripcion": "Tomamos menos proyectos para dedicarles el tiempo que necesitan."
+      "titulo": "Equipo adaptativo y descentralizado",
+      "descripcion": "Nuestro equipo crece y se adapta según las necesidades y amplitud de cada proyecto. Trabajamos donde el proyecto lo necesita, no donde una oficina nos diga."
     }
   ],
+
   "seo": {
-    "title": "Sobre Lucsan Design — Estudio de diseño con foco en negocio",
-    "description": "Conoce nuestro método, valores y equipo. Estudio chileno que integra estrategia, diseño y tecnología para marcas que quieren crecer con sentido.",
+    "title": "Sobre Lucsan Design — Estudio de branding guiado por estrategia",
+    "description": "Estudio chileno especializado en branding, sistemas de identidad y diseño web. Diseño guiado por estrategia, equipo adaptativo y método claro.",
     "ogImage": "/og-default.png"
   }
 }
