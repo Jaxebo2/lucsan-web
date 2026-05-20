@@ -1,28 +1,32 @@
 ---
 /**
- * InteractiveGradient — líquido coral estilo lámpara de lava.
+ * InteractiveGradient — fluid aurora mesh style (Framer cursor-mesh-gradient inspired).
  *
- * 6 blobs coral con formas orgánicas variadas (círculos, óvalos
- * horizontales, óvalos verticales, formas asimétricas) que se mueven
- * constantemente con animaciones desfasadas y se MERGEAN entre sí gracias
- * a un SVG goo filter. El track entero responde al mouse con lag suave.
+ * Composición de varias capas:
+ * 1. Base oscura (brand-black o claro según variant)
+ * 2. Dos capas de aurora coral con radial-gradients soft, blureadas, en
+ *    movimiento orgánico constante (no blobs duros, sino "bandas de luz")
+ * 3. Spotlight cursor: gran radial-gradient que sigue al mouse con transición
+ *    suave de ~800ms (idle = se queda donde lo dejaste)
+ * 4. Grain SVG inline sobre todo (textura sutil que da feel premium)
  *
- * Respeta prefers-reduced-motion (mantiene flujo pero más lento, sin mouse).
+ * Resultado: cuando movés el mouse, una luz coral grande se desplaza
+ * suavemente. En idle, las capas siguen morphing constantemente.
  */
 
 type Variant = 'dark' | 'light';
 
 interface Props {
   variant?: Variant;
-  /** Intensidad (0-1). */
   intensity?: number;
   class?: string;
 }
 
-const { variant = 'dark', intensity = 0.85, class: className = '' } = Astro.props as Props;
+const { variant = 'dark', intensity = 1, class: className = '' } = Astro.props as Props;
 
-// ID único por instancia para evitar colisiones de SVG filter en múltiples heros
-const filterId = `ig-goo-${Math.random().toString(36).slice(2, 9)}`;
+// Grain SVG inline (URL-encoded turbulence)
+const grainBg =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
 ---
 
 <div
@@ -32,204 +36,115 @@ const filterId = `ig-goo-${Math.random().toString(36).slice(2, 9)}`;
     className,
   ]}
   aria-hidden="true"
-  style={`--ig-opacity: ${intensity}`}
+  style={`--ig-intensity: ${intensity}`}
   data-interactive-gradient
 >
-  {/* SVG goo filter inline — los blobs solidos se mergean al pasar por aquí */}
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-      <filter id={filterId}>
-        <feGaussianBlur in="SourceGraphic" stdDeviation="25" result="blur" />
-        <feColorMatrix
-          in="blur"
-          mode="matrix"
-          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8"
-          result="goo"
-        />
-        <feBlend in="SourceGraphic" in2="goo" />
-      </filter>
-    </defs>
-  </svg>
+  {/* Capa 1: aurora soft que morpha */}
+  <div class="ig-aurora ig-aurora--a"></div>
 
-  {/* Track que se desplaza con el mouse */}
-  <div class="ig-track" style={`filter: url(#${filterId})`}>
-    <span class="ig-blob ig-blob--1"></span>
-    <span class="ig-blob ig-blob--2"></span>
-    <span class="ig-blob ig-blob--3"></span>
-    <span class="ig-blob ig-blob--4"></span>
-    <span class="ig-blob ig-blob--5"></span>
-    <span class="ig-blob ig-blob--6"></span>
-  </div>
+  {/* Capa 2: aurora soft con otro ritmo */}
+  <div class="ig-aurora ig-aurora--b"></div>
 
-  <div class="interactive-gradient__capture pointer-events-auto absolute inset-0"></div>
+  {/* Capa 3: spotlight cursor (sigue al mouse con transition smooth) */}
+  <div class="ig-cursor"></div>
+
+  {/* Capa 4: grain overlay */}
+  <div class="ig-grain" style={`background-image: ${grainBg}`}></div>
+
+  {/* Capa de captura de eventos del mouse */}
+  <div class="ig-capture pointer-events-auto absolute inset-0"></div>
 </div>
 
 <style>
   .interactive-gradient {
-    --ig-mx: 0;
-    --ig-my: 0;
+    --ig-mx: 50%;
+    --ig-my: 50%;
   }
 
-  .ig-track {
+  /* Base */
+  .interactive-gradient--dark { background-color: var(--color-brand-black); }
+  .interactive-gradient--light { background-color: var(--color-neutral-50); }
+
+  /* ===== Aurora layers (continuous morph) ===== */
+  .ig-aurora {
     position: absolute;
-    inset: -8rem;
-    transform: translate3d(
-      calc(var(--ig-mx) * 4rem),
-      calc(var(--ig-my) * 4rem),
-      0
-    );
-    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    inset: -30%;
+    filter: blur(70px);
     will-change: transform;
   }
 
-  .ig-blob {
+  .ig-aurora--a {
+    background:
+      radial-gradient(ellipse 60% 80% at 25% 30%, rgb(255 85 72 / calc(0.55 * var(--ig-intensity))), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 75% 70%, rgb(255 85 72 / calc(0.4 * var(--ig-intensity))), transparent 65%);
+    animation: aurora-morph-a 28s ease-in-out infinite;
+  }
+  .ig-aurora--b {
+    background:
+      radial-gradient(ellipse 80% 40% at 65% 20%, rgb(255 85 72 / calc(0.35 * var(--ig-intensity))), transparent 60%),
+      radial-gradient(ellipse 50% 70% at 30% 80%, rgb(255 85 72 / calc(0.45 * var(--ig-intensity))), transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgb(255 85 72 / calc(0.25 * var(--ig-intensity))), transparent 70%);
+    animation: aurora-morph-b 36s ease-in-out infinite reverse;
+  }
+
+  @keyframes aurora-morph-a {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(6%, -3%) rotate(8deg) scale(1.05); }
+    50% { transform: translate(8%, 5%) rotate(15deg) scale(1.1); }
+    75% { transform: translate(-3%, 4%) rotate(5deg) scale(1.02); }
+  }
+  @keyframes aurora-morph-b {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(-5%, 4%) rotate(-12deg) scale(1.08); }
+    66% { transform: translate(4%, -5%) rotate(8deg) scale(0.96); }
+  }
+
+  /* ===== Cursor spotlight ===== */
+  .ig-cursor {
     position: absolute;
-    background: var(--color-brand-coral);
-    opacity: var(--ig-opacity);
-    will-change: transform, border-radius;
+    inset: 0;
+    background: radial-gradient(
+      550px circle at var(--ig-mx) var(--ig-my),
+      rgb(255 85 72 / calc(0.45 * var(--ig-intensity))),
+      rgb(255 85 72 / calc(0.18 * var(--ig-intensity))) 30%,
+      transparent 60%
+    );
+    transition: background 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: background;
   }
 
-  /* 6 blobs con formas variadas, posiciones y animaciones desfasadas */
-
-  /* Blob 1 — gran círculo asimétrico arriba-izquierda */
-  .ig-blob--1 {
-    width: 32rem;
-    height: 32rem;
-    top: -6rem;
-    left: -4rem;
-    border-radius: 60% 40% 55% 45% / 55% 45% 55% 45%;
-    animation: flow-1 24s ease-in-out infinite;
+  /* ===== Grain ===== */
+  .ig-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    pointer-events: none;
   }
-
-  /* Blob 2 — óvalo HORIZONTAL alargado */
-  .ig-blob--2 {
-    width: 38rem;
-    height: 18rem;
-    top: 30%;
-    right: 5%;
-    border-radius: 50%;
-    animation: flow-2 30s ease-in-out infinite;
-  }
-
-  /* Blob 3 — óvalo VERTICAL alargado */
-  .ig-blob--3 {
-    width: 16rem;
-    height: 30rem;
-    bottom: 5%;
-    left: 25%;
-    border-radius: 50%;
-    animation: flow-3 28s ease-in-out infinite;
-    opacity: calc(var(--ig-opacity) * 0.85);
-  }
-
-  /* Blob 4 — forma orgánica asimétrica abajo-derecha */
-  .ig-blob--4 {
-    width: 24rem;
-    height: 28rem;
-    bottom: -4rem;
-    right: -4rem;
-    border-radius: 45% 55% 70% 30% / 60% 40% 50% 50%;
-    animation: flow-4 34s ease-in-out infinite;
-  }
-
-  /* Blob 5 — círculo medio que conecta */
-  .ig-blob--5 {
-    width: 18rem;
-    height: 18rem;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    animation: flow-5 22s ease-in-out infinite;
-    opacity: calc(var(--ig-opacity) * 0.7);
-  }
-
-  /* Blob 6 — gota/lágrima abajo-izquierda */
-  .ig-blob--6 {
-    width: 22rem;
-    height: 26rem;
-    bottom: 15%;
-    left: -2rem;
-    border-radius: 60% 40% 40% 60% / 70% 50% 50% 30%;
-    animation: flow-6 38s ease-in-out infinite;
-    opacity: calc(var(--ig-opacity) * 0.8);
-  }
-
-  /* Animaciones de flujo — cada blob un patrón distinto */
-  @keyframes flow-1 {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    25% { transform: translate(6rem, 4rem) scale(1.15) rotate(45deg); }
-    50% { transform: translate(10rem, -2rem) scale(0.9) rotate(90deg); }
-    75% { transform: translate(2rem, 6rem) scale(1.1) rotate(135deg); }
-  }
-  @keyframes flow-2 {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    33% { transform: translate(-8rem, 4rem) scale(1.2) rotate(15deg); }
-    66% { transform: translate(-12rem, -6rem) scale(0.85) rotate(-15deg); }
-  }
-  @keyframes flow-3 {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    20% { transform: translate(-4rem, -8rem) scale(0.9) rotate(20deg); }
-    50% { transform: translate(8rem, -4rem) scale(1.15) rotate(-20deg); }
-    80% { transform: translate(4rem, 6rem) scale(1.05) rotate(10deg); }
-  }
-  @keyframes flow-4 {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    50% { transform: translate(-10rem, -8rem) scale(1.2) rotate(60deg); }
-  }
-  @keyframes flow-5 {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    25% { transform: translate(-30%, -70%) scale(1.3); }
-    50% { transform: translate(-70%, -40%) scale(0.8); }
-    75% { transform: translate(-40%, -60%) scale(1.15); }
-  }
-  @keyframes flow-6 {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    30% { transform: translate(6rem, -6rem) scale(1.1) rotate(-30deg); }
-    60% { transform: translate(8rem, 4rem) scale(0.9) rotate(30deg); }
-    90% { transform: translate(2rem, -2rem) scale(1.05) rotate(-15deg); }
-  }
-
-  /* Light variant: blend multiply para fondos claros */
-  .interactive-gradient--light .ig-blob {
+  .interactive-gradient--light .ig-grain {
+    opacity: 0.12;
     mix-blend-mode: multiply;
-    opacity: calc(var(--ig-opacity) * 0.55);
   }
 
+  /* ===== Reduced motion ===== */
   @media (prefers-reduced-motion: reduce) {
-    .ig-track { transition: none; transform: none; }
-    .ig-blob--1 { animation-duration: 60s; }
-    .ig-blob--2 { animation-duration: 70s; }
-    .ig-blob--3 { animation-duration: 65s; }
-    .ig-blob--4 { animation-duration: 80s; }
-    .ig-blob--5 { animation-duration: 55s; }
-    .ig-blob--6 { animation-duration: 75s; }
+    .ig-aurora--a { animation-duration: 60s; }
+    .ig-aurora--b { animation-duration: 80s; }
+    .ig-cursor { transition: none; }
   }
 </style>
 
 <script>
   const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (motionOk) {
-    document.querySelectorAll<HTMLElement>('[data-interactive-gradient]').forEach((el) => {
-      let mx = 0, my = 0, tx = 0, ty = 0;
-
-      const onMove = (e: MouseEvent) => {
-        const rect = el.getBoundingClientRect();
-        if (e.clientY < rect.top || e.clientY > rect.bottom) return;
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        tx = Math.max(-1, Math.min(1, (e.clientX - cx) / (rect.width / 2)));
-        ty = Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height / 2)));
-      };
-      window.addEventListener('mousemove', onMove);
-
-      const animate = () => {
-        mx += (tx - mx) * 0.05;
-        my += (ty - my) * 0.05;
-        el.style.setProperty('--ig-mx', mx.toFixed(3));
-        el.style.setProperty('--ig-my', my.toFixed(3));
-        requestAnimationFrame(animate);
-      };
-      animate();
-    });
-  }
+  document.querySelectorAll<HTMLElement>('[data-interactive-gradient]').forEach((el) => {
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      if (e.clientY < rect.top || e.clientY > rect.bottom) return;
+      const mx = ((e.clientX - rect.left) / rect.width) * 100;
+      const my = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--ig-mx', `${mx}%`);
+      el.style.setProperty('--ig-my', `${my}%`);
+    };
+    if (motionOk) window.addEventListener('mousemove', onMove);
+  });
 </script>
