@@ -58,22 +58,33 @@ const surfaceMap: Record<Variant, string> = {
   ghost: 'bg-transparent text-current',
 };
 
+// Color del círculo (también del fill al expandir) — primary ahora con círculo BLANCO.
 const fillMap: Record<Variant, string> = {
-  primary: '#0a0a0a',
+  primary: '#ffffff',
   secondary: '#ff5548',
   outline: '#ff5548',
   ghost: 'transparent',
 };
 
+// Color del icono dentro del círculo — coral en primary (sobre blanco),
+// blanco en los otros (sobre coral/dark).
+const iconInCircleClass: Record<Variant, string> = {
+  primary: 'text-brand-coral',
+  secondary: 'text-neutral-50',
+  outline: 'text-neutral-50',
+  ghost: 'text-current',
+};
+
+// Color de texto cuando el fill cubre el botón
 const hoverTextMap: Record<Variant, string> = {
-  primary: 'group-hover:text-neutral-50',
-  secondary: 'group-hover:text-neutral-50',
+  primary: 'group-hover:text-brand-black',  // fill blanco → texto negro
+  secondary: 'group-hover:text-neutral-50', // fill coral → texto blanco
   outline: 'group-hover:text-neutral-50',
   ghost: 'group-hover:text-brand-coral',
 };
 
 const sizeMap: Record<Size, string> = {
-  sm: 'h-10 pl-4 pr-2 text-sm',
+  sm: 'h-10 pl-4 pr-1.5 text-sm',
   md: 'h-12 pl-5 pr-2 text-sm md:text-base',
   lg: 'h-14 pl-6 pr-2.5 text-base md:text-lg',
 };
@@ -88,17 +99,17 @@ const sizeGhost: Record<Size, string> = {
   lg: 'h-14 px-5 text-base md:text-lg',
 };
 
-// Círculo más chico para dejar aire visual; margen igual a top/bottom/right.
-// sm: btn h-10 (40), circle 28 → margen vertical (40-28)/2=6 → right 6.
-// md: btn h-12 (48), circle 34 → margen vertical (48-34)/2=7 → right 7.
-// lg: btn h-14 (56), circle 40 → margen vertical (56-40)/2=8 → right 8.
+// Aire igual arriba/abajo/derecha:
+// sm: btn h-10 (40), circle 28 → margen 6 → right 6.
+// md: btn h-12 (48), circle 32 → margen 8 → right 8.
+// lg: btn h-14 (56), circle 36 → margen 10 → right 10.
 const circleSize: Record<Size, string> = {
   sm: 'h-7 w-7',
-  md: 'h-[34px] w-[34px]',
-  lg: 'h-10 w-10',
+  md: 'h-8 w-8',
+  lg: 'h-9 w-9',
 };
-const circleSizePx: Record<Size, number> = { sm: 28, md: 34, lg: 40 };
-const circleRightPx: Record<Size, number> = { sm: 6, md: 7, lg: 8 };
+const circleSizePx: Record<Size, number> = { sm: 28, md: 32, lg: 36 };
+const circleRightPx: Record<Size, number> = { sm: 6, md: 8, lg: 10 };
 
 const iconSize: Record<Size, string> = {
   sm: 'h-3.5 w-3.5',
@@ -127,6 +138,7 @@ const allClass = [
   surfaceClass,
   sizeClass,
   hoverTextClass,
+  `btn--variant-${variant}`,
   isCircleMode && 'btn--circle',
   isRadialMode && 'btn--radial',
   isGhost && 'btn--ghost',
@@ -176,8 +188,8 @@ const styleVars = `--btn-ease: ${ease}; --btn-fill: ${fillColor}; --btn-circle-s
           class:list={['btn-icon-anchor relative z-10 ml-2 inline-flex flex-none items-center justify-center overflow-hidden rounded-full', circleSize[size]]}
         >
           <span class:list={['btn-icon-track relative inline-flex items-center overflow-hidden', iconSize[size]]}>
-            <Icon name={iconRight!} class:list={['shrink-0 text-neutral-50', iconSize[size]]} />
-            <Icon name={iconRight!} class:list={['shrink-0 text-neutral-50 btn-icon-clone', iconSize[size]]} />
+            <Icon name={iconRight!} class:list={['shrink-0', iconInCircleClass[variant], iconSize[size]]} />
+            <Icon name={iconRight!} class:list={['shrink-0 btn-icon-clone', iconInCircleClass[variant], iconSize[size]]} />
           </span>
         </span>
       )}
@@ -216,8 +228,8 @@ const styleVars = `--btn-ease: ${ease}; --btn-fill: ${fillColor}; --btn-circle-s
           class:list={['btn-icon-anchor relative z-10 ml-2 inline-flex flex-none items-center justify-center overflow-hidden rounded-full', circleSize[size]]}
         >
           <span class:list={['btn-icon-track relative inline-flex items-center overflow-hidden', iconSize[size]]}>
-            <Icon name={iconRight!} class:list={['shrink-0 text-neutral-50', iconSize[size]]} />
-            <Icon name={iconRight!} class:list={['shrink-0 text-neutral-50 btn-icon-clone', iconSize[size]]} />
+            <Icon name={iconRight!} class:list={['shrink-0', iconInCircleClass[variant], iconSize[size]]} />
+            <Icon name={iconRight!} class:list={['shrink-0 btn-icon-clone', iconInCircleClass[variant], iconSize[size]]} />
           </span>
         </span>
       )}
@@ -235,6 +247,18 @@ const styleVars = `--btn-ease: ${ease}; --btn-fill: ${fillColor}; --btn-circle-s
 <style>
   .btn {
     transition-timing-function: var(--btn-ease);
+    transition-property: color, background-color, box-shadow;
+    transition-duration: 0.5s;
+  }
+
+  /* Primary: cuando el fill blanco cubre el botón, agregamos sombra para
+     distinguirlo de fondos claros. */
+  .btn--variant-primary {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+  .btn--variant-primary:hover,
+  .btn--variant-primary:focus-visible {
+    box-shadow: 0 10px 28px rgba(10, 10, 10, 0.18), 0 2px 6px rgba(10, 10, 10, 0.08);
   }
 
   /* ============================================================
