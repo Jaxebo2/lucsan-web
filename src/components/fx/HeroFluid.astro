@@ -94,7 +94,9 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 
         WebGLFluid(canvas, {
           IMMEDIATE: true,
-          AUTO: false,            // sin splats internos uniformes — controlamos nosotros
+          AUTO: true,             // ambient splats vía lib (mecanismo nativo confiable)
+          INTERVAL: 2200,         // cada 2.2s
+          SPLAT_COUNT: 1,         // un solo splat por tick → no se ve uniforme
           TRIGGER: 'hover',
           HOVER: true,
           SIM_RESOLUTION: 128,
@@ -134,64 +136,9 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           wrapper.dataset.loaded = 'true';
         });
 
-        // Cursor virtual único: traza un path orgánico continuo (no splats múltiples).
-        // El mousemove real lo pausa inmediatamente — el usuario "dirige" cuando interactúa,
-        // el flujo ambient retoma 1s después de que el usuario se detiene.
-        // -Infinity asegura que al inicio (performance.now() ≈ 0) el ambient NO esté pausado.
-        let lastUserMove = -Infinity;
-        canvas.addEventListener('mousemove', () => {
-          lastUserMove = performance.now();
-        });
-
-        // Estado del cursor virtual — Lissajous con frecuencias pequeñas para flujo lento
-        const phantom = {
-          ax: 0.38, ay: 0.32,
-          fx: 0.00022, fy: 0.00031,
-          phaseX: Math.random() * Math.PI * 2,
-          phaseY: Math.random() * Math.PI * 2,
-          px: 0.5, py: 0.5,
-        };
-        let initialized = false;
-
-        function ambientTick(t: number) {
-          requestAnimationFrame(ambientTick);
-          // Mouse real activo en últimos 1000ms → pausar
-          if (performance.now() - lastUserMove < 1000) {
-            initialized = false; // reset para que próximo arranque haga mousedown
-            return;
-          }
-          const rect = canvas!.getBoundingClientRect();
-          if (rect.width === 0) return;
-
-          // Posición objetivo Lissajous (normalizada al canvas)
-          const targetX = (0.5 + phantom.ax * Math.sin(t * phantom.fx + phantom.phaseX)) * rect.width;
-          const targetY = (0.5 + phantom.ay * Math.cos(t * phantom.fy + phantom.phaseY)) * rect.height;
-          // LERP muy suave (0.025) → trayectoria líquida
-          phantom.px += (targetX - phantom.px) * 0.025;
-          phantom.py += (targetY - phantom.py) * 0.025;
-
-          const cx = rect.left + phantom.px;
-          const cy = rect.top + phantom.py;
-
-          // webgl-fluid lee event.offsetX/offsetY (no clientX/Y). En MouseEvent
-          // sintéticos esos campos no se setean automáticamente → forzamos vía
-          // Object.defineProperty para que la lib reciba la posición correcta.
-          const makeEvent = (type: string) => {
-            const e = new MouseEvent(type, {
-              clientX: cx, clientY: cy, bubbles: true, buttons: 1,
-            });
-            Object.defineProperty(e, 'offsetX', { get: () => phantom.px });
-            Object.defineProperty(e, 'offsetY', { get: () => phantom.py });
-            return e;
-          };
-
-          if (!initialized) {
-            canvas!.dispatchEvent(makeEvent('mousedown'));
-            initialized = true;
-          }
-          canvas!.dispatchEvent(makeEvent('mousemove'));
-        }
-        requestAnimationFrame(ambientTick);
+        // Ambient flow ahora vía AUTO + INTERVAL nativo del lib — más confiable
+        // que dispatch sintético. El usuario "dirige" con mouse real (HOVER: true)
+        // mientras la lib sigue lanzando splats lentos en paralelo.
       });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);
