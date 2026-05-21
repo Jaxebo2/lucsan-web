@@ -97,7 +97,7 @@ const ogImageUrl = ogImage.startsWith('http')
       crossorigin="anonymous"
     />
   </head>
-  <body class="min-h-screen bg-neutral-50 text-brand-black antialiased">
+  <body class="min-h-screen bg-brand-black text-brand-black antialiased">
     {/* GTM noscript fallback — must be immediately after <body> */}
     <GTMNoscript />
 
@@ -108,12 +108,18 @@ const ogImageUrl = ogImage.startsWith('http')
       Saltar al contenido
     </a>
 
-    <Navbar />
+    {/* Page layer — encima del footer, con bg sólido. Margin-bottom = footer-height crea
+        el espacio scrolleable que revela el footer al final. */}
+    <div id="page-layer" class="page-layer relative z-10 bg-neutral-50">
+      <Navbar />
 
-    <main id="main-content">
-      <slot />
-    </main>
+      <main id="main-content">
+        <slot />
+      </main>
+    </div>
 
+    {/* Footer FIJO al fondo del viewport, detrás del page-layer (z-0).
+        Se revela cuando el page-layer scrollea hacia arriba. */}
     <Footer />
 
     {/* SmartHover utility — efecto magnético en cualquier elemento con [data-smart-hover] */}
@@ -121,5 +127,46 @@ const ogImageUrl = ogImage.startsWith('http')
 
     {/* GlowHover utility — radial-gradient coral siguiendo el cursor en [data-glow-hover] */}
     <GlowHover />
+
+    <style is:global>
+      /* === Footer reveal effect ===
+         Footer fixed al fondo del viewport (z-0). El page-layer (z-10) tiene bg sólido
+         que lo cubre. Margin-bottom del page-layer crea espacio scrolleable que revela
+         el footer al final. */
+      .site-footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        width: 100%;
+      }
+      .page-layer {
+        /* margin-bottom seteado por JS en función del alto real del footer */
+        margin-bottom: var(--footer-h, 600px);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .site-footer { position: relative; }
+        .page-layer { margin-bottom: 0; }
+      }
+    </style>
+
+    <script>
+      // Mide el alto real del footer y lo expone como CSS var → page-layer reserva
+      // ese espacio scrolleable al final. Refresca en resize y page-load.
+      function syncFooterHeight() {
+        const footer = document.getElementById('site-footer');
+        if (!footer) return;
+        const h = footer.offsetHeight;
+        document.documentElement.style.setProperty('--footer-h', `${h}px`);
+      }
+      syncFooterHeight();
+      window.addEventListener('resize', syncFooterHeight, { passive: true });
+      document.addEventListener('astro:page-load', syncFooterHeight);
+      // Re-medir cuando fonts cargan (cambia layout)
+      if ('fonts' in document) {
+        document.fonts.ready.then(syncFooterHeight);
+      }
+    </script>
   </body>
 </html>
