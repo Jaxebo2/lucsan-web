@@ -93,19 +93,21 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
         if (!canvas) return;
 
         WebGLFluid(canvas, {
-          IMMEDIATE: true,
+          IMMEDIATE: true,        // empieza con splats inmediatos al cargar
+          AUTO: true,             // splats automáticos en intervalos (sin mouse)
+          INTERVAL: 1800,         // cada 1.8s la lib lanza un nuevo set de splats
+          SPLAT_COUNT: 6,         // varios splats por tick → estelas y matices distintos
           TRIGGER: 'hover',
-          HOVER: true,
+          HOVER: true,            // mousemove real "dirige" la simulación
           SIM_RESOLUTION: 128,
           DYE_RESOLUTION: 1024,
-          // Disipaciones suaves para que las splats duren más
-          DENSITY_DISSIPATION: 0.7,
-          VELOCITY_DISSIPATION: 1.0,
-          PRESSURE: 0.5,
+          DENSITY_DISSIPATION: 0.6,   // tinte dura más
+          VELOCITY_DISSIPATION: 0.9,  // fluido sigue moviéndose
+          PRESSURE: 0.55,
           PRESSURE_ITERATIONS: 20,
-          CURL: 15,
-          SPLAT_RADIUS: 0.22,
-          SPLAT_FORCE: 6000,
+          CURL: 22,                   // más vorticidad → swirls orgánicos
+          SPLAT_RADIUS: 0.26,
+          SPLAT_FORCE: 6500,
           SHADING: true,
           COLORFUL: false,
           COLOR_UPDATE_SPEED: 0,
@@ -115,78 +117,25 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           BLOOM: true,
           BLOOM_ITERATIONS: 8,
           BLOOM_RESOLUTION: 256,
-          BLOOM_INTENSITY: 0.6,
-          BLOOM_THRESHOLD: 0.55,
+          BLOOM_INTENSITY: 0.7,
+          BLOOM_THRESHOLD: 0.5,
           BLOOM_SOFT_KNEE: 0.7,
           SUNRAYS: false,
-          COLOR_PALETTE: [{ r: 1.0, g: 0.333, b: 0.282 }],
+          // Paleta de varios matices coral para "estelas de colores y sombras de distintos matices"
+          COLOR_PALETTE: [
+            { r: 1.0, g: 0.333, b: 0.282 },   // coral base #ff5548
+            { r: 0.91, g: 0.27, b: 0.23 },    // coral profundo
+            { r: 1.0, g: 0.45, b: 0.4 },      // coral claro
+            { r: 0.85, g: 0.2, b: 0.18 },     // rojo-coral oscuro
+            { r: 1.0, g: 0.55, b: 0.5 },      // salmón claro
+          ],
         });
 
         requestAnimationFrame(() => {
           wrapper.dataset.loaded = 'true';
         });
-
-        // Mouse virtual idle: anima dos "punteros" virtuales sobre paths
-        // Lissajous, dispatcheando mousemove continuo. El fluid los lee como
-        // si fueran cursores reales y dibuja humo coral sin parar.
-        let lastUserMove = 0;
-        let userActive = false;
-        canvas.addEventListener('mousemove', () => {
-          lastUserMove = performance.now();
-          userActive = true;
-        });
-
-        const phantoms = [
-          { ax: 0.42, ay: 0.32, fx: 0.00018, fy: 0.00029, px: 0.5, py: 0.5 },
-          { ax: 0.30, ay: 0.40, fx: 0.00031, fy: 0.00019, px: 0.5, py: 0.5 },
-        ];
-
-        let lastSplat = 0;
-        let lastTickX = phantoms.map(() => 0);
-        let lastTickY = phantoms.map(() => 0);
-
-        function idleTick(t: number) {
-          requestAnimationFrame(idleTick);
-          // Si el usuario está activo, no interferir
-          if (performance.now() - lastUserMove < 1500) {
-            userActive = true;
-            return;
-          }
-          userActive = false;
-
-          const rect = canvas!.getBoundingClientRect();
-          if (rect.width === 0) return;
-
-          // Throttle a ~50ms (≈20Hz) — suficiente para flujo fluido sin saturar
-          if (t - lastSplat < 50) return;
-          lastSplat = t;
-
-          phantoms.forEach((p, i) => {
-            // Posición Lissajous suavizada: en el rango [10%, 90%] del canvas
-            const targetX = (0.5 + p.ax * Math.sin(t * p.fx)) * rect.width;
-            const targetY = (0.5 + p.ay * Math.cos(t * p.fy)) * rect.height;
-            // Smoothing exponencial (LERP)
-            p.px += (targetX - p.px) * 0.08;
-            p.py += (targetY - p.py) * 0.08;
-
-            const cx = rect.left + p.px;
-            const cy = rect.top + p.py;
-
-            // Si es la primera vez, mandar mousedown para iniciar splat
-            if (lastTickX[i] === 0 && lastTickY[i] === 0) {
-              canvas!.dispatchEvent(new MouseEvent('mousedown', {
-                clientX: cx, clientY: cy, bubbles: true, buttons: 1,
-              }));
-            }
-            // Mousemove continuo → el fluid sim aplica fuerza/splat
-            canvas!.dispatchEvent(new MouseEvent('mousemove', {
-              clientX: cx, clientY: cy, bubbles: true, buttons: 1,
-            }));
-            lastTickX[i] = cx;
-            lastTickY[i] = cy;
-          });
-        }
-        requestAnimationFrame(idleTick);
+        // Sin mouse fantasmas — AUTO + INTERVAL generan splats internos en la lib.
+        // El mousemove real "dirige" la simulación (HOVER: true).
       });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);
