@@ -147,7 +147,7 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
         // path Lissajous denso que cubre casi todo el canvas sin volver al mismo punto.
         const phantom = {
           ax: 0.42, ay: 0.34,           // amplitudes amplias → cubre casi todo el canvas
-          fx: 0.00038, fy: 0.00091,     // freqs en razón irracional ≈ no se repite
+          fx: 0.00057, fy: 0.00137,     // freqs en razón irracional ≈ no se repite (1.5× velocidad)
           phaseX: Math.random() * Math.PI * 2,
           phaseY: Math.random() * Math.PI * 2,
           px: 0, py: 0,
