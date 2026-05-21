@@ -16,7 +16,7 @@ import StatCard from '../components/ui/StatCard.astro';
 import PixelTrail from '../components/fx/PixelTrail.astro';
 import ServiceHoverReveal from '../components/fx/ServiceHoverReveal.astro';
 import ImageRevealCard from '../components/fx/ImageRevealCard.astro';
-import ImageFlow from '../components/fx/ImageFlow.astro';
+import MotionScrollMarquee from '../components/fx/MotionScrollMarquee';
 import { Icon } from 'astro-icon/components';
 
 // Read home singleton from content collection
@@ -159,7 +159,7 @@ const iconForService: Record<string, string> = {
     </Container>
   </Section>
 
-  {/* CASOS RECIENTES — Image Reveal Cards */}
+  {/* CASOS RECIENTES — scroll-velocity marquee con drag */}
   <Section surface="muted">
     <Container>
       <div data-reveal class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -173,50 +173,21 @@ const iconForService: Record<string, string> = {
           Ver todos los proyectos
         </Button>
       </div>
-
-      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
-        <ImageRevealCard
-          href="/proyectos/acme-rebrand"
-          titulo="Rebranding completo de Acme Corp"
-          tag="Branding"
-          aspect="3/4"
-        />
-        <ImageRevealCard
-          href="/proyectos"
-          titulo="Próximamente"
-          tag="Diseño web"
-          aspect="3/4"
-        />
-        <ImageRevealCard
-          href="/proyectos"
-          titulo="Próximamente"
-          tag="Marketing"
-          aspect="3/4"
-        />
-      </div>
     </Container>
-  </Section>
 
-  {/* IMAGE FLOW — mini galería horizontal */}
-  <Section surface="page" spacing="tight">
-    <Container>
-      <div data-reveal class="mb-8">
-        <Eyebrow>Galería</Eyebrow>
-        <Heading level={2} size="lg" class="mt-3 max-w-3xl">
-          Detalles del <span class="text-text-accent">trabajo</span>.
-        </Heading>
-      </div>
-      <ImageFlow
+    {/* Marquee fuera del Container para que sangre full-bleed */}
+    <div class="mt-12">
+      <MotionScrollMarquee
+        client:visible
         items={[
-          { caption: 'Identidad visual' },
-          { caption: 'Sistema gráfico' },
-          { caption: 'Aplicaciones' },
-          { caption: 'Packaging' },
-          { caption: 'Dirección de arte' },
-          { caption: 'Diseño editorial' },
+          { href: '/proyectos/acme-rebrand', titulo: 'Rebranding completo de Acme Corp', tag: 'Branding' },
+          { href: '/proyectos', titulo: 'Próximamente', tag: 'Diseño web' },
+          { href: '/proyectos', titulo: 'Próximamente', tag: 'Marketing' },
+          { href: '/proyectos', titulo: 'Próximamente', tag: 'Branding' },
+          { href: '/proyectos', titulo: 'Próximamente', tag: 'Identidad visual' },
         ]}
       />
-    </Container>
+    </div>
   </Section>
 
   {/* MÉTODO */}

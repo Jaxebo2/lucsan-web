@@ -2,9 +2,8 @@
 import MotionCounter from '../fx/MotionCounter';
 
 /**
- * StatCard — número grande con animación odometer + descripción.
- * El valor numérico se anima al entrar al viewport. Si valor no es número
- * puro, se renderiza tal cual (compatibilidad con strings antiguos).
+ * StatCard — número grande animado + descripción.
+ * Prefijo y sufijo se renderizan FUERA del counter, en tamaño menor.
  */
 
 interface Props {
@@ -13,7 +12,6 @@ interface Props {
   prefijo?: string;
   sufijo?: string;
   tone?: 'primary' | 'inverse' | 'accent';
-  /** 'count' = conteo suave. 'odometer' = dígitos rodantes. */
   mode?: 'count' | 'odometer';
   class?: string;
 }
@@ -36,27 +34,45 @@ const toneClass = {
 
 const descTone = tone === 'inverse' ? 'text-text-inverse-secondary' : 'text-text-secondary';
 
-// Try parsing valor as number for animation
-const numeric = typeof valor === 'number' ? valor : parseFloat(String(valor).replace(/[^\d.-]/g, ''));
+// Si valor viene como string con texto (ej "100%"), separar parte numérica del sufijo embebido
+let mainValue: string | number = valor;
+let inlineSuffix = sufijo;
+if (typeof valor === 'string' && !sufijo) {
+  const match = valor.match(/^([+\-]?)([\d.,]+)(.*)$/);
+  if (match && match[3]) {
+    mainValue = parseFloat(match[2]!.replace(/,/g, ''));
+    inlineSuffix = match[3].trim();
+  }
+}
+
+const numeric = typeof mainValue === 'number' ? mainValue : parseFloat(String(mainValue).replace(/[^\d.-]/g, ''));
 const canAnimate = !Number.isNaN(numeric) && Number.isFinite(numeric);
 ---
 
 <div class:list={['stat-card flex flex-col gap-3', className]} data-reveal>
-  {canAnimate ? (
-    <MotionCounter
-      client:visible
-      value={numeric}
-      prefix={prefijo}
-      suffix={sufijo}
-      mode={mode}
-      className={`font-display text-5xl font-bold leading-none md:text-7xl ${toneClass}`}
-    />
-  ) : (
-    <div class="flex items-baseline gap-1">
-      {prefijo && <span class:list={['font-display text-4xl font-bold md:text-5xl', toneClass]}>{prefijo}</span>}
-      <span class:list={['font-display text-5xl font-bold leading-none md:text-7xl', toneClass]}>{valor}</span>
-      {sufijo && <span class:list={['font-display text-2xl font-bold md:text-3xl', toneClass]}>{sufijo}</span>}
-    </div>
-  )}
+  <div class="flex items-baseline gap-1.5 leading-none">
+    {prefijo && (
+      <span class:list={['font-display text-4xl font-bold leading-none md:text-5xl', toneClass]}>
+        {prefijo}
+      </span>
+    )}
+    {canAnimate ? (
+      <MotionCounter
+        client:visible
+        value={numeric}
+        mode={mode}
+        className={`font-display text-5xl font-bold leading-none md:text-7xl ${toneClass}`}
+      />
+    ) : (
+      <span class:list={['font-display text-5xl font-bold leading-none md:text-7xl', toneClass]}>
+        {valor}
+      </span>
+    )}
+    {inlineSuffix && (
+      <span class:list={['font-display text-xl font-medium leading-none md:text-2xl', toneClass]}>
+        {inlineSuffix}
+      </span>
+    )}
+  </div>
   <p class:list={['text-sm leading-snug md:text-base', descTone]}>{descripcion}</p>
 </div>
