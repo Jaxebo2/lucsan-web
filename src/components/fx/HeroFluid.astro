@@ -93,21 +93,19 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
         if (!canvas) return;
 
         WebGLFluid(canvas, {
-          IMMEDIATE: true,        // empieza con splats inmediatos al cargar
-          AUTO: true,             // splats automáticos en intervalos (sin mouse)
-          INTERVAL: 1800,         // cada 1.8s la lib lanza un nuevo set de splats
-          SPLAT_COUNT: 6,         // varios splats por tick → estelas y matices distintos
+          IMMEDIATE: true,
+          AUTO: false,            // sin splats internos uniformes — controlamos nosotros
           TRIGGER: 'hover',
-          HOVER: true,            // mousemove real "dirige" la simulación
+          HOVER: true,
           SIM_RESOLUTION: 128,
           DYE_RESOLUTION: 1024,
-          DENSITY_DISSIPATION: 0.6,   // tinte dura más
-          VELOCITY_DISSIPATION: 0.9,  // fluido sigue moviéndose
-          PRESSURE: 0.55,
+          DENSITY_DISSIPATION: 0.55,  // tinte dura más → trazos largos
+          VELOCITY_DISSIPATION: 0.85, // fluido sigue moviéndose
+          PRESSURE: 0.6,
           PRESSURE_ITERATIONS: 20,
-          CURL: 22,                   // más vorticidad → swirls orgánicos
-          SPLAT_RADIUS: 0.26,
-          SPLAT_FORCE: 6500,
+          CURL: 28,                   // vorticidad alta → swirls líquidos
+          SPLAT_RADIUS: 0.18,         // splats más pequeños = trazos finos
+          SPLAT_FORCE: 5500,          // menos fuerza → fluye no explota
           SHADING: true,
           COLORFUL: false,
           COLOR_UPDATE_SPEED: 0,
@@ -121,21 +119,70 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           BLOOM_THRESHOLD: 0.5,
           BLOOM_SOFT_KNEE: 0.7,
           SUNRAYS: false,
-          // Paleta de varios matices coral para "estelas de colores y sombras de distintos matices"
+          // Paleta brand-aligned: coral, naranjo, rojo, azul, morado, teal
           COLOR_PALETTE: [
-            { r: 1.0, g: 0.333, b: 0.282 },   // coral base #ff5548
-            { r: 0.91, g: 0.27, b: 0.23 },    // coral profundo
-            { r: 1.0, g: 0.45, b: 0.4 },      // coral claro
-            { r: 0.85, g: 0.2, b: 0.18 },     // rojo-coral oscuro
-            { r: 1.0, g: 0.55, b: 0.5 },      // salmón claro
+            { r: 1.0, g: 0.333, b: 0.282 },  // coral #ff5548
+            { r: 1.0, g: 0.478, b: 0.290 },  // naranjo
+            { r: 0.91, g: 0.275, b: 0.227 }, // rojo profundo
+            { r: 0.29, g: 0.565, b: 0.886 }, // azul
+            { r: 0.545, g: 0.361, b: 0.965 },// morado
+            { r: 0.078, g: 0.722, b: 0.651 },// verde agua / teal
           ],
         });
 
         requestAnimationFrame(() => {
           wrapper.dataset.loaded = 'true';
         });
-        // Sin mouse fantasmas — AUTO + INTERVAL generan splats internos en la lib.
-        // El mousemove real "dirige" la simulación (HOVER: true).
+
+        // Cursor virtual único: traza un path orgánico continuo (no splats múltiples).
+        // El mousemove real lo pausa inmediatamente — el usuario "dirige" cuando interactúa,
+        // el flujo ambient retoma 1s después de que el usuario se detiene.
+        let lastUserMove = 0;
+        canvas.addEventListener('mousemove', () => {
+          lastUserMove = performance.now();
+        });
+
+        // Estado del cursor virtual — Lissajous con frecuencias pequeñas para flujo lento
+        const phantom = {
+          ax: 0.38, ay: 0.32,
+          fx: 0.00022, fy: 0.00031,
+          phaseX: Math.random() * Math.PI * 2,
+          phaseY: Math.random() * Math.PI * 2,
+          px: 0.5, py: 0.5,
+        };
+        let initialized = false;
+
+        function ambientTick(t: number) {
+          requestAnimationFrame(ambientTick);
+          // Mouse real activo en últimos 1000ms → pausar
+          if (performance.now() - lastUserMove < 1000) {
+            initialized = false; // reset para que próximo arranque haga mousedown
+            return;
+          }
+          const rect = canvas!.getBoundingClientRect();
+          if (rect.width === 0) return;
+
+          // Posición objetivo Lissajous (normalizada al canvas)
+          const targetX = (0.5 + phantom.ax * Math.sin(t * phantom.fx + phantom.phaseX)) * rect.width;
+          const targetY = (0.5 + phantom.ay * Math.cos(t * phantom.fy + phantom.phaseY)) * rect.height;
+          // LERP muy suave (0.025) → trayectoria líquida
+          phantom.px += (targetX - phantom.px) * 0.025;
+          phantom.py += (targetY - phantom.py) * 0.025;
+
+          const cx = rect.left + phantom.px;
+          const cy = rect.top + phantom.py;
+
+          if (!initialized) {
+            canvas!.dispatchEvent(new MouseEvent('mousedown', {
+              clientX: cx, clientY: cy, bubbles: true, buttons: 1,
+            }));
+            initialized = true;
+          }
+          canvas!.dispatchEvent(new MouseEvent('mousemove', {
+            clientX: cx, clientY: cy, bubbles: true, buttons: 1,
+          }));
+        }
+        requestAnimationFrame(ambientTick);
       });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);
