@@ -94,9 +94,7 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 
         WebGLFluid(canvas, {
           IMMEDIATE: true,
-          AUTO: true,             // ambient splats vía lib (mecanismo nativo confiable)
-          INTERVAL: 2200,         // cada 2.2s
-          SPLAT_COUNT: 1,         // un solo splat por tick → no se ve uniforme
+          AUTO: false,            // sin medusas — controlamos con phantom continuo
           TRIGGER: 'hover',
           HOVER: true,
           SIM_RESOLUTION: 128,
@@ -136,9 +134,67 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           wrapper.dataset.loaded = 'true';
         });
 
-        // Ambient flow ahora vía AUTO + INTERVAL nativo del lib — más confiable
-        // que dispatch sintético. El usuario "dirige" con mouse real (HOVER: true)
-        // mientras la lib sigue lanzando splats lentos en paralelo.
+        // Phantom cursor continuo en path Lissajous → trazo líquido.
+        // CRÍTICO: filtrar isTrusted en el listener para NO confundir nuestros
+        // propios dispatches sintéticos con "actividad del usuario".
+        let lastUserMove = -Infinity;
+        canvas.addEventListener('mousemove', (e) => {
+          if (e.isTrusted) lastUserMove = performance.now();
+        });
+
+        const phantom = {
+          ax: 0.36, ay: 0.30,
+          fx: 0.00025, fy: 0.00034,
+          phaseX: Math.random() * Math.PI * 2,
+          phaseY: Math.random() * Math.PI * 2,
+          px: 0, py: 0,
+        };
+        let initialized = false;
+
+        // El lib registra el listener mousemove con un setTimeout de 500ms → esperamos
+        // 600ms antes de empezar a dispatchear para que reciba todos los eventos.
+        setTimeout(() => {
+          function ambientTick(t: number) {
+            requestAnimationFrame(ambientTick);
+            if (performance.now() - lastUserMove < 1000) {
+              initialized = false;
+              return;
+            }
+            const rect = canvas!.getBoundingClientRect();
+            if (rect.width === 0) return;
+
+            // Inicializar phantom.px/py al centro la primera vez (ya con rect válido)
+            if (phantom.px === 0 && phantom.py === 0) {
+              phantom.px = rect.width / 2;
+              phantom.py = rect.height / 2;
+            }
+
+            const targetX = (0.5 + phantom.ax * Math.sin(t * phantom.fx + phantom.phaseX)) * rect.width;
+            const targetY = (0.5 + phantom.ay * Math.cos(t * phantom.fy + phantom.phaseY)) * rect.height;
+            phantom.px += (targetX - phantom.px) * 0.03;
+            phantom.py += (targetY - phantom.py) * 0.03;
+
+            const cx = rect.left + phantom.px;
+            const cy = rect.top + phantom.py;
+
+            // Setear offsetX/Y vía defineProperty (MouseEvent constructor no los acepta)
+            const makeEvent = (type: string) => {
+              const e = new MouseEvent(type, {
+                clientX: cx, clientY: cy, bubbles: true, buttons: 1,
+              });
+              Object.defineProperty(e, 'offsetX', { configurable: true, get: () => phantom.px });
+              Object.defineProperty(e, 'offsetY', { configurable: true, get: () => phantom.py });
+              return e;
+            };
+
+            if (!initialized) {
+              canvas!.dispatchEvent(makeEvent('mousedown'));
+              initialized = true;
+            }
+            canvas!.dispatchEvent(makeEvent('mousemove'));
+          }
+          requestAnimationFrame(ambientTick);
+        }, 600);
       });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);

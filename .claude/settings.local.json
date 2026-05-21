@@ -159,7 +159,9 @@
       "Bash(grep -nE \"addEventListener|updatePointerMoveData|pointers\\\\[\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
       "Bash(grep -nE \"resize|onResize|width|height\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
       "Bash(grep -nE \"clientWidth|getBoundingClientRect|window\\\\.devicePixelRatio\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
-      "Bash(grep -nE \"IMMEDIATE|AUTO|INTERVAL|splatStack|multipleSplats\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")"
+      "Bash(grep -nE \"IMMEDIATE|AUTO|INTERVAL|splatStack|multipleSplats\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
+      "Bash(grep -nE \"a\\\\.length|a\\\\.pop|a\\\\.shift|Ve\\\\\\(\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
+      "Bash(grep -nE \"function Be|function Ge|function He\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")"
     ]
   }
 }
