@@ -94,18 +94,19 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 
         WebGLFluid(canvas, {
           IMMEDIATE: true,
-          AUTO: false,            // sin medusas — controlamos con phantom continuo
+          SPLAT_COUNT: 20,        // dye inicial generoso que cubre el canvas
+          AUTO: false,
           TRIGGER: 'hover',
-          HOVER: true,
+          HOVER: true,            // mouse real → trails, interactúa con dye flotante
           SIM_RESOLUTION: 128,
           DYE_RESOLUTION: 1024,
-          DENSITY_DISSIPATION: 1.1,   // disipa rápido → no se acumula bright spot en extremos del path
-          VELOCITY_DISSIPATION: 1.0,
-          PRESSURE: 0.65,
+          DENSITY_DISSIPATION: 0.2,   // MUY lenta → smoke persiste y flota
+          VELOCITY_DISSIPATION: 0.45, // fluido mantiene momentum por mucho tiempo
+          PRESSURE: 0.7,
           PRESSURE_ITERATIONS: 20,
-          CURL: 32,                   // más vorticidad → swirls líquidos amplios
-          SPLAT_RADIUS: 0.14,
-          SPLAT_FORCE: 3500,          // fuerza moderada → trazos sin explotar
+          CURL: 30,                   // swirls orgánicos
+          SPLAT_RADIUS: 0.2,          // splats anchos = blobs flotantes
+          SPLAT_FORCE: 4500,
           SHADING: true,
           COLORFUL: false,
           COLOR_UPDATE_SPEED: 0,
@@ -134,67 +135,25 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           wrapper.dataset.loaded = 'true';
         });
 
-        // Phantom cursor continuo en path Lissajous → trazo líquido.
-        // CRÍTICO: filtrar isTrusted en el listener para NO confundir nuestros
-        // propios dispatches sintéticos con "actividad del usuario".
-        let lastUserMove = -Infinity;
-        canvas.addEventListener('mousemove', (e) => {
-          if (e.isTrusted) lastUserMove = performance.now();
-        });
+        // IDLE = humo flotante distribuido. No hay phantom cursor visible.
+        // IMMEDIATE: true ya genera 20 splats al cargar. Para mantener el humo vivo
+        // a lo largo del tiempo, refrescamos periódicamente con splats random
+        // dispersos via dispatch SPACE keydown (el lib responde a SPACE pusheando
+        // entre 5-25 splats random al queue).
+        function refreshSmoke() {
+          window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+        }
 
-        // Un phantom (el lib solo tiene 1 pointer mouse y procesa el último mousemove
-        // del frame). Amplitud amplia + LERP rápido + 2 frecuencias incomensurables →
-        // path Lissajous denso que cubre casi todo el canvas sin volver al mismo punto.
-        const phantom = {
-          ax: 0.42, ay: 0.34,           // amplitudes amplias → cubre casi todo el canvas
-          fx: 0.00114, fy: 0.00274,     // freqs en razón irracional, 2× velocidad → menos acumulación en extremos
-          phaseX: Math.random() * Math.PI * 2,
-          phaseY: Math.random() * Math.PI * 2,
-          px: 0, py: 0,
-        };
-        let initialized = false;
-
-        setTimeout(() => {
-          function ambientTick(t: number) {
-            requestAnimationFrame(ambientTick);
-            if (performance.now() - lastUserMove < 1000) {
-              initialized = false;
-              return;
-            }
-            const rect = canvas!.getBoundingClientRect();
-            if (rect.width === 0) return;
-
-            if (phantom.px === 0 && phantom.py === 0) {
-              phantom.px = rect.width / 2;
-              phantom.py = rect.height / 2;
-            }
-
-            const targetX = (0.5 + phantom.ax * Math.sin(t * phantom.fx + phantom.phaseX)) * rect.width;
-            const targetY = (0.5 + phantom.ay * Math.cos(t * phantom.fy + phantom.phaseY)) * rect.height;
-            // LERP rápido (0.18) → el phantom alcanza targets antes de acumular dye
-            phantom.px += (targetX - phantom.px) * 0.18;
-            phantom.py += (targetY - phantom.py) * 0.18;
-
-            const cx = rect.left + phantom.px;
-            const cy = rect.top + phantom.py;
-
-            const makeEvent = (type: string) => {
-              const e = new MouseEvent(type, {
-                clientX: cx, clientY: cy, bubbles: true, buttons: 1,
-              });
-              Object.defineProperty(e, 'offsetX', { configurable: true, get: () => phantom.px });
-              Object.defineProperty(e, 'offsetY', { configurable: true, get: () => phantom.py });
-              return e;
-            };
-
-            if (!initialized) {
-              canvas!.dispatchEvent(makeEvent('mousedown'));
-              initialized = true;
-            }
-            canvas!.dispatchEvent(makeEvent('mousemove'));
-          }
-          requestAnimationFrame(ambientTick);
-        }, 600);
+        // Primer refresh a los 8s (después de IMMEDIATE), luego cada 10-14s aleatorio
+        let nextRefresh = 8000;
+        function scheduleRefresh() {
+          setTimeout(() => {
+            if (!document.hidden) refreshSmoke();
+            nextRefresh = 10000 + Math.random() * 4000;
+            scheduleRefresh();
+          }, nextRefresh);
+        }
+        scheduleRefresh();
       });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);
