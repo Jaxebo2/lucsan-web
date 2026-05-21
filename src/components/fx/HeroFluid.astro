@@ -137,7 +137,8 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
         // Cursor virtual único: traza un path orgánico continuo (no splats múltiples).
         // El mousemove real lo pausa inmediatamente — el usuario "dirige" cuando interactúa,
         // el flujo ambient retoma 1s después de que el usuario se detiene.
-        let lastUserMove = 0;
+        // -Infinity asegura que al inicio (performance.now() ≈ 0) el ambient NO esté pausado.
+        let lastUserMove = -Infinity;
         canvas.addEventListener('mousemove', () => {
           lastUserMove = performance.now();
         });
