@@ -12,7 +12,6 @@ import Eyebrow from '../components/ui/Eyebrow.astro';
 import Heading from '../components/ui/Heading.astro';
 import Prose from '../components/ui/Prose.astro';
 import Button from '../components/ui/Button.astro';
-import CircleExpandButton from '../components/ui/CircleExpandButton.astro';
 import Card from '../components/ui/Card.astro';
 import Badge from '../components/ui/Badge.astro';
 import MetricBadge from '../components/ui/MetricBadge.astro';
@@ -20,6 +19,7 @@ import FAQ from '../components/ui/FAQ.astro';
 import FAQItem from '../components/ui/FAQItem.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
 import MotionCardExpand from '../components/fx/MotionCardExpand.tsx';
+import MotionCounter from '../components/fx/MotionCounter.tsx';
 
 // 404 in production builds
 if (!import.meta.env.DEV) {
@@ -171,14 +171,37 @@ const semantic = [
         <Button variant="primary" size="lg">Large</Button>
       </div>
 
-      <Heading level={2} size="md" class="mt-12">Circle Expand Button</Heading>
+    </Container>
+  </Section>
+
+  {/* ===== MOTION COUNTER ===== */}
+  <Section>
+    <Container>
+      <Eyebrow>05b / Motion Counter</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Contadores animados</Heading>
       <Prose tone="secondary" size="sm" class="mt-2 max-w-xl">
-        Variante especial: círculo coral en la derecha que se expande hasta cubrir el botón
-        completo en hover. Disponible como componente independiente para usos puntuales.
+        Dos variantes: <strong>count</strong> (conteo suave estilo counter-pro) y
+        <strong>odometer</strong> (cada dígito rueda verticalmente con stagger). Disparan
+        al entrar al viewport.
       </Prose>
-      <div class="mt-6 flex flex-wrap items-center gap-4">
-        <CircleExpandButton variant="light" size="md">Conversemos</CircleExpandButton>
-        <CircleExpandButton variant="light" size="lg">Empezar proyecto</CircleExpandButton>
+
+      <div class="mt-10 grid gap-10 md:grid-cols-2">
+        <div>
+          <p class="text-sm uppercase tracking-wider text-text-secondary">Mode: count</p>
+          <div class="mt-4 flex flex-col gap-6">
+            <MotionCounter client:visible value={47} prefix="+" suffix="%" mode="count" className="font-display text-6xl font-bold text-text-accent" />
+            <MotionCounter client:visible value={200} prefix="+" mode="count" className="font-display text-6xl font-bold text-text-primary" />
+            <MotionCounter client:visible value={12} suffix=" años" mode="count" className="font-display text-5xl font-bold text-text-primary" />
+          </div>
+        </div>
+        <div>
+          <p class="text-sm uppercase tracking-wider text-text-secondary">Mode: odometer</p>
+          <div class="mt-4 flex flex-col gap-6">
+            <MotionCounter client:visible value={47} prefix="+" suffix="%" mode="odometer" className="font-display text-6xl font-bold text-text-accent" />
+            <MotionCounter client:visible value={2024} mode="odometer" className="font-display text-6xl font-bold text-text-primary" />
+            <MotionCounter client:visible value={1500} thousands="," mode="odometer" className="font-display text-5xl font-bold text-text-primary" />
+          </div>
+        </div>
       </div>
     </Container>
   </Section>

@@ -1,22 +1,20 @@
 ---
+import MotionCounter from '../fx/MotionCounter';
+
 /**
- * StatCard — número grande + descripción.
- *
- * Idéntico a MetricBadge en spirit pero más decorativo: el número aparece
- * con un sutil counter-up effect al entrar al viewport. La animación es
- * solo decorativa, el valor real ya está renderizado server-side.
- *
- * Pensado para sección de "trust signals" en home.
+ * StatCard — número grande con animación odometer + descripción.
+ * El valor numérico se anima al entrar al viewport. Si valor no es número
+ * puro, se renderiza tal cual (compatibilidad con strings antiguos).
  */
 
 interface Props {
-  valor: string;
+  valor: string | number;
   descripcion: string;
-  /** Si quieres mostrar un + adelante del número, ej "+200 proyectos" */
   prefijo?: string;
-  /** Si quieres mostrar un sufijo, ej "10 años" */
   sufijo?: string;
   tone?: 'primary' | 'inverse' | 'accent';
+  /** 'count' = conteo suave. 'odometer' = dígitos rodantes. */
+  mode?: 'count' | 'odometer';
   class?: string;
 }
 
@@ -26,6 +24,7 @@ const {
   prefijo = '',
   sufijo = '',
   tone = 'accent',
+  mode = 'count',
   class: className = '',
 } = Astro.props as Props;
 
@@ -36,16 +35,28 @@ const toneClass = {
 }[tone];
 
 const descTone = tone === 'inverse' ? 'text-text-inverse-secondary' : 'text-text-secondary';
+
+// Try parsing valor as number for animation
+const numeric = typeof valor === 'number' ? valor : parseFloat(String(valor).replace(/[^\d.-]/g, ''));
+const canAnimate = !Number.isNaN(numeric) && Number.isFinite(numeric);
 ---
 
-<div
-  class:list={['stat-card flex flex-col gap-3', className]}
-  data-reveal
->
-  <div class="flex items-baseline gap-1">
-    {prefijo && <span class:list={['font-display text-4xl font-bold md:text-5xl', toneClass]}>{prefijo}</span>}
-    <span class:list={['font-display text-5xl font-bold leading-none md:text-7xl', toneClass]}>{valor}</span>
-    {sufijo && <span class:list={['font-display text-2xl font-bold md:text-3xl', toneClass]}>{sufijo}</span>}
-  </div>
+<div class:list={['stat-card flex flex-col gap-3', className]} data-reveal>
+  {canAnimate ? (
+    <MotionCounter
+      client:visible
+      value={numeric}
+      prefix={prefijo}
+      suffix={sufijo}
+      mode={mode}
+      className={`font-display text-5xl font-bold leading-none md:text-7xl ${toneClass}`}
+    />
+  ) : (
+    <div class="flex items-baseline gap-1">
+      {prefijo && <span class:list={['font-display text-4xl font-bold md:text-5xl', toneClass]}>{prefijo}</span>}
+      <span class:list={['font-display text-5xl font-bold leading-none md:text-7xl', toneClass]}>{valor}</span>
+      {sufijo && <span class:list={['font-display text-2xl font-bold md:text-3xl', toneClass]}>{sufijo}</span>}
+    </div>
+  )}
   <p class:list={['text-sm leading-snug md:text-base', descTone]}>{descripcion}</p>
 </div>

@@ -1,17 +1,22 @@
 ---
+import MotionCounter from '../fx/MotionCounter';
+
 /**
- * MetricBadge — large metric value + descriptive label.
- * Used in case studies for "+47% / aumento en leads".
+ * MetricBadge — métrica grande + label. Anima el número al entrar al viewport.
+ * Usado en case studies. Si valor no es numérico, se renderiza tal cual.
  */
 
 type Tone = 'accent' | 'inverse' | 'inherit';
 type Align = 'left' | 'center';
 
 interface Props {
-  valor: string;
+  valor: string | number;
   descripcion: string;
   tone?: Tone;
   align?: Align;
+  prefijo?: string;
+  sufijo?: string;
+  mode?: 'count' | 'odometer';
   class?: string;
 }
 
@@ -20,6 +25,9 @@ const {
   descripcion,
   tone = 'accent',
   align = 'left',
+  prefijo = '',
+  sufijo = '',
+  mode = 'count',
   class: className = '',
 } = Astro.props as Props;
 
@@ -38,13 +46,39 @@ const descripcionMap: Record<Tone, string> = {
 const descripcionTone = descripcionMap[tone];
 
 const alignClass = align === 'center' ? 'text-center items-center' : 'text-left items-start';
+
+// Auto-extract sufijo del valor si viene como "+47%" o "200+"
+let extractedPrefix = prefijo;
+let extractedSuffix = sufijo;
+let cleanValue: number | string = valor;
+
+if (typeof valor === 'string' && !prefijo && !sufijo) {
+  const match = valor.match(/^([+\-]?)([\d.,]+)(.*)$/);
+  if (match) {
+    extractedPrefix = match[1] || '';
+    cleanValue = parseFloat(match[2]!.replace(/,/g, ''));
+    extractedSuffix = match[3] || '';
+  }
+}
+
+const numeric = typeof cleanValue === 'number' ? cleanValue : parseFloat(String(cleanValue).replace(/[^\d.-]/g, ''));
+const canAnimate = !Number.isNaN(numeric) && Number.isFinite(numeric);
 ---
 
 <div class:list={['flex flex-col gap-2', alignClass, className]}>
-  <span class:list={['font-display text-5xl font-bold leading-none md:text-6xl', valorTone]}>
-    {valor}
-  </span>
-  <span class:list={['max-w-[20ch] text-sm', descripcionTone]}>
-    {descripcion}
-  </span>
+  {canAnimate ? (
+    <MotionCounter
+      client:visible
+      value={numeric}
+      prefix={extractedPrefix}
+      suffix={extractedSuffix}
+      mode={mode}
+      className={`font-display text-5xl font-bold leading-none md:text-6xl ${valorTone}`}
+    />
+  ) : (
+    <span class:list={['font-display text-5xl font-bold leading-none md:text-6xl', valorTone]}>
+      {valor}
+    </span>
+  )}
+  <span class:list={['max-w-[20ch] text-sm', descripcionTone]}>{descripcion}</span>
 </div>

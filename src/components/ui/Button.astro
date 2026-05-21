@@ -2,23 +2,18 @@
 import { Icon } from 'astro-icon/components';
 
 /**
- * Button — Primary CTA with premium hover animations.
+ * Button — Primary CTA con animaciones premium.
  *
- * Variants:
- * - primary:   coral → fills to black on hover (white text always)
- * - secondary: black → fills to coral on hover (white text always)
- * - outline:   transparent → fills to coral on hover (text turns white)
- * - ghost:     transparent → no fill, text shifts to accent
+ * Cuando se pasa `iconRight`, el icono vive dentro de un círculo de color
+ * contraste alineado a la derecha del botón. En hover, ese círculo se expande
+ * orgánicamente con un ease premium (cubic-bezier expo-out) hasta cubrir el
+ * botón completo, invirtiendo los colores. Sin icono → fill suave bottom-up.
  *
- * All "coral surfaces" use white text per brand decision.
- *
- * Sizes: sm | md (default) | lg
- *
- * Icons (Phosphor names, e.g. "ph:arrow-right-bold"):
- * - iconRight: animated track — icon slides right while duplicate enters from left
- * - iconLeft:  reverse direction
- *
- * Rendered as <a> if `href` is provided, else <button>.
+ * Variantes:
+ * - primary:   coral + círculo negro → en hover el círculo cubre todo (negro)
+ * - secondary: negro + círculo coral → en hover el círculo cubre todo (coral)
+ * - outline:   transparente + círculo coral → en hover el círculo cubre todo (coral)
+ * - ghost:     transparente, sin fill, solo cambio de color de texto
  */
 
 type Variant = 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -52,158 +47,210 @@ const {
   class: className = '',
 } = Astro.props as Props;
 
-const base =
-  'btn group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
-
-const variantMap: Record<Variant, string> = {
-  // White text always (resting + hover = both surfaces white-friendly: coral & black)
-  primary:
-    'bg-brand-coral text-neutral-50 focus-visible:outline-brand-coral',
-  // White text always (resting on black, hover on coral — both fine with white)
-  secondary:
-    'bg-brand-black text-neutral-50 focus-visible:outline-brand-black',
-  // Text inherits container color at rest; on hover it goes white (over coral fill)
-  outline:
-    'border border-current bg-transparent text-current hover:text-neutral-50',
-  // No fill — only text color shift
-  ghost:
-    'bg-transparent text-current hover:text-brand-coral',
+// Color de SUPERFICIE base (lo que ve idle)
+const surfaceMap: Record<Variant, string> = {
+  primary: 'bg-brand-coral text-neutral-50',
+  secondary: 'bg-brand-black text-neutral-50',
+  outline: 'border border-current bg-transparent text-brand-black',
+  ghost: 'bg-transparent text-current',
 };
 
-// Color that sweeps up from below on hover
-const fillMap: Record<Variant, string> = {
-  primary: 'bg-brand-black',   // coral → black
-  secondary: 'bg-brand-coral', // black → coral
-  outline: 'bg-brand-coral',   // transparent → coral
-  ghost: 'bg-transparent',     // no fill
+// Color del CÍRCULO que contiene el icono (contraste con la superficie)
+// También es el color que cubrirá el botón al expandirse.
+const circleMap: Record<Variant, string> = {
+  primary: 'bg-brand-black',   // coral → círculo negro
+  secondary: 'bg-brand-coral', // negro → círculo coral
+  outline: 'bg-brand-coral',   // outline → círculo coral
+  ghost: 'bg-brand-coral',
 };
 
+// Color de texto cuando el botón está completamente cubierto (hover final)
+const hoverTextMap: Record<Variant, string> = {
+  primary: 'group-hover:text-neutral-50',   // black bg → white text
+  secondary: 'group-hover:text-neutral-50', // coral bg → white text
+  outline: 'group-hover:text-neutral-50',
+  ghost: 'group-hover:text-brand-coral',    // ghost: solo cambio de color
+};
+
+// Sizing — espacio extra a la derecha para alojar el círculo del icono
 const sizeMap: Record<Size, string> = {
-  sm: 'px-4 py-2 text-sm',
-  md: 'px-5 py-2.5 text-sm md:px-6 md:py-3 md:text-base',
-  lg: 'px-7 py-4 text-base md:text-lg',
+  sm: 'h-10 pl-4 pr-2 text-sm',
+  md: 'h-12 pl-5 pr-2 text-sm md:text-base',
+  lg: 'h-14 pl-6 pr-3 text-base md:text-lg',
+};
+// Para botones sin icono usamos padding uniforme
+const sizeNoIcon: Record<Size, string> = {
+  sm: 'h-10 px-4 text-sm',
+  md: 'h-12 px-5 text-sm md:text-base',
+  lg: 'h-14 px-7 text-base md:text-lg',
 };
 
-// Icon wrapper size in em (matches text size). Using em keeps icon centered relative to text baseline.
-const iconEm: Record<Size, string> = {
-  sm: '1.1em',
-  md: '1.15em',
-  lg: '1.2em',
+// Tamaño del círculo (cabe dentro del alto del botón con margen)
+const circleSize: Record<Size, string> = {
+  sm: 'h-7 w-7',
+  md: 'h-9 w-9',
+  lg: 'h-11 w-11',
 };
 
-const variantClass = variantMap[variant];
-const fillClass = fillMap[variant];
-const sizeClass = sizeMap[size];
-const iconBoxSize = iconEm[size];
+const iconSize: Record<Size, string> = {
+  sm: 'h-3.5 w-3.5',
+  md: 'h-4 w-4',
+  lg: 'h-5 w-5',
+};
 
-const allClass = [base, variantClass, sizeClass, fullWidth && 'w-full', className];
+const hasIcon = !!iconRight;
+const sizeClass = hasIcon ? sizeMap[size] : sizeNoIcon[size];
+const surfaceClass = surfaceMap[variant];
+const circleColorClass = circleMap[variant];
+const hoverTextClass = hoverTextMap[variant];
+
+const base =
+  'btn group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium transition-colors duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+
+const allClass = [
+  base,
+  surfaceClass,
+  sizeClass,
+  hoverTextClass,
+  hasIcon && 'btn--with-circle',
+  variant === 'ghost' && 'btn--ghost',
+  fullWidth && 'w-full',
+  className,
+];
+
 const isLink = !!href;
-// Solo aplicar magnético en primary CTAs (no en links secundarios)
 const magnetic = variant === 'primary' || variant === 'secondary';
 const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
-const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
+// Premium organic ease — expo.out, sensación de fluido decelerando
+const ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+const ContentTag = isLink ? 'a' : 'button';
 ---
 
 {
   isLink ? (
-    <a href={href} target={target} rel={rel} aria-label={ariaLabel} class:list={allClass} data-smart-hover={magnetic ? '0.18' : undefined}>
-      <span
-        aria-hidden="true"
-        class:list={[
-          'btn-fill pointer-events-none absolute -inset-px -z-10 translate-y-[105%] transition-transform duration-500 group-hover:translate-y-0',
-          fillClass,
-        ]}
-        style={`transition-timing-function: ${ease}`}
-      />
-      <span class="relative z-10 inline-flex items-center gap-2">
-        {iconLeft && (
-          <span
-            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
-            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
-          >
-            <span
-              class="btn-icon-track flex h-full translate-x-0 transition-transform duration-500 group-hover:-translate-x-1/2"
-              style={`transition-timing-function: ${ease};`}
-            >
-              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-            </span>
-          </span>
-        )}
+    <a
+      href={href}
+      target={target}
+      rel={rel}
+      aria-label={ariaLabel}
+      class:list={allClass}
+      style={`--btn-ease: ${ease}`}
+      data-smart-hover={magnetic ? '0.18' : undefined}
+    >
+      {iconLeft && (
+        <Icon name={iconLeft} class:list={['btn-icon-left relative z-10', iconSize[size]]} />
+      )}
+      <span class="btn-label relative z-10 whitespace-nowrap">
         <slot />
-        {iconRight && (
-          <span
-            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
-            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
-          >
-            <span
-              class="btn-icon-track flex h-full -translate-x-1/2 transition-transform duration-500 group-hover:translate-x-0"
-              style={`transition-timing-function: ${ease};`}
-            >
-              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-            </span>
-          </span>
-        )}
       </span>
+      {hasIcon && (
+        <span
+          class:list={[
+            'btn-circle relative z-10 ml-2 inline-flex flex-none items-center justify-center rounded-full transition-colors duration-500',
+            circleSize[size],
+            circleColorClass,
+          ]}
+          aria-hidden="true"
+        >
+          <Icon name={iconRight!} class:list={['relative z-10 text-neutral-50', iconSize[size]]} />
+        </span>
+      )}
     </a>
   ) : (
-    <button type={type} disabled={disabled} aria-label={ariaLabel} class:list={allClass} data-smart-hover={magnetic ? '0.18' : undefined}>
-      <span
-        aria-hidden="true"
-        class:list={[
-          'btn-fill pointer-events-none absolute -inset-px -z-10 translate-y-[105%] transition-transform duration-500 group-hover:translate-y-0',
-          fillClass,
-        ]}
-        style={`transition-timing-function: ${ease}`}
-      />
-      <span class="relative z-10 inline-flex items-center gap-2">
-        {iconLeft && (
-          <span
-            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
-            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
-          >
-            <span
-              class="btn-icon-track flex h-full translate-x-0 transition-transform duration-500 group-hover:-translate-x-1/2"
-              style={`transition-timing-function: ${ease};`}
-            >
-              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-              <Icon name={iconLeft} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-            </span>
-          </span>
-        )}
+    <button
+      type={type}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      class:list={allClass}
+      style={`--btn-ease: ${ease}`}
+      data-smart-hover={magnetic ? '0.18' : undefined}
+    >
+      {iconLeft && (
+        <Icon name={iconLeft} class:list={['btn-icon-left relative z-10', iconSize[size]]} />
+      )}
+      <span class="btn-label relative z-10 whitespace-nowrap">
         <slot />
-        {iconRight && (
-          <span
-            class="btn-icon relative inline-flex flex-none items-center overflow-hidden"
-            style={`width: ${iconBoxSize}; height: ${iconBoxSize}`}
-          >
-            <span
-              class="btn-icon-track flex h-full -translate-x-1/2 transition-transform duration-500 group-hover:translate-x-0"
-              style={`transition-timing-function: ${ease};`}
-            >
-              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-              <Icon name={iconRight} class="h-full flex-none" style={`width: ${iconBoxSize}`} />
-            </span>
-          </span>
-        )}
       </span>
+      {hasIcon && (
+        <span
+          class:list={[
+            'btn-circle relative z-10 ml-2 inline-flex flex-none items-center justify-center rounded-full transition-colors duration-500',
+            circleSize[size],
+            circleColorClass,
+          ]}
+          aria-hidden="true"
+        >
+          <Icon name={iconRight!} class:list={['relative z-10 text-neutral-50', iconSize[size]]} />
+        </span>
+      )}
     </button>
   )
 }
 
 <style>
-  /* Force GPU compositing on the fill to avoid sub-pixel peek on rounded edges */
-  .btn-fill {
-    will-change: transform;
-    backface-visibility: hidden;
+  .btn {
+    transition-timing-function: var(--btn-ease);
   }
+
+  /* ============================================================
+     EFECTO 1 — Botón CON círculo (iconRight)
+     El ::after del círculo crece hasta cubrir todo el botón.
+     ============================================================ */
+  .btn--with-circle .btn-circle {
+    position: relative;
+  }
+  .btn--with-circle .btn-circle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: inherit;
+    transform: scale(1);
+    transform-origin: center;
+    transition: transform 0.7s var(--btn-ease);
+    z-index: 0;
+  }
+  /* En hover el pseudo-círculo escala hasta cubrir todo el botón.
+     scale(20) es generoso: garantiza cobertura aun en btn lg/fullWidth */
+  .btn--with-circle:hover .btn-circle::before {
+    transform: scale(22);
+  }
+
+  /* ============================================================
+     EFECTO 2 — Botón SIN círculo (fill orgánico bottom-up)
+     Pseudo con curva SVG en el borde superior, sube en hover.
+     ============================================================ */
+  .btn:not(.btn--with-circle):not(.btn--ghost)::before {
+    content: '';
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: 0;
+    height: 120%;
+    background: currentColor;
+    /* máscara con curva orgánica en el borde superior */
+    -webkit-mask-image: radial-gradient(120% 100% at 50% 100%, black 65%, transparent 66%);
+            mask-image: radial-gradient(120% 100% at 50% 100%, black 65%, transparent 66%);
+    transform: translateY(105%);
+    transition: transform 0.8s var(--btn-ease);
+    z-index: -1;
+    opacity: 0.001; /* fix para iOS safari */
+  }
+  .btn:not(.btn--with-circle):not(.btn--ghost):hover::before {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  /* Color del fill por variante (currentColor inherita del color de texto fallback) */
+  .btn.bg-brand-coral:not(.btn--with-circle)::before { background: #0a0a0a; }
+  .btn.bg-brand-black:not(.btn--with-circle)::before { background: #ff5548; }
+  .btn.bg-transparent:not(.btn--with-circle):not(.btn--ghost)::before { background: #ff5548; }
 
   @media (prefers-reduced-motion: reduce) {
     .btn,
-    .btn-fill,
-    .btn-icon-track {
+    .btn-circle::before,
+    .btn::before {
       transition: none !important;
     }
   }
