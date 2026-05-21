@@ -12,7 +12,7 @@ import MotionFAQ from '../../components/fx/MotionFAQ.tsx';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import MediaSlot from '../../components/ui/MediaSlot.astro';
 import HeroFluid from '../../components/fx/HeroFluid.astro';
-import CardExpand from '../../components/fx/CardExpand.astro';
+import MotionCardExpand from '../../components/fx/MotionCardExpand.tsx';
 import MotionAccordion from '../../components/fx/MotionAccordion.tsx';
 import { Icon } from 'astro-icon/components';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
@@ -83,18 +83,16 @@ const schemas = [
         Todas las <span class="text-text-accent">disciplinas</span> que cubrimos.
       </Heading>
 
-      <div class="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
-        {
-          s.incluye.map((item, i) => (
-            <CardExpand
-              titulo={item.titulo}
-              numero={String(i + 1).padStart(2, '0')}
-              variant="filled"
-            >
-              {item.descripcion || `Más información sobre ${item.titulo}.`}
-            </CardExpand>
-          ))
-        }
+      <div class="mt-16" data-reveal>
+        <MotionCardExpand
+          client:visible
+          variant="filled"
+          items={s.incluye.map((item, i) => ({
+            titulo: item.titulo,
+            descripcion: item.descripcion || `Más información sobre ${item.titulo}.`,
+            numero: String(i + 1).padStart(2, '0'),
+          }))}
+        />
       </div>
     </Container>
   </Section>

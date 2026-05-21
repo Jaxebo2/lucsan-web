@@ -7,6 +7,7 @@ import SchemaOrg from '../components/seo/SchemaOrg.astro';
 import Analytics from '../components/analytics/Analytics.astro';
 import GTMNoscript from '../components/analytics/GTMNoscript.astro';
 import SmartHover from '../components/fx/SmartHover.astro';
+import GlowHover from '../components/fx/GlowHover.astro';
 import { organizationSchema, websiteSchema } from '../lib/seo';
 
 interface Props {
@@ -117,5 +118,8 @@ const ogImageUrl = ogImage.startsWith('http')
 
     {/* SmartHover utility — efecto magnético en cualquier elemento con [data-smart-hover] */}
     <SmartHover />
+
+    {/* GlowHover utility — radial-gradient coral siguiendo el cursor en [data-glow-hover] */}
+    <GlowHover />
   </body>
 </html>

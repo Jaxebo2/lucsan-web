@@ -1,0 +1,59 @@
+---
+/**
+ * GlowHover — script global que aplica un radial-gradient coral siguiendo
+ * el cursor en cualquier elemento con [data-glow-hover].
+ *
+ * Funciona via CSS custom properties --gx / --gy actualizadas en mousemove,
+ * y un pseudo-element ::before con radial-gradient soft.
+ *
+ * Aplicación: agregar data-glow-hover a botones primary y cards interactivas.
+ */
+---
+
+<style is:global>
+  /* Pseudo-element con radial-gradient que sigue el cursor */
+  [data-glow-hover] {
+    position: relative;
+    isolation: isolate;
+  }
+  [data-glow-hover]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 250ms ease;
+    background: radial-gradient(
+      280px circle at var(--gx, 50%) var(--gy, 50%),
+      rgb(255 85 72 / 0.22),
+      rgb(255 85 72 / 0.08) 30%,
+      transparent 60%
+    );
+    z-index: 1;
+  }
+  [data-glow-hover]:hover::before {
+    opacity: 1;
+  }
+  /* Asegurar que el contenido quede arriba del glow */
+  [data-glow-hover] > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-glow-hover]::before { transition: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-glow-hover]').forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--gx', `${x}%`);
+      el.style.setProperty('--gy', `${y}%`);
+    });
+  });
+</script>
