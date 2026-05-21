@@ -254,17 +254,40 @@ const isActive = (href: string): boolean => {
      Pill glass surface — adapts to light/dark via parent class
      ============================================================ */
 
+  /* backdrop-filter via pseudo-element para no romper backdrop-filter de hijos
+     (dropdown). El pill base es transparente; ::before lleva el blur. */
   .nav-pill {
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: relative;
+    isolation: isolate;
+    background-color: transparent !important;
     transition:
-      background-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
       height 400ms cubic-bezier(0.22, 1, 0.36, 1),
       padding 400ms cubic-bezier(0.22, 1, 0.36, 1),
       gap 400ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: background-color, height, padding;
+  }
+  .nav-pill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background-color: color-mix(in oklab, var(--color-neutral-50) 72%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-neutral-300) 60%, transparent);
+    box-shadow:
+      0 8px 24px color-mix(in oklab, var(--color-brand-black) 8%, transparent),
+      0 1px 0 color-mix(in oklab, white 50%, transparent) inset;
+    transition:
+      background-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1;
+    pointer-events: none;
+  }
+  /* Todos los nav-item se centran verticalmente cuando nav tiene items-stretch */
+  .nav-item {
+    display: flex;
+    align-items: center;
   }
 
   /* === Shrink al scroll === */
@@ -331,9 +354,9 @@ const isActive = (href: string): boolean => {
     font-size: 0.875rem;
   }
 
-  #site-navbar.nav--light .nav-pill {
+  #site-navbar.nav--light .nav-pill::before {
     background-color: color-mix(in oklab, var(--color-neutral-50) 72%, transparent);
-    border: 1px solid color-mix(in oklab, var(--color-neutral-300) 60%, transparent);
+    border-color: color-mix(in oklab, var(--color-neutral-300) 60%, transparent);
     box-shadow:
       0 8px 24px color-mix(in oklab, var(--color-brand-black) 8%, transparent),
       0 1px 0 color-mix(in oklab, white 50%, transparent) inset;
@@ -343,9 +366,9 @@ const isActive = (href: string): boolean => {
   #site-navbar.nav--light .nav-logo--light { display: none; }
   #site-navbar.nav--light .nav-toggle { color: var(--color-brand-black); }
 
-  #site-navbar.nav--dark .nav-pill {
+  #site-navbar.nav--dark .nav-pill::before {
     background-color: color-mix(in oklab, var(--color-brand-black) 55%, transparent);
-    border: 1px solid color-mix(in oklab, var(--color-neutral-50) 12%, transparent);
+    border-color: color-mix(in oklab, var(--color-neutral-50) 12%, transparent);
     box-shadow:
       0 8px 24px color-mix(in oklab, var(--color-brand-black) 30%, transparent),
       0 1px 0 color-mix(in oklab, white 8%, transparent) inset;
