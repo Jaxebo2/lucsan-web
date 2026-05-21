@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  webgl-fluid@0.4.0: 47807b9fd7237719e62602f71cf03742241dfd1640bc7f9723a3e72c7bc014ff
+
 importers:
 
   .:
@@ -58,7 +61,7 @@ importers:
         version: 4.3.0
       webgl-fluid:
         specifier: ^0.4.0
-        version: 0.4.0
+        version: 0.4.0(patch_hash=47807b9fd7237719e62602f71cf03742241dfd1640bc7f9723a3e72c7bc014ff)
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.4
@@ -8753,7 +8756,7 @@ snapshots:
 
   web-namespaces@2.0.1: {}
 
-  webgl-fluid@0.4.0: {}
+  webgl-fluid@0.4.0(patch_hash=47807b9fd7237719e62602f71cf03742241dfd1640bc7f9723a3e72c7bc014ff): {}
 
   webidl-conversions@3.0.1: {}
 

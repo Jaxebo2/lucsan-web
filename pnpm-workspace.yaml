@@ -6,6 +6,9 @@ onlyBuiltDependencies:
   - esbuild
   - sharp
 
+patchedDependencies:
+  webgl-fluid@0.4.0: patches/webgl-fluid@0.4.0.patch
+
 # pnpm v11 runs `pnpm install` before each script invocation.
 # Setting this to "warn" prevents pre-script failure when build scripts
 # are pending approval, while still surfacing the warning.

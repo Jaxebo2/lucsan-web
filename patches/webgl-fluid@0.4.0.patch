@@ -1,0 +1,23 @@
+diff --git a/dist/webgl-fluid.mjs b/dist/webgl-fluid.mjs
+index 149b21828fbaf79e41dacc61e9202b6530abb23b..faeeef3f1d499d7110b9773fe267bbe85a9a876c 100644
+--- a/dist/webgl-fluid.mjs
++++ b/dist/webgl-fluid.mjs	
+@@ -396,8 +396,16 @@ function e(e, t) {
+ 		return t > 1 && (e /= t), e;
+ 	}
+ 	function Ye() {
+-		let e = Xe(Math.random(), 1, 1);
+-		return e.r *= .15, e.g *= .15, e.b *= .15, e;
++		// PATCHED Lucsan: usa paleta brand-aligned en vez de hue HSV random.
++		const palette = [
++			{ r: 1.0,   g: 0.333, b: 0.282 }, // coral marca
++			{ r: 0.851, g: 0.275, b: 0.937 }, // rosa/violeta
++			{ r: 1.0,   g: 0.478, b: 0.290 }, // naranjo
++			{ r: 0.118, g: 0.251, b: 0.686 }, // azul profundo
++			{ r: 0.024, g: 0.714, b: 0.831 }, // aguamarina
++		];
++		const c = palette[Math.floor(Math.random() * palette.length)];
++		return { r: c.r * 0.15, g: c.g * 0.15, b: c.b * 0.15 };
+ 	}
+ 	function Z() {
+ 		let e = t.SPLAT_COLOR || Ye();

@@ -161,7 +161,14 @@
       "Bash(grep -nE \"clientWidth|getBoundingClientRect|window\\\\.devicePixelRatio\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
       "Bash(grep -nE \"IMMEDIATE|AUTO|INTERVAL|splatStack|multipleSplats\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
       "Bash(grep -nE \"a\\\\.length|a\\\\.pop|a\\\\.shift|Ve\\\\\\(\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
-      "Bash(grep -nE \"function Be|function Ge|function He\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")"
+      "Bash(grep -nE \"function Be|function Ge|function He\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
+      "Bash(grep -nE \"COLOR_PALETTE|function Z|HSVtoRGB\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
+      "Bash(grep -nE \"function Ye\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
+      "Bash(grep -nE \"function.*=.*function|Object\\\\.assign|deepmerge|merge\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")",
+      "Bash(npx patch-package *)",
+      "Bash(pnpm uninstall *)",
+      "Bash(pnpm patch *)",
+      "Bash(pnpm patch-commit *)"
     ]
   }
 }

@@ -143,12 +143,12 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
         }
 
-        // Refresh cada 8s (con leve jitter ±1s para no sentirse mecánico)
+        // Refresh cada 10s (con jitter ±500ms para que no se sienta mecánico)
         function scheduleRefresh() {
           setTimeout(() => {
             if (!document.hidden) refreshSmoke();
             scheduleRefresh();
-          }, 7000 + Math.random() * 2000);
+          }, 9500 + Math.random() * 1000);
         }
         scheduleRefresh();
       });
