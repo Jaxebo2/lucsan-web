@@ -99,13 +99,13 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           HOVER: true,
           SIM_RESOLUTION: 128,
           DYE_RESOLUTION: 1024,
-          DENSITY_DISSIPATION: 0.55,  // tinte dura más → trazos largos
-          VELOCITY_DISSIPATION: 0.85, // fluido sigue moviéndose
-          PRESSURE: 0.6,
+          DENSITY_DISSIPATION: 0.85,  // se disipa más rápido → no se acumula bright spot
+          VELOCITY_DISSIPATION: 1.0,
+          PRESSURE: 0.65,
           PRESSURE_ITERATIONS: 20,
-          CURL: 28,                   // vorticidad alta → swirls líquidos
-          SPLAT_RADIUS: 0.18,         // splats más pequeños = trazos finos
-          SPLAT_FORCE: 5500,          // menos fuerza → fluye no explota
+          CURL: 32,                   // más vorticidad → swirls líquidos amplios
+          SPLAT_RADIUS: 0.14,
+          SPLAT_FORCE: 3500,          // fuerza moderada → trazos sin explotar
           SHADING: true,
           COLORFUL: false,
           COLOR_UPDATE_SPEED: 0,
@@ -115,8 +115,8 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           BLOOM: true,
           BLOOM_ITERATIONS: 8,
           BLOOM_RESOLUTION: 256,
-          BLOOM_INTENSITY: 0.7,
-          BLOOM_THRESHOLD: 0.5,
+          BLOOM_INTENSITY: 0.4,       // bloom menos quemado
+          BLOOM_THRESHOLD: 0.65,
           BLOOM_SOFT_KNEE: 0.7,
           SUNRAYS: false,
           // Paleta brand-aligned: coral, naranjo, rojo, azul, morado, teal
@@ -142,17 +142,18 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           if (e.isTrusted) lastUserMove = performance.now();
         });
 
+        // Un phantom (el lib solo tiene 1 pointer mouse y procesa el último mousemove
+        // del frame). Amplitud amplia + LERP rápido + 2 frecuencias incomensurables →
+        // path Lissajous denso que cubre casi todo el canvas sin volver al mismo punto.
         const phantom = {
-          ax: 0.36, ay: 0.30,
-          fx: 0.00025, fy: 0.00034,
+          ax: 0.42, ay: 0.34,           // amplitudes amplias → cubre casi todo el canvas
+          fx: 0.00038, fy: 0.00091,     // freqs en razón irracional ≈ no se repite
           phaseX: Math.random() * Math.PI * 2,
           phaseY: Math.random() * Math.PI * 2,
           px: 0, py: 0,
         };
         let initialized = false;
 
-        // El lib registra el listener mousemove con un setTimeout de 500ms → esperamos
-        // 600ms antes de empezar a dispatchear para que reciba todos los eventos.
         setTimeout(() => {
           function ambientTick(t: number) {
             requestAnimationFrame(ambientTick);
@@ -163,7 +164,6 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
             const rect = canvas!.getBoundingClientRect();
             if (rect.width === 0) return;
 
-            // Inicializar phantom.px/py al centro la primera vez (ya con rect válido)
             if (phantom.px === 0 && phantom.py === 0) {
               phantom.px = rect.width / 2;
               phantom.py = rect.height / 2;
@@ -171,13 +171,13 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 
             const targetX = (0.5 + phantom.ax * Math.sin(t * phantom.fx + phantom.phaseX)) * rect.width;
             const targetY = (0.5 + phantom.ay * Math.cos(t * phantom.fy + phantom.phaseY)) * rect.height;
-            phantom.px += (targetX - phantom.px) * 0.03;
-            phantom.py += (targetY - phantom.py) * 0.03;
+            // LERP rápido (0.18) → el phantom alcanza targets antes de acumular dye
+            phantom.px += (targetX - phantom.px) * 0.18;
+            phantom.py += (targetY - phantom.py) * 0.18;
 
             const cx = rect.left + phantom.px;
             const cy = rect.top + phantom.py;
 
-            // Setear offsetX/Y vía defineProperty (MouseEvent constructor no los acepta)
             const makeEvent = (type: string) => {
               const e = new MouseEvent(type, {
                 clientX: cx, clientY: cy, bubbles: true, buttons: 1,
