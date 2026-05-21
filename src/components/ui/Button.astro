@@ -77,16 +77,16 @@ const iconInCircleClass: Record<Variant, string> = {
 
 // Color de texto cuando el fill cubre el botón
 const hoverTextMap: Record<Variant, string> = {
-  primary: 'group-hover:text-brand-black',  // fill blanco → texto negro
+  primary: 'group-hover:text-brand-coral',  // fill blanco → texto coral
   secondary: 'group-hover:text-neutral-50', // fill coral → texto blanco
   outline: 'group-hover:text-neutral-50',
   ghost: 'group-hover:text-brand-coral',
 };
 
 const sizeMap: Record<Size, string> = {
-  sm: 'h-10 pl-4 pr-1.5 text-sm',
-  md: 'h-12 pl-5 pr-2 text-sm md:text-base',
-  lg: 'h-14 pl-6 pr-2.5 text-base md:text-lg',
+  sm: 'h-10 pl-4 pr-2 text-sm',
+  md: 'h-12 pl-5 pr-2.5 text-sm md:text-base',
+  lg: 'h-14 pl-6 pr-3 text-base md:text-lg',
 };
 const sizeNoIcon: Record<Size, string> = {
   sm: 'h-10 px-5 text-sm',
@@ -99,17 +99,17 @@ const sizeGhost: Record<Size, string> = {
   lg: 'h-14 px-5 text-base md:text-lg',
 };
 
-// Aire igual arriba/abajo/derecha:
-// sm: btn h-10 (40), circle 28 → margen 6 → right 6.
-// md: btn h-12 (48), circle 32 → margen 8 → right 8.
-// lg: btn h-14 (56), circle 36 → margen 10 → right 10.
+// Aire igual arriba/abajo/derecha (+2-4px extra para sensación premium):
+// sm: btn h-10 (40), circle 24 → margen 8 → right 8.
+// md: btn h-12 (48), circle 28 → margen 10 → right 10.
+// lg: btn h-14 (56), circle 32 → margen 12 → right 12.
 const circleSize: Record<Size, string> = {
-  sm: 'h-7 w-7',
-  md: 'h-8 w-8',
-  lg: 'h-9 w-9',
+  sm: 'h-6 w-6',
+  md: 'h-7 w-7',
+  lg: 'h-8 w-8',
 };
-const circleSizePx: Record<Size, number> = { sm: 28, md: 32, lg: 36 };
-const circleRightPx: Record<Size, number> = { sm: 6, md: 8, lg: 10 };
+const circleSizePx: Record<Size, number> = { sm: 24, md: 28, lg: 32 };
+const circleRightPx: Record<Size, number> = { sm: 8, md: 10, lg: 12 };
 
 const iconSize: Record<Size, string> = {
   sm: 'h-3.5 w-3.5',
