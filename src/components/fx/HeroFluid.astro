@@ -25,9 +25,6 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
   data-hero-fluid
   aria-hidden="true"
 >
-  {/* Fallback CSS sutil mientras carga el canvas */}
-  <div class="hero-fluid__fallback pointer-events-none absolute inset-0"></div>
-
   {/* Canvas que RECIBE eventos del mouse (importante para fluid sim) */}
   <canvas
     class="hero-fluid__canvas absolute inset-0 h-full w-full"
@@ -45,19 +42,10 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
   .hero-fluid__canvas {
     opacity: 0;
     transition: opacity 1.2s ease;
-    /* CRÍTICO: el canvas necesita pointer-events para que la lib reciba mouse moves */
     pointer-events: auto;
   }
   .hero-fluid[data-loaded='true'] .hero-fluid__canvas {
     opacity: var(--hero-fluid-intensity, 1);
-  }
-
-  .hero-fluid__fallback {
-    inset: -20%;
-    background:
-      radial-gradient(ellipse 40% 60% at 25% 40%, rgb(255 85 72 / 0.25), transparent 60%),
-      radial-gradient(ellipse 50% 40% at 75% 70%, rgb(255 85 72 / 0.2), transparent 65%);
-    filter: blur(80px);
   }
 
   .hero-fluid__grain {
@@ -72,6 +60,25 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
 
   @media (prefers-reduced-motion: reduce) {
     .hero-fluid__canvas { display: none; }
+  }
+</style>
+
+<style is:global>
+  /* Sections que contienen HeroFluid: pasamos mouse-events a través del
+     contenido de texto para que el canvas reciba mousemove en todo el área.
+     Solo interactivos (a, button, input, textarea) capturan eventos. */
+  section:has(> .hero-fluid) > :not(.hero-fluid),
+  div:has(> .hero-fluid) > :not(.hero-fluid) {
+    pointer-events: none;
+  }
+  section:has(> .hero-fluid) a,
+  section:has(> .hero-fluid) button,
+  section:has(> .hero-fluid) input,
+  section:has(> .hero-fluid) textarea,
+  section:has(> .hero-fluid) [data-pe-auto],
+  div:has(> .hero-fluid) a,
+  div:has(> .hero-fluid) button {
+    pointer-events: auto;
   }
 </style>
 

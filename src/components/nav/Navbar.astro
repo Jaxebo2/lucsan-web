@@ -430,15 +430,22 @@ const isActive = (href: string): boolean => {
   }
 
   .nav-dropdown__inner {
-    background-color: #ffffff;
-    border: 1px solid color-mix(in oklab, var(--color-neutral-300) 70%, transparent);
-    border-radius: 1rem;
+    background-color: color-mix(in oklab, var(--color-neutral-50) 72%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid color-mix(in oklab, var(--color-neutral-300) 60%, transparent);
+    border-radius: 1.25rem;
     padding: 0.75rem;
-    box-shadow: 0 16px 40px color-mix(in oklab, var(--color-brand-black) 15%, transparent);
+    box-shadow:
+      0 16px 40px color-mix(in oklab, var(--color-brand-black) 12%, transparent),
+      0 1px 0 color-mix(in oklab, white 50%, transparent) inset;
   }
   #site-navbar.nav--dark .nav-dropdown__inner {
-    background-color: var(--color-brand-black);
-    border-color: color-mix(in oklab, var(--color-neutral-50) 18%, transparent);
+    background-color: color-mix(in oklab, var(--color-brand-black) 55%, transparent);
+    border-color: color-mix(in oklab, var(--color-neutral-50) 12%, transparent);
+    box-shadow:
+      0 16px 40px color-mix(in oklab, var(--color-brand-black) 30%, transparent),
+      0 1px 0 color-mix(in oklab, white 8%, transparent) inset;
   }
 
   .nav-dropdown__link {
@@ -505,34 +512,37 @@ const isActive = (href: string): boolean => {
 </style>
 
 <script>
-  // Adaptive theme — IntersectionObserver on [data-theme] sections
+  // Adaptive theme — sample del DOM justo debajo del navbar.
+  // Sólido frente a transiciones / secciones sin data-theme intermedias.
   const navbar = document.getElementById('site-navbar');
   if (navbar) {
-    const sections = document.querySelectorAll<HTMLElement>('[data-theme]');
-    if (sections.length > 0) {
-      const setTheme = (theme: 'light' | 'dark') => {
-        navbar.classList.remove('nav--light', 'nav--dark');
-        navbar.classList.add(`nav--${theme}`);
-      };
+    let currentTheme: 'light' | 'dark' = 'light';
+    const setTheme = (theme: 'light' | 'dark') => {
+      if (theme === currentTheme) return;
+      currentTheme = theme;
+      navbar.classList.remove('nav--light', 'nav--dark');
+      navbar.classList.add(`nav--${theme}`);
+    };
 
-      const navHeight = navbar.offsetHeight;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-          if (visible[0]) {
-            const theme = (visible[0].target.getAttribute('data-theme') as 'light' | 'dark') ?? 'light';
-            setTheme(theme);
-          }
-        },
-        {
-          rootMargin: `-${navHeight + 24}px 0px -${window.innerHeight - navHeight - 25}px 0px`,
-          threshold: 0,
-        },
-      );
-      sections.forEach((s) => observer.observe(s));
-    }
+    const sampleTheme = () => {
+      const navRect = navbar.getBoundingClientRect();
+      const sampleY = navRect.bottom + 8;
+      const sampleX = window.innerWidth / 2;
+      // Ocultar temporalmente el navbar para no detectarse a sí mismo
+      const prevPE = navbar.style.pointerEvents;
+      navbar.style.pointerEvents = 'none';
+      const el = document.elementFromPoint(sampleX, sampleY) as HTMLElement | null;
+      navbar.style.pointerEvents = prevPE;
+      if (!el) return;
+      const themed = el.closest('[data-theme]') as HTMLElement | null;
+      const theme = (themed?.getAttribute('data-theme') as 'light' | 'dark') || 'light';
+      setTheme(theme);
+    };
+
+    sampleTheme();
+    window.addEventListener('scroll', sampleTheme, { passive: true });
+    window.addEventListener('resize', sampleTheme, { passive: true });
+    document.addEventListener('astro:page-load', sampleTheme);
   }
 
   // Shrink al scroll: agrega clase nav--shrunk cuando scrollY > 80
