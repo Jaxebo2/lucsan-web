@@ -100,8 +100,8 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           HOVER: true,            // mouse real → trails, interactúa con dye flotante
           SIM_RESOLUTION: 128,
           DYE_RESOLUTION: 1024,
-          DENSITY_DISSIPATION: 0.2,   // MUY lenta → smoke persiste y flota
-          VELOCITY_DISSIPATION: 0.45, // fluido mantiene momentum por mucho tiempo
+          DENSITY_DISSIPATION: 0.1,   // dye persiste por mucho más tiempo
+          VELOCITY_DISSIPATION: 0.4,  // fluido mantiene momentum por mucho tiempo
           PRESSURE: 0.7,
           PRESSURE_ITERATIONS: 20,
           CURL: 30,                   // swirls orgánicos
@@ -120,14 +120,13 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           BLOOM_THRESHOLD: 0.65,
           BLOOM_SOFT_KNEE: 0.7,
           SUNRAYS: false,
-          // Paleta brand-aligned: coral, naranjo, rojo, azul, morado, teal
+          // Paleta reducida brand-aligned
           COLOR_PALETTE: [
-            { r: 1.0, g: 0.333, b: 0.282 },  // coral #ff5548
-            { r: 1.0, g: 0.478, b: 0.290 },  // naranjo
-            { r: 0.91, g: 0.275, b: 0.227 }, // rojo profundo
-            { r: 0.29, g: 0.565, b: 0.886 }, // azul
-            { r: 0.545, g: 0.361, b: 0.965 },// morado
-            { r: 0.078, g: 0.722, b: 0.651 },// verde agua / teal
+            { r: 1.0, g: 0.333, b: 0.282 },  // coral marca #ff5548
+            { r: 0.851, g: 0.275, b: 0.937 },// rosa/violeta #d946ef
+            { r: 1.0, g: 0.478, b: 0.290 },  // naranjo #ff7a4a
+            { r: 0.118, g: 0.251, b: 0.686 },// azul profundo #1e40af
+            { r: 0.024, g: 0.714, b: 0.831 },// aguamarina #06b6d4
           ],
         });
 
@@ -144,14 +143,12 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
         }
 
-        // Primer refresh a los 8s (después de IMMEDIATE), luego cada 10-14s aleatorio
-        let nextRefresh = 8000;
+        // Refresh cada 8s (con leve jitter ±1s para no sentirse mecánico)
         function scheduleRefresh() {
           setTimeout(() => {
             if (!document.hidden) refreshSmoke();
-            nextRefresh = 10000 + Math.random() * 4000;
             scheduleRefresh();
-          }, nextRefresh);
+          }, 7000 + Math.random() * 2000);
         }
         scheduleRefresh();
       });
