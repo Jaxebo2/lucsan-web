@@ -126,28 +126,67 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           wrapper.dataset.loaded = 'true';
         });
 
-        // Mantener fluid vivo: si el usuario no mueve el mouse, disparar
-        // splats sintéticos en posiciones aleatorias cada 2.5s para que
-        // siempre haya movimiento coral en el hero.
-        let lastUserMove = Date.now();
-        canvas.addEventListener('mousemove', () => { lastUserMove = Date.now(); });
-        setInterval(() => {
-          if (Date.now() - lastUserMove < 2000) return; // user activo, no interferir
-          const rect = canvas.getBoundingClientRect();
-          const x = rect.left + Math.random() * rect.width;
-          const y = rect.top + Math.random() * rect.height;
-          // Sintetizar mousemove + mouseup secuencia para splat
-          ['mousedown', 'mousemove', 'mouseup'].forEach((type, idx) => {
-            setTimeout(() => {
-              canvas.dispatchEvent(new MouseEvent(type, {
-                clientX: x + Math.random() * 50,
-                clientY: y + Math.random() * 50,
-                bubbles: true,
-                buttons: 1,
+        // Mouse virtual idle: anima dos "punteros" virtuales sobre paths
+        // Lissajous, dispatcheando mousemove continuo. El fluid los lee como
+        // si fueran cursores reales y dibuja humo coral sin parar.
+        let lastUserMove = 0;
+        let userActive = false;
+        canvas.addEventListener('mousemove', () => {
+          lastUserMove = performance.now();
+          userActive = true;
+        });
+
+        const phantoms = [
+          { ax: 0.42, ay: 0.32, fx: 0.00018, fy: 0.00029, px: 0.5, py: 0.5 },
+          { ax: 0.30, ay: 0.40, fx: 0.00031, fy: 0.00019, px: 0.5, py: 0.5 },
+        ];
+
+        let lastSplat = 0;
+        let lastTickX = phantoms.map(() => 0);
+        let lastTickY = phantoms.map(() => 0);
+
+        function idleTick(t: number) {
+          requestAnimationFrame(idleTick);
+          // Si el usuario está activo, no interferir
+          if (performance.now() - lastUserMove < 1500) {
+            userActive = true;
+            return;
+          }
+          userActive = false;
+
+          const rect = canvas!.getBoundingClientRect();
+          if (rect.width === 0) return;
+
+          // Throttle a ~50ms (≈20Hz) — suficiente para flujo fluido sin saturar
+          if (t - lastSplat < 50) return;
+          lastSplat = t;
+
+          phantoms.forEach((p, i) => {
+            // Posición Lissajous suavizada: en el rango [10%, 90%] del canvas
+            const targetX = (0.5 + p.ax * Math.sin(t * p.fx)) * rect.width;
+            const targetY = (0.5 + p.ay * Math.cos(t * p.fy)) * rect.height;
+            // Smoothing exponencial (LERP)
+            p.px += (targetX - p.px) * 0.08;
+            p.py += (targetY - p.py) * 0.08;
+
+            const cx = rect.left + p.px;
+            const cy = rect.top + p.py;
+
+            // Si es la primera vez, mandar mousedown para iniciar splat
+            if (lastTickX[i] === 0 && lastTickY[i] === 0) {
+              canvas!.dispatchEvent(new MouseEvent('mousedown', {
+                clientX: cx, clientY: cy, bubbles: true, buttons: 1,
               }));
-            }, idx * 50);
+            }
+            // Mousemove continuo → el fluid sim aplica fuerza/splat
+            canvas!.dispatchEvent(new MouseEvent('mousemove', {
+              clientX: cx, clientY: cy, bubbles: true, buttons: 1,
+            }));
+            lastTickX[i] = cx;
+            lastTickY[i] = cy;
           });
-        }, 2500);
+        }
+        requestAnimationFrame(idleTick);
       });
     }).catch((err) => {
       console.warn('WebGL fluid failed to load:', err);

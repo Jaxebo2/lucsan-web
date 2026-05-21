@@ -37,7 +37,7 @@ const isActive = (href: string): boolean => {
   class:list={[
     'fixed inset-x-0 top-3 z-40 flex justify-center px-3 md:top-5 md:px-6',
     'transition-[color] duration-300 ease-out',
-    'nav--light',
+    'nav--dark',
   ]}
 >
   <div class="nav-pill relative flex h-16 items-center gap-3 rounded-full pl-4 pr-5 md:h-[72px] md:gap-6 md:pl-7 md:pr-5">
@@ -546,7 +546,7 @@ const isActive = (href: string): boolean => {
   // Sólido frente a transiciones / secciones sin data-theme intermedias.
   const navbar = document.getElementById('site-navbar');
   if (navbar) {
-    let currentTheme: 'light' | 'dark' = 'light';
+    let currentTheme: 'light' | 'dark' = 'dark';
     const setTheme = (theme: 'light' | 'dark') => {
       if (theme === currentTheme) return;
       currentTheme = theme;
@@ -565,7 +565,7 @@ const isActive = (href: string): boolean => {
       navbar.style.pointerEvents = prevPE;
       if (!el) return;
       const themed = el.closest('[data-theme]') as HTMLElement | null;
-      const theme = (themed?.getAttribute('data-theme') as 'light' | 'dark') || 'light';
+      const theme = (themed?.getAttribute('data-theme') as 'light' | 'dark') || 'dark';
       setTheme(theme);
     };
 
