@@ -1,0 +1,109 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * CircleExpandButton — botón con efecto de círculo coral que se expande
+ * desde el lado derecho hasta cubrir todo el botón en hover.
+ *
+ * Estado idle: texto + círculo pequeño coral a la derecha
+ * Estado hover: el círculo escala hasta cubrir el botón, texto color cambia
+ */
+
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  /** Variante de color base. */
+  variant?: 'light' | 'dark';
+  /** Tamaño. */
+  size?: 'sm' | 'md' | 'lg';
+  iconName?: string;
+  class?: string;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'light',
+  size = 'md',
+  iconName = 'ph:arrow-right-bold',
+  class: className = '',
+} = Astro.props as Props;
+
+const variantBase = {
+  light: 'border-brand-black text-brand-black hover:text-neutral-50',
+  dark: 'border-neutral-50 text-neutral-50 hover:text-brand-black',
+}[variant];
+
+const sizeMap = {
+  sm: 'h-12 pl-5 pr-12 text-sm',
+  md: 'h-14 pl-6 pr-14 text-base',
+  lg: 'h-16 pl-8 pr-16 text-lg',
+};
+const circleSize = { sm: 'h-8 w-8 right-2', md: 'h-10 w-10 right-2', lg: 'h-12 w-12 right-2' };
+
+const base =
+  'circle-expand-btn group relative inline-flex items-center overflow-hidden rounded-full border-2 font-medium transition-colors duration-500';
+
+const allClass = [base, variantBase, sizeMap[size], className];
+const isLink = !!href;
+---
+
+{
+  isLink ? (
+    <a href={href} class:list={allClass}>
+      <span class="relative z-10">
+        <slot />
+      </span>
+      <span
+        class:list={['circle-expand-btn__circle absolute top-1/2 -translate-y-1/2 rounded-full bg-brand-coral transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]', circleSize[size]]}
+        aria-hidden="true"
+      ></span>
+      <span class="relative z-10 ml-auto inline-flex items-center justify-center text-neutral-50">
+        <Icon name={iconName} class="h-4 w-4" />
+      </span>
+    </a>
+  ) : (
+    <button type={type} class:list={allClass}>
+      <span class="relative z-10">
+        <slot />
+      </span>
+      <span
+        class:list={['circle-expand-btn__circle absolute top-1/2 -translate-y-1/2 rounded-full bg-brand-coral transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]', circleSize[size]]}
+        aria-hidden="true"
+      ></span>
+      <span class="relative z-10 ml-auto inline-flex items-center justify-center text-neutral-50">
+        <Icon name={iconName} class="h-4 w-4" />
+      </span>
+    </button>
+  )
+}
+
+<style>
+  /* En hover el círculo escala hasta cubrir el botón */
+  .circle-expand-btn:hover .circle-expand-btn__circle {
+    width: 200%;
+    height: 100%;
+    right: -50%;
+    border-radius: 50%;
+    top: 0;
+    transform: translateY(0);
+  }
+
+  /* Posiciona el ícono encima del círculo */
+  .circle-expand-btn > span:last-child {
+    position: absolute;
+    right: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .circle-expand-btn,
+    .circle-expand-btn__circle {
+      transition: none;
+    }
+  }
+</style>

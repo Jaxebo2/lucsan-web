@@ -12,12 +12,14 @@ import Eyebrow from '../components/ui/Eyebrow.astro';
 import Heading from '../components/ui/Heading.astro';
 import Prose from '../components/ui/Prose.astro';
 import Button from '../components/ui/Button.astro';
+import CircleExpandButton from '../components/ui/CircleExpandButton.astro';
 import Card from '../components/ui/Card.astro';
 import Badge from '../components/ui/Badge.astro';
 import MetricBadge from '../components/ui/MetricBadge.astro';
 import FAQ from '../components/ui/FAQ.astro';
 import FAQItem from '../components/ui/FAQItem.astro';
 import CTABlock from '../components/ui/CTABlock.astro';
+import MotionCardExpand from '../components/fx/MotionCardExpand.tsx';
 
 // 404 in production builds
 if (!import.meta.env.DEV) {
@@ -167,6 +169,40 @@ const semantic = [
         <Button variant="primary" size="sm">Small</Button>
         <Button variant="primary" size="md">Medium</Button>
         <Button variant="primary" size="lg">Large</Button>
+      </div>
+
+      <Heading level={2} size="md" class="mt-12">Circle Expand Button</Heading>
+      <Prose tone="secondary" size="sm" class="mt-2 max-w-xl">
+        Variante especial: círculo coral en la derecha que se expande hasta cubrir el botón
+        completo en hover. Disponible como componente independiente para usos puntuales.
+      </Prose>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <CircleExpandButton variant="light" size="md">Conversemos</CircleExpandButton>
+        <CircleExpandButton variant="light" size="lg">Empezar proyecto</CircleExpandButton>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ===== MOTION CARD EXPAND ===== */}
+  <Section>
+    <Container>
+      <Eyebrow>05a / Motion Card Expand</Eyebrow>
+      <Heading level={2} size="lg" class="mt-3">Cards con layout animation</Heading>
+      <Prose tone="secondary" size="sm" class="mt-2 max-w-xl">
+        Cards interactivas que se expanden a 2 columnas al hacer click, con las demás
+        cards reordenándose mediante spring physics. Disponible como componente para
+        secciones específicas en el futuro.
+      </Prose>
+      <div class="mt-10">
+        <MotionCardExpand
+          client:visible
+          variant="filled"
+          items={[
+            { numero: '01', titulo: 'Card uno', descripcion: 'Descripción extendida que aparece cuando esta card se expande. Las demás se reordenan suavemente.' },
+            { numero: '02', titulo: 'Card dos', descripcion: 'Otra descripción extendida diferente para ilustrar el comportamiento.' },
+            { numero: '03', titulo: 'Card tres', descripcion: 'Y una tercera descripción para mostrar la versatilidad del componente.' },
+          ]}
+        />
       </div>
     </Container>
   </Section>

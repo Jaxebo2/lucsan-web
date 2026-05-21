@@ -12,7 +12,6 @@ import MotionFAQ from '../../components/fx/MotionFAQ.tsx';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import MediaSlot from '../../components/ui/MediaSlot.astro';
 import HeroFluid from '../../components/fx/HeroFluid.astro';
-import MotionCardExpand from '../../components/fx/MotionCardExpand.tsx';
 import MotionAccordion from '../../components/fx/MotionAccordion.tsx';
 import { Icon } from 'astro-icon/components';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../lib/seo';
@@ -83,16 +82,18 @@ const schemas = [
         Todas las <span class="text-text-accent">disciplinas</span> que cubrimos.
       </Heading>
 
-      <div class="mt-16" data-reveal>
-        <MotionCardExpand
-          client:visible
-          variant="filled"
-          items={s.incluye.map((item, i) => ({
-            titulo: item.titulo,
-            descripcion: item.descripcion || `Más información sobre ${item.titulo}.`,
-            numero: String(i + 1).padStart(2, '0'),
-          }))}
-        />
+      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+        {
+          s.incluye.map((item) => (
+            <Card variant="filled" padding="lg" radius="xl">
+              <Icon name="ph:check-bold" class="h-6 w-6 text-text-accent" />
+              <Heading level={3} size="sm" class="mt-4">{item.titulo}</Heading>
+              {item.descripcion && (
+                <Prose tone="secondary" size="sm" class="mt-3">{item.descripcion}</Prose>
+              )}
+            </Card>
+          ))
+        }
       </div>
     </Container>
   </Section>
