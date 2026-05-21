@@ -73,9 +73,9 @@ const hoverTextMap: Record<Variant, string> = {
 };
 
 const sizeMap: Record<Size, string> = {
-  sm: 'h-10 pl-4 pr-1.5 text-sm',
-  md: 'h-12 pl-5 pr-1.5 text-sm md:text-base',
-  lg: 'h-14 pl-6 pr-2 text-base md:text-lg',
+  sm: 'h-10 pl-4 pr-2 text-sm',
+  md: 'h-12 pl-5 pr-2 text-sm md:text-base',
+  lg: 'h-14 pl-6 pr-2.5 text-base md:text-lg',
 };
 const sizeNoIcon: Record<Size, string> = {
   sm: 'h-10 px-5 text-sm',
@@ -88,13 +88,17 @@ const sizeGhost: Record<Size, string> = {
   lg: 'h-14 px-5 text-base md:text-lg',
 };
 
+// Círculo más chico para dejar aire visual; margen igual a top/bottom/right.
+// sm: btn h-10 (40), circle 28 → margen vertical (40-28)/2=6 → right 6.
+// md: btn h-12 (48), circle 34 → margen vertical (48-34)/2=7 → right 7.
+// lg: btn h-14 (56), circle 40 → margen vertical (56-40)/2=8 → right 8.
 const circleSize: Record<Size, string> = {
   sm: 'h-7 w-7',
-  md: 'h-9 w-9',
-  lg: 'h-11 w-11',
+  md: 'h-[34px] w-[34px]',
+  lg: 'h-10 w-10',
 };
-const circleSizePx: Record<Size, number> = { sm: 28, md: 36, lg: 44 };
-const circleRightPx: Record<Size, number> = { sm: 4, md: 4, lg: 6 };
+const circleSizePx: Record<Size, number> = { sm: 28, md: 34, lg: 40 };
+const circleRightPx: Record<Size, number> = { sm: 6, md: 7, lg: 8 };
 
 const iconSize: Record<Size, string> = {
   sm: 'h-3.5 w-3.5',
@@ -134,7 +138,8 @@ const isLink = !!href;
 const magnetic = variant === 'primary' || variant === 'secondary';
 const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
-const ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
+// Ease in-out simétrico: fill-in y fill-out se perciben igual de rápidos.
+const ease = 'cubic-bezier(0.65, 0, 0.35, 1)';
 const cz = circleSizePx[size];
 const cr = circleRightPx[size];
 
@@ -248,7 +253,7 @@ const styleVars = `--btn-ease: ${ease}; --btn-fill: ${fillColor}; --btn-circle-s
     background: var(--btn-fill);
     transform: scale(1);
     transform-origin: center;
-    transition: transform 1.1s var(--btn-ease);
+    transition: transform 1s var(--btn-ease);
     z-index: 1;
     pointer-events: none;
   }

@@ -153,7 +153,9 @@
       "Bash(curl -s -o /dev/null -w \"Keystatic home: HTTP %{http_code}\\\\n\" http://localhost:4321/keystatic/singleton/home)",
       "Bash(curl -s -o /dev/null -w \"Home: %{http_code}\\\\nStyle guide: \" http://localhost:4321/)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/style-guide)",
-      "Bash(npx astro *)"
+      "Bash(npx astro *)",
+      "mcp__plugin_context-mode_context-mode__ctx_fetch_and_index",
+      "mcp__plugin_context-mode_context-mode__ctx_search"
     ]
   }
 }

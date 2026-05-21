@@ -63,8 +63,8 @@ const isActive = (href: string): boolean => {
       />
     </a>
 
-    {/* Desktop nav */}
-    <nav class="hidden items-center gap-2 md:flex" aria-label="Primaria">
+    {/* Desktop nav — self-stretch + items-stretch para que dropdown se posicione al borde inferior real de la pill */}
+    <nav class="hidden gap-2 self-stretch md:flex md:items-stretch" aria-label="Primaria">
       {
         navLinks.map((link) => {
           const active = isActive(link.href);
