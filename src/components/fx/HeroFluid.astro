@@ -173,15 +173,23 @@ const { intensity = 1, variant = 'dark', class: className = '' } = Astro.props a
           const cx = rect.left + phantom.px;
           const cy = rect.top + phantom.py;
 
-          if (!initialized) {
-            canvas!.dispatchEvent(new MouseEvent('mousedown', {
+          // webgl-fluid lee event.offsetX/offsetY (no clientX/Y). En MouseEvent
+          // sintéticos esos campos no se setean automáticamente → forzamos vía
+          // Object.defineProperty para que la lib reciba la posición correcta.
+          const makeEvent = (type: string) => {
+            const e = new MouseEvent(type, {
               clientX: cx, clientY: cy, bubbles: true, buttons: 1,
-            }));
+            });
+            Object.defineProperty(e, 'offsetX', { get: () => phantom.px });
+            Object.defineProperty(e, 'offsetY', { get: () => phantom.py });
+            return e;
+          };
+
+          if (!initialized) {
+            canvas!.dispatchEvent(makeEvent('mousedown'));
             initialized = true;
           }
-          canvas!.dispatchEvent(new MouseEvent('mousemove', {
-            clientX: cx, clientY: cy, bubbles: true, buttons: 1,
-          }));
+          canvas!.dispatchEvent(makeEvent('mousemove'));
         }
         requestAnimationFrame(ambientTick);
       });

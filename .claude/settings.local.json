@@ -155,7 +155,8 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/style-guide)",
       "Bash(npx astro *)",
       "mcp__plugin_context-mode_context-mode__ctx_fetch_and_index",
-      "mcp__plugin_context-mode_context-mode__ctx_search"
+      "mcp__plugin_context-mode_context-mode__ctx_search",
+      "Bash(grep -nE \"addEventListener|updatePointerMoveData|pointers\\\\[\" \"E:\\\\\\\\Claude Code\\\\\\\\Lucsan web\\\\\\\\node_modules\\\\\\\\webgl-fluid\\\\\\\\dist\\\\\\\\webgl-fluid.mjs\")"
     ]
   }
 }
