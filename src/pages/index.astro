@@ -92,7 +92,7 @@ const iconForService: Record<string, string> = {
               <Card href={`/servicios/${s.data.slug}`} variant="default" padding="md" radius="lg" class="aspect-square">
                 <Icon
                   name={iconForService[s.data.slug] ?? 'ph:sparkle-bold'}
-                  class="h-9 w-9 text-text-accent"
+                  class="service-card-icon h-9 w-9 text-text-accent transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 group-hover:rotate-6"
                 />
                 <Heading level={3} size="sm" class="mt-5">
                   {s.data.title}
@@ -104,7 +104,7 @@ const iconForService: Record<string, string> = {
                   Ver servicio
                   <Icon
                     name="ph:arrow-right-bold"
-                    class="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+                    class="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1.5"
                   />
                 </span>
               </Card>
@@ -201,8 +201,10 @@ const iconForService: Record<string, string> = {
       <div class="mt-16 grid gap-12 md:grid-cols-4" data-reveal-stagger>
         {
           home.metodoResumen.fases.map((fase) => (
-            <div>
-              <span class="font-display text-5xl font-bold text-text-accent">{fase.numero}</span>
+            <div class="metodo-phase group">
+              <span class="metodo-phase__num font-display text-5xl font-bold text-text-accent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110">
+                {fase.numero}
+              </span>
               <Heading level={3} size="sm" tone="inverse" class="mt-4">
                 {fase.titulo}
               </Heading>
@@ -213,6 +215,19 @@ const iconForService: Record<string, string> = {
           ))
         }
       </div>
+
+      <style>
+        .metodo-phase__num {
+          display: inline-block;
+          transform-origin: left center;
+        }
+        .metodo-phase {
+          transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .metodo-phase:hover {
+          transform: translateY(-4px);
+        }
+      </style>
     </Container>
   </Section>
 

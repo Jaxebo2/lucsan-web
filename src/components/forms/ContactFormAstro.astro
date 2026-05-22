@@ -266,3 +266,33 @@ const { presupuestos, turnstileSiteKey = '' } = Astro.props as Props;
     resetBtn?.addEventListener('click', () => setState('idle'));
   });
 </script>
+
+<style>
+  /* Premium focus animations en form fields */
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form select {
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.3s ease,
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus,
+  .contact-form select:focus {
+    box-shadow:
+      0 0 0 4px color-mix(in oklab, var(--color-brand-coral) 14%, transparent),
+      0 4px 14px color-mix(in oklab, var(--color-brand-coral) 12%, transparent);
+    transform: translateY(-1px);
+  }
+  .contact-form label > span.font-medium {
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: left center;
+  }
+  .contact-form label:focus-within > span.font-medium {
+    color: var(--color-brand-coral);
+    transform: translateY(-2px) scale(0.95);
+  }
+</style>

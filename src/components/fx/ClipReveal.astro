@@ -1,0 +1,42 @@
+---
+/**
+ * ClipReveal — utility global.
+ * Cualquier elemento con [data-clip-reveal] revela con clip-path inset 0 0 100% 0
+ * → inset 0 0 0 0 al entrar al viewport (barrido vertical "cortina" hacia abajo).
+ *
+ * Asigna automáticamente .is-clip-revealed via IntersectionObserver.
+ * El CSS del clip-path debe ser definido por el componente que lo usa (ej. MediaSlot).
+ *
+ * Respeta prefers-reduced-motion.
+ */
+---
+
+<script>
+  function initClipReveal() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document
+        .querySelectorAll<HTMLElement>('[data-clip-reveal]')
+        .forEach((el) => el.classList.add('is-clip-revealed'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-clip-revealed');
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -5% 0px' },
+    );
+
+    document
+      .querySelectorAll<HTMLElement>('[data-clip-reveal]')
+      .forEach((el) => observer.observe(el));
+  }
+
+  initClipReveal();
+  document.addEventListener('astro:page-load', initClipReveal);
+</script>

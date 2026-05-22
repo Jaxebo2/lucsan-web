@@ -39,7 +39,7 @@ const redes: { label: string; href: string; icon: string }[] = [
 >
   <div class="mx-auto max-w-7xl px-6 py-16 md:px-16 md:py-24">
     {/* Middle: 5 columns */}
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 md:gap-8">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 md:gap-8" data-reveal-stagger>
       {/* Brand col */}
       <div class="col-span-2 md:col-span-1">
         <img
@@ -65,7 +65,7 @@ const redes: { label: string; href: string; icon: string }[] = [
               <li>
                 <a
                   href={s.href}
-                  class="text-sm text-neutral-50 transition-colors hover:text-brand-coral"
+                  class="footer-link group inline-flex items-center gap-1 text-sm text-neutral-50 transition-colors hover:text-brand-coral"
                 >
                   {s.label}
                 </a>
@@ -86,7 +86,7 @@ const redes: { label: string; href: string; icon: string }[] = [
               <li>
                 <a
                   href={s.href}
-                  class="text-sm text-neutral-50 transition-colors hover:text-brand-coral"
+                  class="footer-link group inline-flex items-center gap-1 text-sm text-neutral-50 transition-colors hover:text-brand-coral"
                 >
                   {s.label}
                 </a>
@@ -107,7 +107,7 @@ const redes: { label: string; href: string; icon: string }[] = [
               <li>
                 <a
                   href={e.href}
-                  class="text-sm text-neutral-50 transition-colors hover:text-brand-coral"
+                  class="footer-link group inline-flex items-center gap-1 text-sm text-neutral-50 transition-colors hover:text-brand-coral"
                 >
                   {e.label}
                 </a>
@@ -150,6 +150,18 @@ const redes: { label: string; href: string; icon: string }[] = [
         </div>
       </div>
     </div>
+
+    <style>
+      .footer-link {
+        transition:
+          color 0.3s ease,
+          transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left center;
+      }
+      .footer-link:hover {
+        transform: translateX(4px);
+      }
+    </style>
 
     {/* Bottom: legal */}
     <div class="mt-16 flex flex-col gap-3 border-t border-neutral-700 pt-8 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between">
