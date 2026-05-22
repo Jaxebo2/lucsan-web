@@ -1,0 +1,117 @@
+---
+/**
+ * SplitTextReveal — utility global.
+ * Cualquier elemento con [data-split-words] se splittea en spans por palabra
+ * y revela con stagger al entrar al viewport.
+ *
+ * Uso: <h1 data-split-words>Texto largo aquí</h1>
+ *
+ * Opciones via data-attributes:
+ *   data-split-stagger="60"  → ms entre palabras (default 50)
+ *   data-split-delay="0"     → ms de delay inicial (default 0)
+ *
+ * Respeta prefers-reduced-motion.
+ */
+---
+
+<style is:global>
+  [data-split-words] {
+    /* Asegura que los descendant inline-blocks no rompan line-height */
+    line-height: inherit;
+  }
+  [data-split-words] .split-word {
+    display: inline-block;
+    transform: translateY(70%);
+    opacity: 0;
+    transition:
+      transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.6s ease;
+    transition-delay: calc(var(--split-delay, 0ms) + var(--i, 0) * var(--split-stagger, 50ms));
+    will-change: transform, opacity;
+  }
+  [data-split-words].is-revealed .split-word {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-split-words] .split-word {
+      transition: none;
+      transform: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  function splitElement(el: HTMLElement) {
+    if (el.dataset.splitDone) return;
+    el.dataset.splitDone = '1';
+
+    const stagger = el.dataset.splitStagger || '50';
+    const delay = el.dataset.splitDelay || '0';
+    el.style.setProperty('--split-stagger', `${stagger}ms`);
+    el.style.setProperty('--split-delay', `${delay}ms`);
+
+    // Walk recursively, splitting solo TEXT_NODES (preserva <span>, <strong>, etc.)
+    const walk = (node: Node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent || '';
+        if (!text.trim()) return;
+        const parts = text.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        for (const part of parts) {
+          if (!part) continue;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(part));
+          } else {
+            const span = document.createElement('span');
+            span.className = 'split-word';
+            span.textContent = part;
+            frag.appendChild(span);
+          }
+        }
+        node.parentNode?.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const elNode = node as HTMLElement;
+        // No descender en elementos que ya son .split-word ni en form controls
+        if (elNode.classList.contains('split-word')) return;
+        Array.from(node.childNodes).forEach(walk);
+      }
+    };
+    Array.from(el.childNodes).forEach(walk);
+
+    // Asignar índice secuencial a cada palabra para stagger CSS
+    const words = el.querySelectorAll<HTMLElement>('.split-word');
+    words.forEach((w, i) => w.style.setProperty('--i', String(i)));
+  }
+
+  function initSplitReveal() {
+    const els = document.querySelectorAll<HTMLElement>('[data-split-words]');
+    if (els.length === 0) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach((el) => el.classList.add('is-revealed'));
+      return;
+    }
+
+    els.forEach(splitElement);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    els.forEach((el) => observer.observe(el));
+  }
+
+  initSplitReveal();
+  document.addEventListener('astro:page-load', initSplitReveal);
+</script>

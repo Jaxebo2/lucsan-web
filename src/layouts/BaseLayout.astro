@@ -8,6 +8,8 @@ import Analytics from '../components/analytics/Analytics.astro';
 import GTMNoscript from '../components/analytics/GTMNoscript.astro';
 import SmartHover from '../components/fx/SmartHover.astro';
 import GlowHover from '../components/fx/GlowHover.astro';
+import MotionTilt from '../components/fx/MotionTilt.astro';
+import SplitTextReveal from '../components/fx/SplitTextReveal.astro';
 import { organizationSchema, websiteSchema } from '../lib/seo';
 
 interface Props {
@@ -127,6 +129,12 @@ const ogImageUrl = ogImage.startsWith('http')
 
     {/* GlowHover utility — radial-gradient coral siguiendo el cursor en [data-glow-hover] */}
     <GlowHover />
+
+    {/* MotionTilt utility — 3D tilt en [data-tilt] (Cards con href, etc.) */}
+    <MotionTilt />
+
+    {/* SplitTextReveal utility — split por palabras + stagger reveal en [data-split-words] */}
+    <SplitTextReveal />
 
     <style is:global>
       /* === Footer reveal effect ===

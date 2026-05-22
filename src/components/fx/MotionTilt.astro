@@ -1,0 +1,56 @@
+---
+/**
+ * MotionTilt — utility global.
+ * Cualquier elemento con [data-tilt] hace 3D tilt siguiendo el cursor + scale sutil.
+ *
+ * data-tilt="6"        → grados máximos (default 6)
+ * data-tilt-scale="1.02" → scale en hover (default 1.02)
+ *
+ * Respeta prefers-reduced-motion (no se activa).
+ */
+---
+
+<style is:global>
+  [data-tilt] {
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+  [data-tilt] > * {
+    transform: translateZ(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-tilt] { transition: none; }
+  }
+</style>
+
+<script>
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((el) => {
+      if (el.dataset.tiltBound) return;
+      el.dataset.tiltBound = '1';
+      const max = parseFloat(el.dataset.tilt || '6');
+      const scale = parseFloat(el.dataset.tiltScale || '1.02');
+
+      const onMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        const rx = -py * max;
+        const ry = px * max;
+        el.style.transform = `perspective(1100px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${scale})`;
+      };
+      const onLeave = () => {
+        el.style.transform = 'perspective(1100px) rotateX(0) rotateY(0) scale(1)';
+      };
+      el.addEventListener('mousemove', onMove);
+      el.addEventListener('mouseleave', onLeave);
+    });
+  }
+
+  initTilt();
+  document.addEventListener('astro:page-load', initTilt);
+</script>

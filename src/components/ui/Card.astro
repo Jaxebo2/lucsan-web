@@ -56,7 +56,13 @@ const allClass = ['group flex flex-col', variantClass, paddingClass, radiusClass
 
 {
   href ? (
-    <a href={href} class:list={allClass} data-glow-hover>
+    <a
+      href={href}
+      class:list={allClass}
+      data-glow-hover
+      data-tilt="5"
+      data-tilt-scale="1.015"
+    >
       <slot />
     </a>
   ) : (

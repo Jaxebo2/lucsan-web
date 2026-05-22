@@ -26,6 +26,10 @@ interface Props {
   tone?: Tone;
   /** Whether to balance line breaks via CSS `text-wrap: balance`. */
   balance?: boolean;
+  /** Activa split-words + stagger reveal al entrar al viewport (data-split-words). */
+  splitReveal?: boolean;
+  /** ms entre palabras (default 50). */
+  splitStagger?: number;
   class?: string;
 }
 
@@ -35,6 +39,8 @@ const {
   weight = 'bold',
   tone = 'inherit',
   balance = true,
+  splitReveal = false,
+  splitStagger,
   class: className = '',
 } = Astro.props as Props;
 
@@ -75,6 +81,8 @@ const toneClass = toneMap[tone];
     balance && 'text-balance',
     className,
   ]}
+  data-split-words={splitReveal ? '' : undefined}
+  data-split-stagger={splitReveal && splitStagger ? String(splitStagger) : undefined}
 >
   <slot />
 </Tag>
