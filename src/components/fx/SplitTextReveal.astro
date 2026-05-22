@@ -15,13 +15,18 @@
 ---
 
 <style is:global>
-  [data-split-words] {
-    /* Asegura que los descendant inline-blocks no rompan line-height */
+  /* Patrón mask: el wrapper exterior preserva el line-layout del inline normal
+     (display:inline + overflow:visible), el interior es inline-block que se
+     transforma. Así NO infla line-height. */
+  [data-split-words] .split-word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
     line-height: inherit;
   }
   [data-split-words] .split-word {
     display: inline-block;
-    transform: translateY(70%);
+    transform: translateY(105%);
     opacity: 0;
     transition:
       transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
@@ -65,10 +70,13 @@
           if (/^\s+$/.test(part)) {
             frag.appendChild(document.createTextNode(part));
           } else {
-            const span = document.createElement('span');
-            span.className = 'split-word';
-            span.textContent = part;
-            frag.appendChild(span);
+            const wrap = document.createElement('span');
+            wrap.className = 'split-word-wrap';
+            const inner = document.createElement('span');
+            inner.className = 'split-word';
+            inner.textContent = part;
+            wrap.appendChild(inner);
+            frag.appendChild(wrap);
           }
         }
         node.parentNode?.replaceChild(frag, node);
