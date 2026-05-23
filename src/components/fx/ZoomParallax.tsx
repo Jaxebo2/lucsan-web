@@ -50,30 +50,37 @@ export default function ZoomParallax({
     offset: ['start start', 'end end'],
   });
 
+  // Remap scroll → animación:
+  //   Scroll 0-0.7 → animación 0-1 (zoom completo, ~5 ticks lentos)
+  //   Scroll 0.7-1.0 → animación clamped a 1 (sin cambios, exit rápido ~2-3 ticks)
+  // Resultado: zoom slow/smooth + transición fast cuando el centro ya está enfocado.
+  const animProgress = useTransform(scrollYProgress, (v) => Math.min(v / 0.7, 1));
+
   const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
     if (outerImages.length === 0) return centerImage;
     return outerImages[i % outerImages.length]!;
   });
 
   // 2-3-2 layout, todas las cards 16:9.
-  // Laterales acercadas al centro horizontalmente. Más separación vertical entre filas.
+  // Top/bottom MÁS cerca del centro (cx 33/67). Vertical más separado (cy 12/88).
   const pictures: PictureConfig[] = [
     // CENTER (mid row, cx=50%)
     { img: centerImage,    isCenter: true,  cx: 50, cy: 50, w: '26vw', scaleEnd: 5,   exitMult: 1 },
-    // TOP ROW (cy=14%, más arriba para crear gap vertical)
-    { img: safeOuters[0]!, isCenter: false, cx: 28, cy: 14, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
-    { img: safeOuters[1]!, isCenter: false, cx: 72, cy: 14, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
+    // TOP ROW (cy=12%, cerca al centro horizontalmente)
+    { img: safeOuters[0]!, isCenter: false, cx: 33, cy: 12, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
+    { img: safeOuters[1]!, isCenter: false, cx: 67, cy: 12, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
     // MIDDLE ROW sides (cy=50%, acercadas al centro)
     { img: safeOuters[2]!, isCenter: false, cx: 18, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
     { img: safeOuters[3]!, isCenter: false, cx: 82, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
-    // BOTTOM ROW (cy=86%, más abajo)
-    { img: safeOuters[4]!, isCenter: false, cx: 28, cy: 86, w: '26vw', scaleEnd: 3.2, exitMult: 5.5 },
-    { img: safeOuters[5]!, isCenter: false, cx: 72, cy: 86, w: '26vw', scaleEnd: 3,   exitMult: 6 },
+    // BOTTOM ROW (cy=88%, separación vertical generosa)
+    { img: safeOuters[4]!, isCenter: false, cx: 33, cy: 88, w: '26vw', scaleEnd: 3.2, exitMult: 5.5 },
+    { img: safeOuters[5]!, isCenter: false, cx: 67, cy: 88, w: '26vw', scaleEnd: 3,   exitMult: 6 },
   ];
 
-  const textOpacity = useTransform(scrollYProgress, [0.6, 0.92], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0.6, 1], [40, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.55, 0.95], [0, 0.55]);
+  // Todas las transforms usan animProgress (con clamp) en vez de scrollYProgress crudo.
+  const textOpacity = useTransform(animProgress, [0.6, 0.92], [0, 1]);
+  const textY = useTransform(animProgress, [0.6, 1], [40, 0]);
+  const overlayOpacity = useTransform(animProgress, [0.55, 0.95], [0, 0.55]);
 
   return (
     <div
@@ -86,7 +93,7 @@ export default function ZoomParallax({
           <ZoomImage
             key={i}
             picture={p}
-            progress={scrollYProgress}
+            progress={animProgress}
             overlayOpacity={p.isCenter ? overlayOpacity : undefined}
           />
         ))}
