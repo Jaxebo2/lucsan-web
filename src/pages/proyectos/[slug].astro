@@ -62,6 +62,11 @@ const sectorLabels: Record<string, string> = {
   otro: 'Otro',
 };
 
+// Imágenes outer para el grid inicial del zoom hero (galería del proyecto).
+// Si no hay galería, repetimos la cover para que igual haya 6 outer.
+const galeriaSrcs = (p.caso?.galeria ?? []).map((g) => ({ src: g.src, alt: g.alt }));
+const outerImages = galeriaSrcs.length > 0 ? galeriaSrcs : [{ src: p.cover.src, alt: p.cover.alt }];
+
 // Tags para overlay del zoom hero
 const zoomTags = [p.cliente, sectorLabels[p.sector] ?? p.sector, String(p.ano)];
 ---
@@ -71,11 +76,12 @@ const zoomTags = [p.cliente, sectorLabels[p.sector] ?? p.sector, String(p.ano)];
   <Section surface="inverse" spacing="none" data-reveal-skip class="relative">
     <ZoomParallax
       client:load
-      image={{ src: p.cover.src, alt: p.cover.alt }}
+      centerImage={{ src: p.cover.src, alt: p.cover.alt }}
+      outerImages={outerImages}
       title={p.titulo}
       eyebrow="Proyecto destacado"
       tags={zoomTags}
-      scrollHeight={220}
+      scrollHeight={250}
     />
   </Section>
 
