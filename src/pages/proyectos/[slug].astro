@@ -72,6 +72,10 @@ const unsplashOuters = [
   { src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=900&h=900&fit=crop&q=80', alt: 'Minimalist forms' },
   { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1280&h=720&fit=crop&q=80', alt: 'Lake at dawn' },
   { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1280&h=720&fit=crop&q=80', alt: 'Forest path' },
+  { src: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1280&h=720&fit=crop&q=80', alt: 'City at night' },
+  { src: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&h=900&fit=crop&q=80', alt: 'Architecture detail' },
+  { src: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=1280&h=720&fit=crop&q=80', alt: 'Coastal sunset' },
+  { src: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1280&h=720&fit=crop&q=80', alt: 'Snowy mountain' },
 ];
 
 // Galería real del proyecto si existe; si no, usamos los placeholders
@@ -98,7 +102,7 @@ const zoomTags = [p.cliente, sectorLabels[p.sector] ?? p.sector, String(p.ano)];
       title={p.titulo}
       eyebrow="Proyecto destacado"
       tags={zoomTags}
-      scrollHeight={250}
+      scrollHeight={140}
     />
   </Section>
 
