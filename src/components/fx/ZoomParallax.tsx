@@ -42,7 +42,7 @@ export default function ZoomParallax({
   title,
   eyebrow,
   tags = [],
-  scrollHeight = 140,
+  scrollHeight = 200,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -55,19 +55,20 @@ export default function ZoomParallax({
     return outerImages[i % outerImages.length]!;
   });
 
-  // 2-3-2 layout, todas las cards 16:9
+  // 2-3-2 layout, todas las cards 16:9.
+  // Laterales acercadas al centro horizontalmente. Más separación vertical entre filas.
   const pictures: PictureConfig[] = [
     // CENTER (mid row, cx=50%)
     { img: centerImage,    isCenter: true,  cx: 50, cy: 50, w: '26vw', scaleEnd: 5,   exitMult: 1 },
-    // TOP ROW (cy=20%)
-    { img: safeOuters[0]!, isCenter: false, cx: 25, cy: 20, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
-    { img: safeOuters[1]!, isCenter: false, cx: 75, cy: 20, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
-    // MIDDLE ROW sides (cy=50%)
-    { img: safeOuters[2]!, isCenter: false, cx: 10, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
-    { img: safeOuters[3]!, isCenter: false, cx: 90, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
-    // BOTTOM ROW (cy=80%)
-    { img: safeOuters[4]!, isCenter: false, cx: 25, cy: 80, w: '26vw', scaleEnd: 3.2, exitMult: 5.5 },
-    { img: safeOuters[5]!, isCenter: false, cx: 75, cy: 80, w: '26vw', scaleEnd: 3,   exitMult: 6 },
+    // TOP ROW (cy=14%, más arriba para crear gap vertical)
+    { img: safeOuters[0]!, isCenter: false, cx: 28, cy: 14, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
+    { img: safeOuters[1]!, isCenter: false, cx: 72, cy: 14, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
+    // MIDDLE ROW sides (cy=50%, acercadas al centro)
+    { img: safeOuters[2]!, isCenter: false, cx: 18, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
+    { img: safeOuters[3]!, isCenter: false, cx: 82, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
+    // BOTTOM ROW (cy=86%, más abajo)
+    { img: safeOuters[4]!, isCenter: false, cx: 28, cy: 86, w: '26vw', scaleEnd: 3.2, exitMult: 5.5 },
+    { img: safeOuters[5]!, isCenter: false, cx: 72, cy: 86, w: '26vw', scaleEnd: 3,   exitMult: 6 },
   ];
 
   const textOpacity = useTransform(scrollYProgress, [0.6, 0.92], [0, 1]);
