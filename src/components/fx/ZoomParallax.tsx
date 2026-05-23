@@ -51,9 +51,12 @@ export default function ZoomParallax({
   const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
 
   // Texto del overlay: aparece al final del scroll
-  const textOpacity = useTransform(scrollYProgress, [0.55, 0.85], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0.55, 0.95], [40, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.55, 0.95], [0, 0.6]);
+  const textOpacity = useTransform(scrollYProgress, [0.6, 0.9], [0, 1]);
+  const textY = useTransform(scrollYProgress, [0.6, 1], [40, 0]);
+  const overlayOpacity = useTransform(scrollYProgress, [0.6, 1], [0, 0.6]);
+
+  // Outer images: fade-out conforme avanza el scroll → al final solo la central es visible
+  const outerOpacity = useTransform(scrollYProgress, [0.45, 0.75], [1, 0]);
 
   // Asegurar 6 outers únicos (repetir desde el array si hay menos)
   const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
@@ -87,38 +90,44 @@ export default function ZoomParallax({
       style={{ height: `${scrollHeight}vh` }}
     >
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden bg-brand-black">
-        {pictures.map((p, i) => (
-          <motion.div
-            key={i}
-            style={{
-              position: 'absolute',
-              top: p.cy,
-              left: p.cx,
-              width: p.w,
-              height: p.h,
-              x: '-50%',
-              y: '-50%',
-              scale: p.scale,
-              willChange: 'transform',
-            }}
-          >
-            <div className="relative h-full w-full overflow-hidden rounded-lg">
-              <img
-                src={p.img.src}
-                alt={p.img.alt ?? ''}
-                draggable={false}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              {/* Gradient overlay solo en la central, aparece al final para legibilidad */}
-              {i === 0 && (
-                <motion.div
-                  style={{ opacity: overlayOpacity }}
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20"
+        {pictures.map((p, i) => {
+          const isCenter = i === 0;
+          return (
+            <motion.div
+              key={i}
+              style={{
+                position: 'absolute',
+                top: p.cy,
+                left: p.cx,
+                width: p.w,
+                height: p.h,
+                x: '-50%',
+                y: '-50%',
+                scale: p.scale,
+                // Centro siempre visible y arriba en z; outers fade-out + abajo en z.
+                opacity: isCenter ? 1 : outerOpacity,
+                zIndex: isCenter ? 5 : 1,
+                willChange: 'transform, opacity',
+              }}
+            >
+              <div className="relative h-full w-full overflow-hidden rounded-lg">
+                <img
+                  src={p.img.src}
+                  alt={p.img.alt ?? ''}
+                  draggable={false}
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
-              )}
-            </div>
-          </motion.div>
-        ))}
+                {/* Gradient overlay solo en la central, aparece al final para legibilidad */}
+                {isCenter && (
+                  <motion.div
+                    style={{ opacity: overlayOpacity }}
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20"
+                  />
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
 
         {/* Text overlay — capa separada, no escala. Aparece cuando la central llena el viewport. */}
         <motion.div
