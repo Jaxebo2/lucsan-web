@@ -62,23 +62,25 @@ const sectorLabels: Record<string, string> = {
   otro: 'Otro',
 };
 
-// Construir 7 imágenes para el ZoomParallax hero — combina cover + galería + repeats
-const galeriaSrcs = (p.caso?.galeria ?? []).map((g) => ({ src: g.src, alt: g.alt }));
-const sourceImages = [{ src: p.cover.src, alt: p.cover.alt }, ...galeriaSrcs];
-const zoomImages = Array.from({ length: 7 }, (_, i) => {
-  const idx = i % sourceImages.length;
-  return sourceImages[idx]!;
-});
+// Tags para overlay del zoom hero
+const zoomTags = [p.cliente, sectorLabels[p.sector] ?? p.sector, String(p.ano)];
 ---
 
 <BaseLayout title={p.seo.title} description={p.seo.description} ogImage={p.seo.ogImage} schemas={schemas}>
-  {/* IMMERSIVE ZOOM PARALLAX INTRO — solo imágenes, scroll-driven */}
+  {/* IMMERSIVE ZOOM HERO — la cover central crece hasta llenar el viewport */}
   <Section surface="inverse" spacing="none" data-reveal-skip class="relative">
-    <ZoomParallax client:load images={zoomImages} scrollHeight={300} />
+    <ZoomParallax
+      client:load
+      image={{ src: p.cover.src, alt: p.cover.alt }}
+      title={p.titulo}
+      eyebrow="Proyecto destacado"
+      tags={zoomTags}
+      scrollHeight={220}
+    />
   </Section>
 
-  {/* HERO + COVER — dark, aparece DESPUÉS de la inmersión */}
-  <Section surface="inverse" spacing="none" class="relative pt-32 pb-16 md:pt-44 md:pb-24">
+  {/* SUMMARY — dark, aparece DESPUÉS de la inmersión */}
+  <Section surface="inverse" spacing="none" class="relative pt-20 pb-16 md:pt-28 md:pb-24">
     <Container>
       <p class="text-sm text-text-inverse-secondary">
         <a href="/proyectos" class="hover:text-text-accent">Proyectos</a>
@@ -93,24 +95,10 @@ const zoomImages = Array.from({ length: 7 }, (_, i) => {
         {p.destacado && <Badge variant="accent" size="sm">Destacado</Badge>}
       </div>
 
-      <Heading level={1} size="3xl" tone="inverse" splitReveal splitStagger={60} class="mt-6 max-w-5xl">
-        {p.titulo}
-      </Heading>
-      <Prose tone="inverse-secondary" size="xl" class="mt-6 max-w-3xl">
+      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
         {p.resumenCorto}
       </Prose>
     </Container>
-
-    {/* Cover image full-bleed */}
-    <div class="mx-auto mt-16 max-w-[1440px] px-6 md:px-16">
-      <div class="aspect-[16/9] overflow-hidden rounded-2xl bg-neutral-800">
-        <img
-          src={p.cover.src}
-          alt={p.cover.alt}
-          class="h-full w-full object-cover"
-        />
-      </div>
-    </div>
   </Section>
 
   {/* CONTEXTO + DESAFÍO — light */}

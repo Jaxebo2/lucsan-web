@@ -1,93 +1,97 @@
-import { motion, useScroll, useTransform, type MotionStyle } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
-interface ImageItem {
-  src: string;
-  alt?: string;
-}
-
 interface Props {
-  /** Array de 7 imágenes (center + 6 around). */
-  images: ImageItem[];
-  /** Altura total del scroll trigger en vh (default 300). */
+  image: { src: string; alt?: string };
+  title: string;
+  /** Subtítulo arriba del título (cliente, año, sector, etc.) */
+  eyebrow?: string;
+  /** Pie de imagen opcional (badges). */
+  tags?: string[];
+  /** Altura del scroll trigger en vh (default 220). */
   scrollHeight?: number;
 }
 
 /**
- * ZoomParallax — hero inmersivo de scroll.
- * 7 imágenes posicionadas en grilla. Cada una escala a un ritmo distinto
- * conforme el scroll avanza → efecto cinematográfico de zoom-in.
- * Patrón Olivier Larose / Studio Freight.
+ * ZoomParallax — hero inmersivo de proyecto.
+ * Una imagen central + título overlay. Scroll → la imagen escala hasta llenar
+ * el viewport (efecto cinematográfico tipo "te metés dentro"). El título
+ * se desvanece a la mitad del scroll. Al terminar, sigue la landing del caso.
  */
-export default function ZoomParallax({ images, scrollHeight = 300 }: Props) {
+export default function ZoomParallax({
+  image,
+  title,
+  eyebrow,
+  tags = [],
+  scrollHeight = 220,
+}: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end end'],
   });
 
-  // Cada imagen escala a un ritmo distinto — la central escala más rápido (sale del frame antes)
-  const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
-  const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
-  const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
-  const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
-  const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
-
-  // Posiciones + escalas en grid 3x3 (centro + 6 alrededor)
-  const pictures: Array<{ scale: typeof scale4; style: MotionStyle }> = [
-    {
-      scale: scale4,
-      style: { width: '25vw', height: '25vh' },
-    },
-    {
-      scale: scale5,
-      style: { top: '-30vh', left: '5vw', width: '35vw', height: '30vh' },
-    },
-    {
-      scale: scale6,
-      style: { top: '-10vh', left: '-25vw', width: '20vw', height: '45vh' },
-    },
-    {
-      scale: scale5,
-      style: { left: '27.5vw', width: '25vw', height: '25vh' },
-    },
-    {
-      scale: scale6,
-      style: { left: '-27.5vw', width: '20vw', height: '25vh' },
-    },
-    {
-      scale: scale8,
-      style: { top: '27.5vh', left: '5vw', width: '20vw', height: '25vh' },
-    },
-    {
-      scale: scale9,
-      style: { top: '27.5vh', left: '-22.5vw', width: '30vw', height: '25vh' },
-    },
-  ];
+  // Card empieza centrado y compacto (60vw × ~50vh). Scale 1 → 3 garantiza
+  // que cubre el viewport completo aún en pantallas ultra-anchas o portrait.
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 3]);
+  const radius = useTransform(scrollYProgress, [0, 0.85], [24, 0]);
+  // Texto: opacidad 1 → 0 antes de que la imagen ocupe todo (no queremos
+  // verlo cuando la imagen ya esté full-bleed).
+  const textOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.5], [0, -40]);
+  // Overlay dark: aumenta al inicio para legibilidad del texto, desaparece al final
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 0]);
 
   return (
-    <div ref={ref} className="zoom-parallax" style={{ height: `${scrollHeight}vh` }}>
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {pictures.map((p, i) => {
-          const img = images[i % images.length];
-          if (!img) return null;
-          return (
-            <motion.div
-              key={i}
-              style={{ scale: p.scale, ...p.style }}
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform"
-            >
-              <div className="relative h-full w-full overflow-hidden rounded-lg">
-                <img
-                  src={img.src}
-                  alt={img.alt || ''}
-                  draggable={false}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
+    <div
+      ref={ref}
+      className="zoom-parallax relative w-full"
+      style={{ height: `${scrollHeight}vh` }}
+    >
+      <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden bg-brand-black">
+        <motion.div
+          style={{ scale, borderRadius: radius }}
+          className="relative aspect-[16/9] w-[68vw] overflow-hidden shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] will-change-transform"
+        >
+          <img
+            src={image.src}
+            alt={image.alt ?? ''}
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          {/* Dark overlay para legibilidad de texto durante el zoom */}
+          <motion.div
+            style={{ opacity: overlayOpacity }}
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/30"
+          />
+
+          {/* Title overlay */}
+          <motion.div
+            style={{ opacity: textOpacity, y: textY }}
+            className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center"
+          >
+            {eyebrow && (
+              <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/85 md:text-sm">
+                {eyebrow}
+              </p>
+            )}
+            <h1 className="mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
+              {title}
+            </h1>
+            {tags.length > 0 && (
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+                {tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-widest text-white backdrop-blur"
+                  >
+                    {t}
+                  </span>
+                ))}
               </div>
-            </motion.div>
-          );
-        })}
+            )}
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

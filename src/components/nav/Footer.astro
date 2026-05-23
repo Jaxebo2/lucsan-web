@@ -35,11 +35,14 @@ const redes: { label: string; href: string; icon: string }[] = [
 <footer
   id="site-footer"
   data-theme="dark"
+  data-reveal-skip
   class="site-footer bg-brand-black text-neutral-50"
 >
   <div class="mx-auto max-w-7xl px-6 py-16 md:px-16 md:py-24">
-    {/* Middle: 5 columns */}
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 md:gap-8" data-reveal-stagger>
+    {/* Middle: 5 columns — sin data-reveal-stagger porque el footer es position:fixed
+        y ScrollTrigger ejecuta reverse al considerarlo fuera del viewport, fade-ando
+        las columnas a 0 cuando el footer se revela. */}
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5 md:gap-8">
       {/* Brand col */}
       <div class="col-span-2 md:col-span-1">
         <img
