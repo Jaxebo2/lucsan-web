@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 
 interface ImageItem {
@@ -19,14 +19,25 @@ interface Props {
   scrollHeight?: number;
 }
 
+interface PictureConfig {
+  img: ImageItem;
+  isCenter: boolean;
+  cx: number; // % horizontal del centro de la card
+  cy: number; // % vertical del centro de la card
+  w: string;  // ancho CSS (vw)
+  h: string;  // alto CSS (vh)
+  scaleEnd: number;  // scale objetivo
+  exitMult: number;  // velocidad de "fuga" hacia el borde (parallax depth)
+}
+
 /**
- * ZoomParallax — hero inmersivo multi-imagen.
+ * ZoomParallax — hero inmersivo multi-imagen con parallax 3D.
  *
- * INICIO: grid de 7 imágenes (1 central + 6 outer) rodeando el centro del viewport.
- * SCROLL: la central escala 1→4 (llena viewport), las outer escalan 5-9 (se van por los bordes).
- * FINAL: solo se ve la central full-bleed + texto del proyecto (título/eyebrow/tags) revelado encima.
- *
- * Patrón Olivier Larose adaptado: cover del proyecto es la central.
+ * INICIO: grid orgánico de 7 imágenes alrededor del centro.
+ * SCROLL: cada outer se mueve HACIA AFUERA (su vector desde el centro extendido por exitMult)
+ *         y escala simultáneamente. La central se queda y crece hasta llenar el viewport.
+ *         Diferentes exitMult/scaleEnd por imagen → efecto de profundidad/distancia (parallax).
+ * FINAL: solo la central llena el viewport + texto del proyecto overlay.
  */
 export default function ZoomParallax({
   centerImage,
@@ -42,46 +53,34 @@ export default function ZoomParallax({
     offset: ['start start', 'end end'],
   });
 
-  // Central escala 1→4 (de 25vw×25vh a 100vw×100vh = full viewport)
-  const scaleCenter = useTransform(scrollYProgress, [0, 1], [1, 4]);
-  // Outer escalan más rápido → se van por los bordes antes
-  const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
-  const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
-  const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
-  const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
-
-  // Texto del overlay: aparece al final del scroll
-  const textOpacity = useTransform(scrollYProgress, [0.6, 0.9], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0.6, 1], [40, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.6, 1], [0, 0.6]);
-
-  // Outer images: fade-out conforme avanza el scroll → al final solo la central es visible
-  const outerOpacity = useTransform(scrollYProgress, [0.45, 0.75], [1, 0]);
-
-  // Asegurar 6 outers únicos (repetir desde el array si hay menos)
+  // Asegurar 6 outers
   const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
     if (outerImages.length === 0) return centerImage;
     return outerImages[i % outerImages.length]!;
   });
 
-  // Cada imagen: posición CENTRO en viewport (cx, cy), tamaño (w, h), scale animada.
-  // Usamos framer-motion x/y para que se componga correctamente con scale.
-  const pictures = [
-    // Central
-    { img: centerImage, scale: scaleCenter, cx: '50%', cy: '50%', w: '25vw', h: '25vh' },
-    // Top-center
-    { img: safeOuters[0]!, scale: scale5, cx: '52%', cy: '20%', w: '35vw', h: '30vh' },
-    // Far-left tall
-    { img: safeOuters[1]!, scale: scale6, cx: '15%', cy: '40%', w: '20vw', h: '45vh' },
-    // Right of center
-    { img: safeOuters[2]!, scale: scale5, cx: '80%', cy: '50%', w: '25vw', h: '25vh' },
-    // Left of center
-    { img: safeOuters[3]!, scale: scale6, cx: '20%', cy: '50%', w: '20vw', h: '25vh' },
-    // Bottom-right
-    { img: safeOuters[4]!, scale: scale8, cx: '60%', cy: '85%', w: '20vw', h: '25vh' },
+  // Config del grid inicial (basado en el layout de referencia del usuario)
+  const pictures: PictureConfig[] = [
+    // Central — skyscrapers / cover del proyecto
+    { img: centerImage, isCenter: true, cx: 50, cy: 50, w: '25vw', h: '25vh', scaleEnd: 4.2, exitMult: 1 },
+    // Top-center-right: imagen ancha (cityscape)
+    { img: safeOuters[0]!, isCenter: false, cx: 58, cy: 18, w: '32vw', h: '22vh', scaleEnd: 4,   exitMult: 4 },
+    // Top-left: imagen alta (portrait tall)
+    { img: safeOuters[1]!, isCenter: false, cx: 16, cy: 42, w: '14vw', h: '45vh', scaleEnd: 5,   exitMult: 3 },
+    // Middle-right
+    { img: safeOuters[2]!, isCenter: false, cx: 82, cy: 50, w: '20vw', h: '22vh', scaleEnd: 4.5, exitMult: 4 },
     // Bottom-left
-    { img: safeOuters[5]!, scale: scale9, cx: '25%', cy: '85%', w: '30vw', h: '25vh' },
+    { img: safeOuters[3]!, isCenter: false, cx: 18, cy: 82, w: '22vw', h: '18vh', scaleEnd: 5,   exitMult: 3 },
+    // Bottom-center
+    { img: safeOuters[4]!, isCenter: false, cx: 48, cy: 82, w: '22vw', h: '22vh', scaleEnd: 4,   exitMult: 5 },
+    // Bottom-right
+    { img: safeOuters[5]!, isCenter: false, cx: 78, cy: 78, w: '14vw', h: '18vh', scaleEnd: 6,   exitMult: 3.5 },
   ];
+
+  // Texto del overlay — aparece cuando la central llena el viewport
+  const textOpacity = useTransform(scrollYProgress, [0.65, 0.95], [0, 1]);
+  const textY = useTransform(scrollYProgress, [0.65, 1], [40, 0]);
+  const overlayOpacity = useTransform(scrollYProgress, [0.6, 1], [0, 0.55]);
 
   return (
     <div
@@ -90,46 +89,16 @@ export default function ZoomParallax({
       style={{ height: `${scrollHeight}vh` }}
     >
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden bg-brand-black">
-        {pictures.map((p, i) => {
-          const isCenter = i === 0;
-          return (
-            <motion.div
-              key={i}
-              style={{
-                position: 'absolute',
-                top: p.cy,
-                left: p.cx,
-                width: p.w,
-                height: p.h,
-                x: '-50%',
-                y: '-50%',
-                scale: p.scale,
-                // Centro siempre visible y arriba en z; outers fade-out + abajo en z.
-                opacity: isCenter ? 1 : outerOpacity,
-                zIndex: isCenter ? 5 : 1,
-                willChange: 'transform, opacity',
-              }}
-            >
-              <div className="relative h-full w-full overflow-hidden rounded-lg">
-                <img
-                  src={p.img.src}
-                  alt={p.img.alt ?? ''}
-                  draggable={false}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                {/* Gradient overlay solo en la central, aparece al final para legibilidad */}
-                {isCenter && (
-                  <motion.div
-                    style={{ opacity: overlayOpacity }}
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20"
-                  />
-                )}
-              </div>
-            </motion.div>
-          );
-        })}
+        {pictures.map((p, i) => (
+          <ZoomImage
+            key={i}
+            picture={p}
+            progress={scrollYProgress}
+            overlayOpacity={p.isCenter ? overlayOpacity : undefined}
+          />
+        ))}
 
-        {/* Text overlay — capa separada, no escala. Aparece cuando la central llena el viewport. */}
+        {/* Text overlay — capa separada (z-10), aparece sobre la central full-bleed */}
         <motion.div
           style={{ opacity: textOpacity, y: textY }}
           className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
@@ -157,5 +126,65 @@ export default function ZoomParallax({
         </motion.div>
       </div>
     </div>
+  );
+}
+
+/* ============================ Sub-componente: una imagen del zoom ============================ */
+
+interface ZoomImageProps {
+  picture: PictureConfig;
+  progress: MotionValue<number>;
+  overlayOpacity?: MotionValue<number>;
+}
+
+function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
+  // Posición animada: la central NO se mueve; las outers viajan hacia afuera
+  // siguiendo su vector desde (50, 50) extendido por exitMult
+  const cxEnd = picture.isCenter ? picture.cx : 50 + (picture.cx - 50) * picture.exitMult;
+  const cyEnd = picture.isCenter ? picture.cy : 50 + (picture.cy - 50) * picture.exitMult;
+
+  const cxNum = useTransform(progress, [0, 1], [picture.cx, cxEnd]);
+  const cyNum = useTransform(progress, [0, 1], [picture.cy, cyEnd]);
+  const top = useTransform(cyNum, (v) => `${v}%`);
+  const left = useTransform(cxNum, (v) => `${v}%`);
+
+  // Scale: la central a 4.2 (llena viewport con margen); outers escalan según su scaleEnd
+  const scale = useTransform(progress, [0, 1], [1, picture.scaleEnd]);
+
+  // Opacity: la central siempre 1; outers fade-out conforme escapan
+  const outerOpacity = useTransform(progress, [0.35, 0.7], [1, 0]);
+  const opacity = picture.isCenter ? 1 : outerOpacity;
+
+  return (
+    <motion.div
+      style={{
+        position: 'absolute',
+        top,
+        left,
+        width: picture.w,
+        height: picture.h,
+        x: '-50%',
+        y: '-50%',
+        scale,
+        opacity,
+        zIndex: picture.isCenter ? 5 : 1,
+        willChange: 'transform, opacity',
+      }}
+    >
+      <div className="relative h-full w-full overflow-hidden rounded-lg">
+        <img
+          src={picture.img.src}
+          alt={picture.img.alt ?? ''}
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {overlayOpacity && (
+          <motion.div
+            style={{ opacity: overlayOpacity }}
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20"
+          />
+        )}
+      </div>
+    </motion.div>
   );
 }
