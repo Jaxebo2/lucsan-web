@@ -8,12 +8,10 @@ interface ImageItem {
 
 interface Props {
   centerImage: ImageItem;
-  /** Outers (10 idealmente para layout 3-4-3). Si hay menos se repiten. */
   outerImages: ImageItem[];
   title: string;
   eyebrow?: string;
   tags?: string[];
-  /** Altura del scroll trigger en vh (default 140 → ~6-7 ticks). */
   scrollHeight?: number;
 }
 
@@ -22,21 +20,21 @@ interface PictureConfig {
   isCenter: boolean;
   cx: number;
   cy: number;
+  /** Ancho CSS (vw). El alto se calcula automático via aspect-ratio 16/9. */
   w: string;
-  h: string;
-  ml: string;
-  mt: string;
   scaleEnd: number;
   exitMult: number;
 }
 
 /**
- * ZoomParallax — hero inmersivo multi-imagen.
+ * ZoomParallax — hero inmersivo multi-imagen, layout 2-3-2.
  *
- * GRID 3-4-3: top row 3 outers · middle row 4 outers + central · bottom row 3 outers.
- * Total 10 outers + 1 central = 11 imágenes (grid denso, sin huecos grandes).
- * Cada outer escapa hacia afuera a distinta velocidad (parallax depth).
- * scrollHeight bajo (140vh) → recorrido corto, smooth scroll via Lenis global.
+ * Cards en formato 16:9 (aspect-ratio CSS). Tamaños generosos:
+ * - Top/bottom outers + center: 26vw (≈100vw a scale 4 → llena viewport)
+ * - Middle outers laterales: 22vw (un poco menores para no chocar con el centro)
+ *
+ * scrollHeight 140vh → ~6-7 ticks de scroll.
+ * Lenis (global) suaviza cada tick.
  */
 export default function ZoomParallax({
   centerImage,
@@ -52,34 +50,24 @@ export default function ZoomParallax({
     offset: ['start start', 'end end'],
   });
 
-  // 10 outers únicos (repetir si hay menos)
-  const safeOuters: ImageItem[] = Array.from({ length: 10 }, (_, i) => {
+  const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
     if (outerImages.length === 0) return centerImage;
     return outerImages[i % outerImages.length]!;
   });
 
-  // Sizes: outers 14vw×16vh (top/bottom) o 12vw×18vh (middle sides). Center 18vw×18vh.
-  const O_TB = { w: '14vw', h: '16vh', ml: '-7vw',  mt: '-8vh'  };
-  const O_MD = { w: '12vw', h: '18vh', ml: '-6vw',  mt: '-9vh'  };
-  const CTR  = { w: '18vw', h: '18vh', ml: '-9vw',  mt: '-9vh'  };
-
-  // 3-4-3 layout
+  // 2-3-2 layout, todas las cards 16:9
   const pictures: PictureConfig[] = [
     // CENTER (mid row, cx=50%)
-    { img: centerImage,    isCenter: true,  cx: 50, cy: 50, ...CTR,  scaleEnd: 5.7, exitMult: 1 },
-    // TOP ROW (cy=18%): 3 outers
-    { img: safeOuters[0]!, isCenter: false, cx: 25, cy: 18, ...O_TB, scaleEnd: 3.0, exitMult: 5 },
-    { img: safeOuters[1]!, isCenter: false, cx: 50, cy: 18, ...O_TB, scaleEnd: 2.8, exitMult: 6 },
-    { img: safeOuters[2]!, isCenter: false, cx: 75, cy: 18, ...O_TB, scaleEnd: 3.0, exitMult: 5 },
-    // MIDDLE ROW (cy=50%): 4 outers around the center
-    { img: safeOuters[3]!, isCenter: false, cx: 12, cy: 50, ...O_MD, scaleEnd: 2.8, exitMult: 6 },
-    { img: safeOuters[4]!, isCenter: false, cx: 32, cy: 50, ...O_MD, scaleEnd: 2.5, exitMult: 7 },
-    { img: safeOuters[5]!, isCenter: false, cx: 68, cy: 50, ...O_MD, scaleEnd: 2.5, exitMult: 7 },
-    { img: safeOuters[6]!, isCenter: false, cx: 88, cy: 50, ...O_MD, scaleEnd: 2.8, exitMult: 6 },
-    // BOTTOM ROW (cy=82%): 3 outers
-    { img: safeOuters[7]!, isCenter: false, cx: 25, cy: 82, ...O_TB, scaleEnd: 3.2, exitMult: 5 },
-    { img: safeOuters[8]!, isCenter: false, cx: 50, cy: 82, ...O_TB, scaleEnd: 2.8, exitMult: 6 },
-    { img: safeOuters[9]!, isCenter: false, cx: 75, cy: 82, ...O_TB, scaleEnd: 3.2, exitMult: 5 },
+    { img: centerImage,    isCenter: true,  cx: 50, cy: 50, w: '26vw', scaleEnd: 5,   exitMult: 1 },
+    // TOP ROW (cy=20%)
+    { img: safeOuters[0]!, isCenter: false, cx: 25, cy: 20, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
+    { img: safeOuters[1]!, isCenter: false, cx: 75, cy: 20, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
+    // MIDDLE ROW sides (cy=50%)
+    { img: safeOuters[2]!, isCenter: false, cx: 10, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
+    { img: safeOuters[3]!, isCenter: false, cx: 90, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
+    // BOTTOM ROW (cy=80%)
+    { img: safeOuters[4]!, isCenter: false, cx: 25, cy: 80, w: '26vw', scaleEnd: 3.2, exitMult: 5.5 },
+    { img: safeOuters[5]!, isCenter: false, cx: 75, cy: 80, w: '26vw', scaleEnd: 3,   exitMult: 6 },
   ];
 
   const textOpacity = useTransform(scrollYProgress, [0.6, 0.92], [0, 1]);
@@ -151,7 +139,6 @@ function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
 
   const scale = useTransform(progress, [0, 1], [1, picture.scaleEnd]);
 
-  // Fade-out temprano para que los outers ya no estén visibles cuando la central domina
   const outerOpacity = useTransform(progress, [0.2, 0.55], [1, 0]);
   const opacity = picture.isCenter ? 1 : outerOpacity;
 
@@ -162,9 +149,9 @@ function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
         top,
         left,
         width: picture.w,
-        height: picture.h,
-        marginLeft: picture.ml,
-        marginTop: picture.mt,
+        aspectRatio: '16 / 9',
+        x: '-50%',
+        y: '-50%',
         scale,
         opacity,
         zIndex: picture.isCenter ? 5 : 1,
