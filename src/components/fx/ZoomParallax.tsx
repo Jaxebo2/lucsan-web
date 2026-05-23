@@ -9,7 +9,7 @@ interface ImageItem {
 interface Props {
   /** Imagen central que terminará llenando el viewport (la cover del proyecto). */
   centerImage: ImageItem;
-  /** 6 imágenes outer que rodean al centro (gallery del proyecto). Si hay menos, se repiten. */
+  /** 6 imágenes outer que rodean al centro. Si hay menos, se repiten. */
   outerImages: ImageItem[];
   /** Título del proyecto — aparece al final del zoom como hero overlay. */
   title: string;
@@ -50,55 +50,34 @@ export default function ZoomParallax({
   const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
   const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
 
-  // Texto: aparece en el último tercio del scroll, cuando la central ya domina
+  // Texto del overlay: aparece al final del scroll
   const textOpacity = useTransform(scrollYProgress, [0.55, 0.85], [0, 1]);
   const textY = useTransform(scrollYProgress, [0.55, 0.95], [40, 0]);
-  // Gradient overlay sobre la central — sube al final para legibilidad del texto
   const overlayOpacity = useTransform(scrollYProgress, [0.55, 0.95], [0, 0.6]);
 
-  // Asegurar 6 outers (repetir si hay menos)
+  // Asegurar 6 outers únicos (repetir desde el array si hay menos)
   const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
     if (outerImages.length === 0) return centerImage;
     return outerImages[i % outerImages.length]!;
   });
 
-  // 7 fotos: [0]=central, [1..6]=outer positions
+  // Cada imagen: posición CENTRO en viewport (cx, cy), tamaño (w, h), scale animada.
+  // Usamos framer-motion x/y para que se componga correctamente con scale.
   const pictures = [
-    {
-      img: centerImage,
-      scale: scaleCenter,
-      style: { width: '25vw', height: '25vh' } as const,
-    },
-    {
-      img: safeOuters[0]!,
-      scale: scale5,
-      style: { top: '-30vh', left: '5vw', width: '35vw', height: '30vh' } as const,
-    },
-    {
-      img: safeOuters[1]!,
-      scale: scale6,
-      style: { top: '-10vh', left: '-25vw', width: '20vw', height: '45vh' } as const,
-    },
-    {
-      img: safeOuters[2]!,
-      scale: scale5,
-      style: { left: '27.5vw', width: '25vw', height: '25vh' } as const,
-    },
-    {
-      img: safeOuters[3]!,
-      scale: scale6,
-      style: { left: '-27.5vw', width: '20vw', height: '25vh' } as const,
-    },
-    {
-      img: safeOuters[4]!,
-      scale: scale8,
-      style: { top: '27.5vh', left: '5vw', width: '20vw', height: '25vh' } as const,
-    },
-    {
-      img: safeOuters[5]!,
-      scale: scale9,
-      style: { top: '27.5vh', left: '-22.5vw', width: '30vw', height: '25vh' } as const,
-    },
+    // Central
+    { img: centerImage, scale: scaleCenter, cx: '50%', cy: '50%', w: '25vw', h: '25vh' },
+    // Top-center
+    { img: safeOuters[0]!, scale: scale5, cx: '52%', cy: '20%', w: '35vw', h: '30vh' },
+    // Far-left tall
+    { img: safeOuters[1]!, scale: scale6, cx: '15%', cy: '40%', w: '20vw', h: '45vh' },
+    // Right of center
+    { img: safeOuters[2]!, scale: scale5, cx: '80%', cy: '50%', w: '25vw', h: '25vh' },
+    // Left of center
+    { img: safeOuters[3]!, scale: scale6, cx: '20%', cy: '50%', w: '20vw', h: '25vh' },
+    // Bottom-right
+    { img: safeOuters[4]!, scale: scale8, cx: '60%', cy: '85%', w: '20vw', h: '25vh' },
+    // Bottom-left
+    { img: safeOuters[5]!, scale: scale9, cx: '25%', cy: '85%', w: '30vw', h: '25vh' },
   ];
 
   return (
@@ -111,8 +90,17 @@ export default function ZoomParallax({
         {pictures.map((p, i) => (
           <motion.div
             key={i}
-            style={{ scale: p.scale, ...p.style }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform"
+            style={{
+              position: 'absolute',
+              top: p.cy,
+              left: p.cx,
+              width: p.w,
+              height: p.h,
+              x: '-50%',
+              y: '-50%',
+              scale: p.scale,
+              willChange: 'transform',
+            }}
           >
             <div className="relative h-full w-full overflow-hidden rounded-lg">
               <img
@@ -121,7 +109,7 @@ export default function ZoomParallax({
                 draggable={false}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              {/* Gradient overlay solo en la central, para legibilidad del texto al final */}
+              {/* Gradient overlay solo en la central, aparece al final para legibilidad */}
               {i === 0 && (
                 <motion.div
                   style={{ opacity: overlayOpacity }}
