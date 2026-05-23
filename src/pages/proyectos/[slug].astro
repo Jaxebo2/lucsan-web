@@ -10,6 +10,7 @@ import Badge from '../../components/ui/Badge.astro';
 import MetricBadge from '../../components/ui/MetricBadge.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
 import CollapsibleCard from '../../components/fx/CollapsibleCard.astro';
+import ZoomParallax from '../../components/fx/ZoomParallax.tsx';
 import { Icon } from 'astro-icon/components';
 import { caseStudySchema, breadcrumbSchema } from '../../lib/seo';
 
@@ -60,10 +61,23 @@ const sectorLabels: Record<string, string> = {
   finanzas: 'Finanzas',
   otro: 'Otro',
 };
+
+// Construir 7 imágenes para el ZoomParallax hero — combina cover + galería + repeats
+const galeriaSrcs = (p.caso?.galeria ?? []).map((g) => ({ src: g.src, alt: g.alt }));
+const sourceImages = [{ src: p.cover.src, alt: p.cover.alt }, ...galeriaSrcs];
+const zoomImages = Array.from({ length: 7 }, (_, i) => {
+  const idx = i % sourceImages.length;
+  return sourceImages[idx]!;
+});
 ---
 
 <BaseLayout title={p.seo.title} description={p.seo.description} ogImage={p.seo.ogImage} schemas={schemas}>
-  {/* HERO + COVER — dark */}
+  {/* IMMERSIVE ZOOM PARALLAX INTRO — solo imágenes, scroll-driven */}
+  <Section surface="inverse" spacing="none" data-reveal-skip class="relative">
+    <ZoomParallax client:load images={zoomImages} scrollHeight={300} />
+  </Section>
+
+  {/* HERO + COVER — dark, aparece DESPUÉS de la inmersión */}
   <Section surface="inverse" spacing="none" class="relative pt-32 pb-16 md:pt-44 md:pb-24">
     <Container>
       <p class="text-sm text-text-inverse-secondary">
@@ -79,7 +93,7 @@ const sectorLabels: Record<string, string> = {
         {p.destacado && <Badge variant="accent" size="sm">Destacado</Badge>}
       </div>
 
-      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-5xl">
+      <Heading level={1} size="3xl" tone="inverse" splitReveal splitStagger={60} class="mt-6 max-w-5xl">
         {p.titulo}
       </Heading>
       <Prose tone="inverse-secondary" size="xl" class="mt-6 max-w-3xl">

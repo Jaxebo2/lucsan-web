@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SideScrollLegal from '../../components/legal/SideScrollLegal.astro';
+
+const sections = [
+  { id: 'introduccion', title: 'Introducción' },
+  { id: 'datos', title: 'Datos que recopilamos' },
+  { id: 'uso', title: 'Cómo usamos tus datos' },
+  { id: 'cookies', title: 'Cookies y tracking' },
+  { id: 'terceros', title: 'Terceros' },
+  { id: 'derechos', title: 'Tus derechos' },
+  { id: 'retencion', title: 'Retención' },
+  { id: 'cambios', title: 'Cambios a esta política' },
+  { id: 'contacto', title: 'Contacto' },
+];
+
+const lastUpdate = '2026-05-23';
+---
+
+<BaseLayout
+  title="Política de privacidad · Lucsan Design"
+  description="Cómo Lucsan Design SpA recopila, usa y protege tu información personal."
+>
+  <SideScrollLegal
+    title="Política de privacidad"
+    intro={`Cómo recopilamos, usamos y protegemos tu información cuando interactúas con Lucsan Design SpA. Última actualización: ${lastUpdate}.`}
+    sections={sections}
+  >
+    <article id="introduccion" class="legal-section">
+      <h2 class="legal-section__title">Introducción</h2>
+      <p>Lucsan Design SpA ("Lucsan", "nosotros") respeta tu privacidad. Esta política describe qué datos recopilamos cuando visitas nuestro sitio web o nos contactas, cómo los usamos, y los derechos que tienes sobre ellos.</p>
+      <p>Al usar nuestro sitio aceptas las prácticas descritas aquí.</p>
+    </article>
+
+    <article id="datos" class="legal-section">
+      <h2 class="legal-section__title">Datos que recopilamos</h2>
+      <p>Recopilamos información que tú nos proporcionas voluntariamente:</p>
+      <ul>
+        <li><strong>Información de contacto:</strong> nombre, email, empresa y mensaje cuando usas nuestros formularios.</li>
+        <li><strong>Información del navegador:</strong> tipo de dispositivo, sistema operativo, navegador, idioma, IP aproximada, páginas visitadas, vía analytics anonimizado.</li>
+        <li><strong>Cookies funcionales:</strong> preferencias de tema y consentimiento.</li>
+      </ul>
+    </article>
+
+    <article id="uso" class="legal-section">
+      <h2 class="legal-section__title">Cómo usamos tus datos</h2>
+      <p>Usamos tus datos exclusivamente para:</p>
+      <ul>
+        <li>Responder a tus consultas y mensajes.</li>
+        <li>Mejorar la experiencia del sitio y entender qué contenido es útil.</li>
+        <li>Cumplir obligaciones legales cuando aplique.</li>
+      </ul>
+      <p>No vendemos, alquilamos ni cedemos tus datos a terceros con fines comerciales.</p>
+    </article>
+
+    <article id="cookies" class="legal-section">
+      <h2 class="legal-section__title">Cookies y tracking</h2>
+      <p>Usamos cookies y tecnologías similares para analytics anonimizado (Google Analytics 4) y para recordar tus preferencias de UI.</p>
+      <p>Puedes desactivar cookies en tu navegador en cualquier momento; algunas funciones pueden no operar correctamente sin ellas.</p>
+    </article>
+
+    <article id="terceros" class="legal-section">
+      <h2 class="legal-section__title">Terceros</h2>
+      <p>Usamos los siguientes servicios externos:</p>
+      <ul>
+        <li><strong>Google Analytics 4</strong> — métricas anonimizadas de uso.</li>
+        <li><strong>Resend</strong> — entrega de email de formularios de contacto.</li>
+        <li><strong>Vercel</strong> — hosting y entrega del sitio.</li>
+        <li><strong>Cloudflare Turnstile</strong> — protección anti-bot en formularios.</li>
+      </ul>
+      <p>Cada uno tiene sus propias políticas de privacidad.</p>
+    </article>
+
+    <article id="derechos" class="legal-section">
+      <h2 class="legal-section__title">Tus derechos</h2>
+      <p>Tienes derecho a:</p>
+      <ul>
+        <li>Acceder a los datos que tenemos sobre ti.</li>
+        <li>Rectificar datos inexactos.</li>
+        <li>Solicitar la eliminación de tus datos.</li>
+        <li>Oponerte al tratamiento o limitarlo.</li>
+        <li>Portar tus datos en formato estructurado.</li>
+      </ul>
+      <p>Para ejercer cualquier derecho, escríbenos a <a href="mailto:contacto@lucsandesign.com">contacto@lucsandesign.com</a>.</p>
+    </article>
+
+    <article id="retencion" class="legal-section">
+      <h2 class="legal-section__title">Retención</h2>
+      <p>Conservamos tus datos solo el tiempo necesario para los fines descritos arriba. Datos de formularios de contacto: máximo 24 meses tras el último intercambio.</p>
+    </article>
+
+    <article id="cambios" class="legal-section">
+      <h2 class="legal-section__title">Cambios a esta política</h2>
+      <p>Podemos actualizar esta política. La fecha de última actualización aparece al inicio de este documento. Cambios sustanciales se notificarán claramente en el sitio.</p>
+    </article>
+
+    <article id="contacto" class="legal-section">
+      <h2 class="legal-section__title">Contacto</h2>
+      <p>Si tienes preguntas sobre esta política o sobre el tratamiento de tus datos, escríbenos:</p>
+      <p>
+        <a href="mailto:contacto@lucsandesign.com">contacto@lucsandesign.com</a><br />
+        Lucsan Design SpA · Santiago, Chile
+      </p>
+    </article>
+  </SideScrollLegal>
+</BaseLayout>
+
+<style is:global>
+  .legal-section {
+    scroll-margin-top: 100px;
+  }
+  .legal-section__title {
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .legal-section__title { font-size: 2.5rem; }
+  }
+  .legal-section p,
+  .legal-section ul {
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    max-width: 65ch;
+  }
+  .legal-section ul { padding-left: 1.5rem; list-style: disc; }
+  .legal-section li { margin-bottom: 0.5rem; }
+  .legal-section strong { color: var(--color-text-primary); font-weight: 600; }
+  .legal-section a {
+    color: var(--color-brand-coral);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-thickness 0.2s ease;
+  }
+  .legal-section a:hover { text-decoration-thickness: 2px; }
+</style>

@@ -144,7 +144,9 @@ const ogImageUrl = ogImage.startsWith('http')
       /* === Footer reveal effect ===
          Footer fixed al fondo del viewport (z-0). El page-layer (z-10) tiene bg sólido
          que lo cubre. Margin-bottom del page-layer crea espacio scrolleable que revela
-         el footer al final. */
+         el footer al final.
+         BORDE INFERIOR: sombra interna fuerte + curvado sutil para que el momento de
+         reveal se sienta intencional, no un "corte abrupto a negro". */
       .site-footer {
         position: fixed;
         left: 0;
@@ -154,12 +156,16 @@ const ogImageUrl = ogImage.startsWith('http')
         width: 100%;
       }
       .page-layer {
-        /* margin-bottom seteado por JS en función del alto real del footer */
+        position: relative;
         margin-bottom: var(--footer-h, 600px);
+        /* Curvado sutil en el borde inferior — emula "tarjeta apilada" sobre el footer */
+        border-bottom-left-radius: 32px;
+        border-bottom-right-radius: 32px;
+        box-shadow: 0 28px 60px -20px rgba(0, 0, 0, 0.35);
       }
       @media (prefers-reduced-motion: reduce) {
         .site-footer { position: relative; }
-        .page-layer { margin-bottom: 0; }
+        .page-layer { margin-bottom: 0; box-shadow: none; border-radius: 0; }
       }
     </style>
 

@@ -1,0 +1,170 @@
+---
+/**
+ * SideScrollLegal — layout para páginas legales (Privacidad, Cookies, Términos).
+ * Sticky sidebar con TOC + indicador de sección activa animado.
+ * Inspirado en Skiper60 "Side Scroll Navigation" / acceptance of terms.
+ */
+
+interface Section {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  intro?: string;
+  sections: Section[];
+}
+
+const { title, intro, sections } = Astro.props as Props;
+---
+
+<section class="side-scroll-legal" data-theme="light">
+  <div class="mx-auto grid max-w-7xl gap-12 px-6 py-24 md:grid-cols-[260px_1fr] md:px-12 md:py-32 lg:gap-16">
+    {/* Sticky TOC sidebar */}
+    <aside class="legal-toc md:sticky md:top-32 md:self-start">
+      <p class="text-xs font-medium uppercase tracking-widest text-text-secondary">Contenido</p>
+      <nav class="mt-5 flex flex-col gap-1" aria-label="Tabla de contenidos">
+        {sections.map((s, i) => (
+          <a
+            href={`#${s.id}`}
+            data-toc-link
+            data-section-id={s.id}
+            class="legal-toc__link group relative flex items-center gap-3 py-2 text-sm text-text-secondary transition-colors hover:text-text-primary"
+          >
+            <span class="legal-toc__indicator" aria-hidden="true"></span>
+            <span class="legal-toc__num font-mono text-xs text-text-muted">{String(i + 1).padStart(2, '0')}</span>
+            <span class="legal-toc__label">{s.title}</span>
+          </a>
+        ))}
+      </nav>
+    </aside>
+
+    {/* Content */}
+    <div class="legal-content">
+      <header class="mb-12">
+        <h1 class="font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl" data-split-words data-split-stagger="55">
+          {title}
+        </h1>
+        {intro && (
+          <p class="mt-6 max-w-2xl text-lg text-text-secondary md:text-xl">{intro}</p>
+        )}
+      </header>
+
+      <div class="legal-sections flex flex-col gap-20">
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .side-scroll-legal {
+    background: var(--color-neutral-50);
+    min-height: 100vh;
+  }
+
+  .legal-toc__link {
+    padding-left: 1rem;
+  }
+  .legal-toc__indicator {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 14px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--color-brand-black) 12%, transparent);
+    transform: translateY(-50%) scaleY(0.6);
+    transform-origin: center;
+    transition:
+      background-color 0.35s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .legal-toc__link[data-active='true'] {
+    color: var(--color-brand-black);
+  }
+  .legal-toc__link[data-active='true'] .legal-toc__indicator {
+    background: var(--color-brand-coral);
+    transform: translateY(-50%) scaleY(1);
+    width: 4px;
+  }
+  .legal-toc__link[data-active='true'] .legal-toc__num {
+    color: var(--color-brand-coral);
+  }
+  .legal-toc__num {
+    transition: color 0.3s ease;
+  }
+  .legal-toc__label {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: left center;
+  }
+  .legal-toc__link:hover .legal-toc__label,
+  .legal-toc__link[data-active='true'] .legal-toc__label {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .legal-toc__indicator,
+    .legal-toc__label,
+    .legal-toc__num {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initLegalScrollNav() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+    if (links.length === 0) return;
+
+    const sectionIds = Array.from(links).map((l) => l.dataset.sectionId).filter(Boolean) as string[];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const setActive = (id: string | null) => {
+      links.forEach((l) => {
+        l.dataset.active = l.dataset.sectionId === id ? 'true' : 'false';
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Encontrar la sección más visible
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) {
+          setActive(visible[0].target.id);
+        }
+      },
+      {
+        rootMargin: '-30% 0px -50% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    sections.forEach((s) => observer.observe(s));
+
+    // Smooth scroll en click
+    links.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const id = link.dataset.sectionId;
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        const offset = 100;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+  }
+
+  initLegalScrollNav();
+  document.addEventListener('astro:page-load', initLegalScrollNav);
+</script>

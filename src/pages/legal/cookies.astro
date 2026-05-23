@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SideScrollLegal from '../../components/legal/SideScrollLegal.astro';
+
+const sections = [
+  { id: 'que-son', title: '¿Qué son las cookies?' },
+  { id: 'cuales', title: 'Cuáles usamos' },
+  { id: 'analytics', title: 'Analytics' },
+  { id: 'desactivar', title: 'Cómo desactivarlas' },
+  { id: 'contacto', title: 'Contacto' },
+];
+
+const lastUpdate = '2026-05-23';
+---
+
+<BaseLayout
+  title="Política de cookies · Lucsan Design"
+  description="Información sobre las cookies y tecnologías de tracking que usa el sitio de Lucsan Design SpA."
+>
+  <SideScrollLegal
+    title="Política de cookies"
+    intro={`Qué cookies usamos, para qué, y cómo desactivarlas. Última actualización: ${lastUpdate}.`}
+    sections={sections}
+  >
+    <article id="que-son" class="legal-section">
+      <h2 class="legal-section__title">¿Qué son las cookies?</h2>
+      <p>Las cookies son pequeños archivos de texto que un sitio web guarda en tu dispositivo cuando lo visitas. Permiten recordar tu navegación, preferencias, y recopilar información estadística sobre el uso del sitio.</p>
+    </article>
+
+    <article id="cuales" class="legal-section">
+      <h2 class="legal-section__title">Cuáles usamos</h2>
+      <p>Usamos las siguientes categorías:</p>
+      <ul>
+        <li><strong>Funcionales (siempre activas):</strong> preferencias de UI como modo claro/oscuro, idioma, y consentimiento de cookies.</li>
+        <li><strong>Analytics (opcionales):</strong> Google Analytics 4 anonimizado para entender qué páginas se visitan más y mejorar el sitio.</li>
+        <li><strong>Anti-bot (siempre activas):</strong> Cloudflare Turnstile para proteger formularios de spam automatizado.</li>
+      </ul>
+    </article>
+
+    <article id="analytics" class="legal-section">
+      <h2 class="legal-section__title">Analytics</h2>
+      <p>Google Analytics 4 nos permite ver, en agregado y anonimizado:</p>
+      <ul>
+        <li>Páginas más visitadas.</li>
+        <li>Tiempo promedio en cada sección.</li>
+        <li>Rutas comunes de navegación.</li>
+        <li>Dispositivo, navegador y país aproximado del visitante.</li>
+      </ul>
+      <p>No vinculamos esta información con datos personales identificables.</p>
+    </article>
+
+    <article id="desactivar" class="legal-section">
+      <h2 class="legal-section__title">Cómo desactivarlas</h2>
+      <p>Puedes desactivar cookies en cualquier momento desde la configuración de tu navegador:</p>
+      <ul>
+        <li><strong>Chrome:</strong> Configuración → Privacidad y seguridad → Cookies y otros datos de sitios.</li>
+        <li><strong>Firefox:</strong> Preferencias → Privacidad y seguridad → Cookies y datos del sitio.</li>
+        <li><strong>Safari:</strong> Preferencias → Privacidad → Gestionar datos de sitios web.</li>
+        <li><strong>Edge:</strong> Configuración → Cookies y permisos del sitio.</li>
+      </ul>
+      <p>Algunas funciones pueden no operar correctamente sin cookies.</p>
+    </article>
+
+    <article id="contacto" class="legal-section">
+      <h2 class="legal-section__title">Contacto</h2>
+      <p>¿Dudas sobre nuestro uso de cookies?</p>
+      <p>
+        <a href="mailto:contacto@lucsandesign.com">contacto@lucsandesign.com</a><br />
+        Lucsan Design SpA · Santiago, Chile
+      </p>
+    </article>
+  </SideScrollLegal>
+</BaseLayout>
