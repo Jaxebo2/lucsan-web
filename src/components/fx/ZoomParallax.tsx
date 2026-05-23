@@ -7,11 +7,9 @@ interface ImageItem {
 }
 
 interface Props {
-  /** Imagen central que terminará llenando el viewport (la cover del proyecto). */
   centerImage: ImageItem;
-  /** 6 imágenes outer que rodean al centro. Si hay menos, se repiten. */
+  /** 6 imágenes outer que rodean al centro. */
   outerImages: ImageItem[];
-  /** Título del proyecto — aparece al final del zoom como hero overlay. */
   title: string;
   eyebrow?: string;
   tags?: string[];
@@ -22,22 +20,26 @@ interface Props {
 interface PictureConfig {
   img: ImageItem;
   isCenter: boolean;
-  cx: number; // % horizontal del centro de la card
-  cy: number; // % vertical del centro de la card
-  w: string;  // ancho CSS (vw)
-  h: string;  // alto CSS (vh)
-  scaleEnd: number;  // scale objetivo
-  exitMult: number;  // velocidad de "fuga" hacia el borde (parallax depth)
+  cx: number;        // % horizontal del centro de la card
+  cy: number;        // % vertical del centro de la card
+  w: string;         // ancho (vw)
+  h: string;         // alto (vh)
+  ml: string;        // margin-left negativo = -w/2 (centering)
+  mt: string;        // margin-top negativo = -h/2 (centering)
+  scaleEnd: number;
+  exitMult: number;
 }
 
 /**
- * ZoomParallax — hero inmersivo multi-imagen con parallax 3D.
+ * ZoomParallax — hero inmersivo multi-imagen.
  *
- * INICIO: grid orgánico de 7 imágenes alrededor del centro.
- * SCROLL: cada outer se mueve HACIA AFUERA (su vector desde el centro extendido por exitMult)
- *         y escala simultáneamente. La central se queda y crece hasta llenar el viewport.
- *         Diferentes exitMult/scaleEnd por imagen → efecto de profundidad/distancia (parallax).
- * FINAL: solo la central llena el viewport + texto del proyecto overlay.
+ * GRID 2-3-2: 6 outers en filas top/middle/bottom + central. Todos del mismo tamaño.
+ * SCROLL: outers se trasladan rápido hacia afuera + fade-out temprano (0.2→0.55).
+ *         Distintos exitMult/scaleEnd por imagen → sensación de profundidad/parallax.
+ *         Central queda en (50,50) y crece hasta llenar el viewport (scale 4.6).
+ * FINAL: solo la central full-bleed + texto del proyecto overlay.
+ *
+ * Centering vía margin negativo (más predecible que translate + scale).
  */
 export default function ZoomParallax({
   centerImage,
@@ -53,34 +55,39 @@ export default function ZoomParallax({
     offset: ['start start', 'end end'],
   });
 
-  // Asegurar 6 outers
+  // 6 outers únicos (repetir desde el array si hay menos)
   const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
     if (outerImages.length === 0) return centerImage;
     return outerImages[i % outerImages.length]!;
   });
 
-  // Config del grid inicial (basado en el layout de referencia del usuario)
+  // Grid 2-3-2: uniform 22vw × 22vh para todas las cards
+  // Top row (cy=22%):    O1 (cx=25%), O2 (cx=75%)
+  // Mid row (cy=50%):    O3 (cx=12%), CENTER (cx=50%), O4 (cx=88%)
+  // Bottom row (cy=78%): O5 (cx=25%), O6 (cx=75%)
+  const W = '22vw';
+  const H = '22vh';
+  const ML = '-11vw';
+  const MT = '-11vh';
+
   const pictures: PictureConfig[] = [
-    // Central — skyscrapers / cover del proyecto
-    { img: centerImage, isCenter: true, cx: 50, cy: 50, w: '25vw', h: '25vh', scaleEnd: 4.2, exitMult: 1 },
-    // Top-center-right: imagen ancha (cityscape)
-    { img: safeOuters[0]!, isCenter: false, cx: 58, cy: 18, w: '32vw', h: '22vh', scaleEnd: 4,   exitMult: 4 },
-    // Top-left: imagen alta (portrait tall)
-    { img: safeOuters[1]!, isCenter: false, cx: 16, cy: 42, w: '14vw', h: '45vh', scaleEnd: 5,   exitMult: 3 },
-    // Middle-right
-    { img: safeOuters[2]!, isCenter: false, cx: 82, cy: 50, w: '20vw', h: '22vh', scaleEnd: 4.5, exitMult: 4 },
-    // Bottom-left
-    { img: safeOuters[3]!, isCenter: false, cx: 18, cy: 82, w: '22vw', h: '18vh', scaleEnd: 5,   exitMult: 3 },
-    // Bottom-center
-    { img: safeOuters[4]!, isCenter: false, cx: 48, cy: 82, w: '22vw', h: '22vh', scaleEnd: 4,   exitMult: 5 },
-    // Bottom-right
-    { img: safeOuters[5]!, isCenter: false, cx: 78, cy: 78, w: '14vw', h: '18vh', scaleEnd: 6,   exitMult: 3.5 },
+    // CENTER (mid row)
+    { img: centerImage, isCenter: true,  cx: 50, cy: 50, w: W, h: H, ml: ML, mt: MT, scaleEnd: 4.6, exitMult: 1 },
+    // Top row
+    { img: safeOuters[0]!, isCenter: false, cx: 25, cy: 22, w: W, h: H, ml: ML, mt: MT, scaleEnd: 3,   exitMult: 6 },
+    { img: safeOuters[1]!, isCenter: false, cx: 75, cy: 22, w: W, h: H, ml: ML, mt: MT, scaleEnd: 2.8, exitMult: 6.5 },
+    // Mid row sides
+    { img: safeOuters[2]!, isCenter: false, cx: 12, cy: 50, w: W, h: H, ml: ML, mt: MT, scaleEnd: 2.5, exitMult: 7 },
+    { img: safeOuters[3]!, isCenter: false, cx: 88, cy: 50, w: W, h: H, ml: ML, mt: MT, scaleEnd: 2.5, exitMult: 7 },
+    // Bottom row
+    { img: safeOuters[4]!, isCenter: false, cx: 25, cy: 78, w: W, h: H, ml: ML, mt: MT, scaleEnd: 3.2, exitMult: 5.5 },
+    { img: safeOuters[5]!, isCenter: false, cx: 75, cy: 78, w: W, h: H, ml: ML, mt: MT, scaleEnd: 3,   exitMult: 6 },
   ];
 
-  // Texto del overlay — aparece cuando la central llena el viewport
-  const textOpacity = useTransform(scrollYProgress, [0.65, 0.95], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0.65, 1], [40, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.6, 1], [0, 0.55]);
+  // Texto del overlay aparece después de que los outers se fueron
+  const textOpacity = useTransform(scrollYProgress, [0.6, 0.92], [0, 1]);
+  const textY = useTransform(scrollYProgress, [0.6, 1], [40, 0]);
+  const overlayOpacity = useTransform(scrollYProgress, [0.55, 0.95], [0, 0.55]);
 
   return (
     <div
@@ -98,7 +105,7 @@ export default function ZoomParallax({
           />
         ))}
 
-        {/* Text overlay — capa separada (z-10), aparece sobre la central full-bleed */}
+        {/* Text overlay — capa separada (z-10) sobre la central full-bleed */}
         <motion.div
           style={{ opacity: textOpacity, y: textY }}
           className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
@@ -129,7 +136,7 @@ export default function ZoomParallax({
   );
 }
 
-/* ============================ Sub-componente: una imagen del zoom ============================ */
+/* ============================ Sub-componente: imagen individual ============================ */
 
 interface ZoomImageProps {
   picture: PictureConfig;
@@ -138,8 +145,8 @@ interface ZoomImageProps {
 }
 
 function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
-  // Posición animada: la central NO se mueve; las outers viajan hacia afuera
-  // siguiendo su vector desde (50, 50) extendido por exitMult
+  // Posición animada: la central queda en su lugar; los outers se van hacia afuera
+  // (vector desde el centro del viewport extendido por exitMult)
   const cxEnd = picture.isCenter ? picture.cx : 50 + (picture.cx - 50) * picture.exitMult;
   const cyEnd = picture.isCenter ? picture.cy : 50 + (picture.cy - 50) * picture.exitMult;
 
@@ -148,11 +155,10 @@ function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
   const top = useTransform(cyNum, (v) => `${v}%`);
   const left = useTransform(cxNum, (v) => `${v}%`);
 
-  // Scale: la central a 4.2 (llena viewport con margen); outers escalan según su scaleEnd
   const scale = useTransform(progress, [0, 1], [1, picture.scaleEnd]);
 
-  // Opacity: la central siempre 1; outers fade-out conforme escapan
-  const outerOpacity = useTransform(progress, [0.35, 0.7], [1, 0]);
+  // Outer fade-out temprano (entre 0.2 y 0.55) → ya no son visibles cuando la central domina
+  const outerOpacity = useTransform(progress, [0.2, 0.55], [1, 0]);
   const opacity = picture.isCenter ? 1 : outerOpacity;
 
   return (
@@ -163,8 +169,8 @@ function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
         left,
         width: picture.w,
         height: picture.h,
-        x: '-50%',
-        y: '-50%',
+        marginLeft: picture.ml,
+        marginTop: picture.mt,
         scale,
         opacity,
         zIndex: picture.isCenter ? 5 : 1,

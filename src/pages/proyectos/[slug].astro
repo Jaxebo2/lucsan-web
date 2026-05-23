@@ -63,24 +63,25 @@ const sectorLabels: Record<string, string> = {
 };
 
 // Placeholders Unsplash para preview del ZoomParallax mientras no hay assets reales.
-// 6 imágenes outer distintas + una opción para reemplazar la cover si es solo el logo SVG.
-const unsplashPlaceholders = [
-  { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1280&h=720&fit=crop&q=80', alt: 'Modern architecture' },
+// 6 outers distintos. La cover se mantiene si es foto; si es logo SVG, se sustituye
+// por la imagen más cinematográfica (skyscrapers) para el efecto inmersivo.
+const unsplashOuters = [
   { src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1280&h=720&fit=crop&q=80', alt: 'Urban cityscape' },
-  { src: 'https://images.unsplash.com/photo-1557683316-973673baf926?w=800&h=800&fit=crop&q=80', alt: 'Abstract gradient' },
+  { src: 'https://images.unsplash.com/photo-1557683316-973673baf926?w=900&h=900&fit=crop&q=80', alt: 'Abstract gradient' },
   { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop&q=80', alt: 'Mountain landscape' },
-  { src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=800&fit=crop&q=80', alt: 'Minimalist forms' },
-  { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1280&h=720&fit=crop&q=80', alt: 'Ocean waves' },
+  { src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=900&h=900&fit=crop&q=80', alt: 'Minimalist forms' },
+  { src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1280&h=720&fit=crop&q=80', alt: 'Lake at dawn' },
+  { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1280&h=720&fit=crop&q=80', alt: 'Forest path' },
 ];
 
 // Galería real del proyecto si existe; si no, usamos los placeholders
 const galeriaSrcs = (p.caso?.galeria ?? []).map((g) => ({ src: g.src, alt: g.alt }));
-const outerImages = galeriaSrcs.length >= 6 ? galeriaSrcs : unsplashPlaceholders;
+const outerImages = galeriaSrcs.length >= 6 ? galeriaSrcs : unsplashOuters;
 
-// Si la cover es un SVG/logo (no una foto real), usamos un placeholder más cinematográfico
+// Cover: si es SVG/logo, sustituimos por foto cinematográfica de skyscrapers
 const isLogoCover = p.cover.src.endsWith('.svg') || p.cover.src.includes('logo');
 const zoomCenterImage = isLogoCover
-  ? { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop&q=85', alt: 'Cover preview' }
+  ? { src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop&q=85', alt: 'Cover preview' }
   : { src: p.cover.src, alt: p.cover.alt };
 
 // Tags para overlay del zoom hero
@@ -101,27 +102,6 @@ const zoomTags = [p.cliente, sectorLabels[p.sector] ?? p.sector, String(p.ano)];
     />
   </Section>
 
-  {/* SUMMARY — dark, aparece DESPUÉS de la inmersión */}
-  <Section surface="inverse" spacing="none" class="relative pt-20 pb-16 md:pt-28 md:pb-24">
-    <Container>
-      <p class="text-sm text-text-inverse-secondary">
-        <a href="/proyectos" class="hover:text-text-accent">Proyectos</a>
-        <span class="mx-2 opacity-50">/</span>
-        <span class="text-text-inverse">{p.cliente}</span>
-      </p>
-
-      <div class="mt-8 flex flex-wrap items-center gap-2">
-        <Badge variant="inverse" size="sm">{p.cliente}</Badge>
-        <Badge variant="inverse" size="sm">{sectorLabels[p.sector] ?? p.sector}</Badge>
-        <Badge variant="inverse" size="sm">{p.ano}</Badge>
-        {p.destacado && <Badge variant="accent" size="sm">Destacado</Badge>}
-      </div>
-
-      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-3xl">
-        {p.resumenCorto}
-      </Prose>
-    </Container>
-  </Section>
 
   {/* CONTEXTO + DESAFÍO — light */}
   <Section surface="page">
