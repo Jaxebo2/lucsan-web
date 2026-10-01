@@ -92,7 +92,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const resend = getResend();
     const servicioLabel = SERVICIO_LABELS[data.servicio] ?? data.servicio;
 
-    const subject = `Nuevo contacto — ${data.nombre}${data.empresa ? ` (${data.empresa})` : ''}`;
+    const subject = `Nuevo contacto: ${data.nombre}${data.empresa ? ` (${data.empresa})` : ''}`;
 
     const textBody = [
       `Nombre: ${data.nombre}`,
