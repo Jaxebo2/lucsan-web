@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ImageItem {
   src: string;
@@ -20,21 +20,57 @@ interface PictureConfig {
   isCenter: boolean;
   cx: number;
   cy: number;
-  /** Ancho CSS (vw). El alto se calcula automático via aspect-ratio 16/9. */
-  w: string;
+  /** Ancho de la card en vw. El alto sale del aspect ratio del layout. */
+  w: number;
   scaleEnd: number;
   exitMult: number;
 }
 
+interface Layout {
+  /** [ancho, alto] del aspect ratio de las cards. */
+  aspect: [number, number];
+  /** Posiciones: [cx, cy, wVw, scaleEnd, exitMult] — índice 0 = centro. */
+  slots: Array<[number, number, number, number, number]>;
+}
+
+// DESKTOP: 2-3-2, cards 16:9
+const DESKTOP: Layout = {
+  aspect: [16, 9],
+  slots: [
+    [50, 50, 26, 0, 1], // centro (scale se calcula para cubrir viewport)
+    [33, 12, 26, 2.8, 6],
+    [67, 12, 26, 2.8, 6],
+    [18, 50, 22, 2.5, 7],
+    [82, 50, 22, 2.5, 7],
+    [33, 88, 26, 3.2, 5.5],
+    [67, 88, 26, 3, 6],
+  ],
+};
+
+// MÓVIL: viewport vertical → cards verticales 3:4, más grandes y agrupadas.
+// Fila superior (2), fila media (2 laterales asomando + centro), fila inferior (2).
+const MOBILE: Layout = {
+  aspect: [3, 4],
+  slots: [
+    [50, 50, 40, 0, 1],
+    [28, 22, 40, 2.8, 6],
+    [72, 22, 40, 2.8, 6],
+    [14, 50, 26, 2.5, 7],
+    [86, 50, 26, 2.5, 7],
+    [28, 78, 40, 3.2, 5.5],
+    [72, 78, 40, 3, 6],
+  ],
+};
+
 /**
- * ZoomParallax — hero inmersivo multi-imagen, layout 2-3-2.
+ * ZoomParallax — hero inmersivo multi-imagen.
  *
- * Cards en formato 16:9 (aspect-ratio CSS). Tamaños generosos:
- * - Top/bottom outers + center: 26vw (≈100vw a scale 4 → llena viewport)
- * - Middle outers laterales: 22vw (un poco menores para no chocar con el centro)
+ * Desktop: grid 2-3-2 de cards 16:9. Móvil: grid de cards verticales 3:4.
+ * Scroll: los outers viajan hacia afuera a distintas velocidades (parallax) y
+ * se desvanecen; la central crece hasta cubrir TODO el viewport (escala calculada
+ * con el tamaño real de la pantalla) y aparece el título encima.
  *
- * scrollHeight 140vh → ~6-7 ticks de scroll.
- * Lenis (global) suaviza cada tick.
+ * Animación en el primer 70% del scroll; el resto es salida rápida.
  */
 export default function ZoomParallax({
   centerImage,
@@ -50,10 +86,16 @@ export default function ZoomParallax({
     offset: ['start start', 'end end'],
   });
 
-  // Remap scroll → animación:
-  //   Scroll 0-0.7 → animación 0-1 (zoom completo, ~5 ticks lentos)
-  //   Scroll 0.7-1.0 → animación clamped a 1 (sin cambios, exit rápido ~2-3 ticks)
-  // Resultado: zoom slow/smooth + transición fast cuando el centro ya está enfocado.
+  // Tamaño real del viewport (para layout móvil y escala de cobertura).
+  const [vp, setVp] = useState({ w: 1440, h: 900 });
+  useEffect(() => {
+    const update = () => setVp({ w: window.innerWidth, h: window.innerHeight });
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  const layout = vp.w < 768 ? MOBILE : DESKTOP;
+
   const animProgress = useTransform(scrollYProgress, (v) => Math.min(v / 0.7, 1));
 
   const safeOuters: ImageItem[] = Array.from({ length: 6 }, (_, i) => {
@@ -61,23 +103,22 @@ export default function ZoomParallax({
     return outerImages[i % outerImages.length]!;
   });
 
-  // 2-3-2 layout, todas las cards 16:9.
-  // Top/bottom MÁS cerca del centro (cx 33/67). Vertical más separado (cy 12/88).
-  const pictures: PictureConfig[] = [
-    // CENTER (mid row, cx=50%)
-    { img: centerImage,    isCenter: true,  cx: 50, cy: 50, w: '26vw', scaleEnd: 5,   exitMult: 1 },
-    // TOP ROW (cy=12%, cerca al centro horizontalmente)
-    { img: safeOuters[0]!, isCenter: false, cx: 33, cy: 12, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
-    { img: safeOuters[1]!, isCenter: false, cx: 67, cy: 12, w: '26vw', scaleEnd: 2.8, exitMult: 6 },
-    // MIDDLE ROW sides (cy=50%, acercadas al centro)
-    { img: safeOuters[2]!, isCenter: false, cx: 18, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
-    { img: safeOuters[3]!, isCenter: false, cx: 82, cy: 50, w: '22vw', scaleEnd: 2.5, exitMult: 7 },
-    // BOTTOM ROW (cy=88%, separación vertical generosa)
-    { img: safeOuters[4]!, isCenter: false, cx: 33, cy: 88, w: '26vw', scaleEnd: 3.2, exitMult: 5.5 },
-    { img: safeOuters[5]!, isCenter: false, cx: 67, cy: 88, w: '26vw', scaleEnd: 3,   exitMult: 6 },
-  ];
+  // Escala de la central para CUBRIR el viewport completo (+5% de margen).
+  const [aw, ah] = layout.aspect;
+  const centerWpx = (layout.slots[0]![2] / 100) * vp.w;
+  const centerHpx = (centerWpx * ah) / aw;
+  const coverScale = Math.max(vp.w / centerWpx, vp.h / centerHpx) * 1.05;
 
-  // Todas las transforms usan animProgress (con clamp) en vez de scrollYProgress crudo.
+  const pictures: PictureConfig[] = layout.slots.map(([cx, cy, w, scaleEnd, exitMult], i) => ({
+    img: i === 0 ? centerImage : safeOuters[i - 1]!,
+    isCenter: i === 0,
+    cx,
+    cy,
+    w,
+    scaleEnd: i === 0 ? coverScale : scaleEnd,
+    exitMult,
+  }));
+
   const textOpacity = useTransform(animProgress, [0.6, 0.92], [0, 1]);
   const textY = useTransform(animProgress, [0.6, 1], [40, 0]);
   const overlayOpacity = useTransform(animProgress, [0.55, 0.95], [0, 0.55]);
@@ -88,11 +129,15 @@ export default function ZoomParallax({
       className="zoom-parallax relative w-full"
       style={{ height: `${scrollHeight}vh` }}
     >
-      <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden bg-brand-black">
+      <div
+        className="sticky top-0 flex w-full items-center justify-center overflow-hidden bg-brand-black"
+        style={{ height: '100svh' }}
+      >
         {pictures.map((p, i) => (
           <ZoomImage
-            key={i}
+            key={`${layout === MOBILE ? 'm' : 'd'}-${i}`}
             picture={p}
+            aspect={layout.aspect}
             progress={animProgress}
             overlayOpacity={p.isCenter ? overlayOpacity : undefined}
           />
@@ -132,11 +177,12 @@ export default function ZoomParallax({
 
 interface ZoomImageProps {
   picture: PictureConfig;
+  aspect: [number, number];
   progress: MotionValue<number>;
   overlayOpacity?: MotionValue<number>;
 }
 
-function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
+function ZoomImage({ picture, aspect, progress, overlayOpacity }: ZoomImageProps) {
   const cxEnd = picture.isCenter ? picture.cx : 50 + (picture.cx - 50) * picture.exitMult;
   const cyEnd = picture.isCenter ? picture.cy : 50 + (picture.cy - 50) * picture.exitMult;
 
@@ -156,8 +202,8 @@ function ZoomImage({ picture, progress, overlayOpacity }: ZoomImageProps) {
         position: 'absolute',
         top,
         left,
-        width: picture.w,
-        aspectRatio: '16 / 9',
+        width: `${picture.w}vw`,
+        aspectRatio: `${aspect[0]} / ${aspect[1]}`,
         x: '-50%',
         y: '-50%',
         scale,
