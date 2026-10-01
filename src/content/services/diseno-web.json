@@ -12,7 +12,6 @@
 
   "incluye": [
     { "titulo": "Tiendas online (e-commerce)", "descripcion": "Implementación de tiendas digitales rápidas, escalables y optimizadas para conversión." },
-    { "titulo": "Sitios web educativos (LMS)", "descripcion": "Plataformas para academias, cursos online y formación corporativa." },
     { "titulo": "Sitios web informativos", "descripcion": "Webs corporativas, institucionales y de servicios con foco en posicionamiento." },
     { "titulo": "Landing pages", "descripcion": "Páginas de aterrizaje para campañas, lanzamientos y captación de leads." },
     { "titulo": "Diseño UX", "descripcion": "Arquitectura de información, flujos de usuario y validación con pruebas." },
@@ -133,7 +132,7 @@
 
   "seo": {
     "title": "Diseño web profesional: sitios y e-commerce · Lucsan Design",
-    "description": "Diseño e implementación de sitios web, tiendas online, landings y plataformas educativas. Performance, SEO y experiencia de usuario optimizados.",
+    "description": "Diseño e implementación de sitios web, tiendas online y landings. Performance, SEO y experiencia de usuario optimizados.",
     "ogImage": "/og-diseno-web.png"
   }
 }

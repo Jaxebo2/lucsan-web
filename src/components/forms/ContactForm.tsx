@@ -159,7 +159,7 @@ export default function ContactForm({ presupuestos, turnstileSiteKey }: Props) {
         <span className="font-medium">¿En qué te podemos ayudar?</span>
         <select name="servicio" required className={inputClass} defaultValue="">
           <option value="" disabled>
-            Elegí un servicio
+            Elige un servicio
           </option>
           <option value="branding">Branding y diseño de marca</option>
           <option value="diseno-web">Diseño web</option>
