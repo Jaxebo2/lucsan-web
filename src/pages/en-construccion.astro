@@ -173,15 +173,30 @@ const description =
     }
   }
 
+  /* La cinta animada mueve la pista "-25% de su ancho". Por defecto la pista mide
+     lo que el contenedor (390px en móvil) y no lo que su contenido (5000px+), así
+     que recorría ~98px por vuelta (casi estática) y daba un salto al reiniciar.
+     Con ancho = contenido, 25% equivale a UN ciclo de palabras y el bucle empalma.
+     El padding-right iguala el espacio entre palabras (gap-12 / md:gap-16). */
+  .construction :global(.marquee__track) {
+    width: max-content;
+    padding-right: 3rem;
+  }
+  @media (min-width: 768px) {
+    .construction :global(.marquee__track) {
+      padding-right: 4rem;
+    }
+  }
+
   /* Movil: la barra flotante del navegador (iOS Safari) tapa el borde inferior.
      Se deja espacio abajo para que la cinta quede visible, y se acelera
-     (el valor inline del Marquee se sobreescribe con !important). 60s en escritorio, 9s en móvil. */
+     (el valor inline del Marquee se sobreescribe con !important). 60s en escritorio, 24s en móvil. */
   @media (max-width: 767px) {
     .construction__foot {
       padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
     }
     .construction :global(.marquee) {
-      --marquee-duration: 9s !important;
+      --marquee-duration: 24s !important;
     }
     /* Textos algo menores para que todo quepa sin scroll en pantallas de ~800px */
     :global(.construction h1) {
