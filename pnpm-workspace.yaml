@@ -1,7 +1,9 @@
+# pnpm v11 falla `pnpm install` (ERR_PNPM_IGNORED_BUILDS) si algún paquete con
+# scripts de instalación no tiene decisión explícita.
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  webgl-fluid: set this to true or false
+  esbuild: true      # binario nativo, el script solo lo verifica
+  sharp: true        # binario nativo, el script solo lo verifica
+  webgl-fluid: false # scripts de desarrollo de la propia lib (only-allow, git hooks, registry); ya viene compilada en dist
 onlyBuiltDependencies:
   - esbuild
   - sharp
