@@ -40,11 +40,11 @@ const description =
     <link rel="preload" href="/fonts/Switzer-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
   </head>
   <body class="bg-brand-black text-neutral-50 antialiased">
-    <section class="construction relative flex min-h-[100svh] flex-col overflow-hidden">
+    <section class="construction relative flex min-h-[100svh] flex-col overflow-hidden md:h-[100svh]">
       <HeroFluid variant="dark" intensity={1} />
 
       {/* Barra superior: logo + estado */}
-      <header class="construction__rise relative z-10 flex items-center justify-between px-6 pt-8 md:px-16 md:pt-10" style="--d: 0ms">
+      <header class="construction__rise construction__top relative z-10 flex items-center justify-between px-6 pt-8 md:px-16" style="--d: 0ms">
         <img
           src="/brand/LucsanDesign-horizontal-blanco.svg"
           alt="Lucsan Design"
@@ -60,7 +60,7 @@ const description =
       </header>
 
       {/* Mensaje central */}
-      <main class="relative z-10 flex flex-1 items-center px-6 py-16 md:px-16">
+      <main class="relative z-10 flex min-h-0 flex-1 items-center px-6 py-16 md:px-16 md:py-0">
         <div class="mx-auto w-full max-w-6xl">
           <div class="construction__rise" style="--d: 150ms">
             <Eyebrow tone="inverse">Estudio de diseño · Santiago, Chile</Eyebrow>
@@ -78,13 +78,13 @@ const description =
           </Heading>
 
           <div class="construction__rise" style="--d: 700ms">
-            <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-2xl">
+            <Prose tone="inverse-secondary" size="xl" class="construction__lead mt-8 max-w-2xl">
               Estamos terminando el nuevo sitio de Lucsan Design y queremos que quede a la altura de lo que hacemos.
               Mientras tanto seguimos trabajando en proyectos de branding, diseño web y marketing digital.
               Si tienes uno en mente, escríbenos.
             </Prose>
 
-            <div class="mt-12 flex flex-wrap gap-4">
+            <div class="construction__cta mt-12 flex flex-wrap gap-4">
               <Button
                 href="mailto:contacto@lucsandesign.com"
                 variant="primary"
@@ -99,7 +99,7 @@ const description =
       </main>
 
       {/* Marquee inferior + legal */}
-      <footer class="construction__rise relative z-10 pb-6 md:pb-8" style="--d: 900ms">
+      <footer class="construction__rise construction__foot relative z-10 pb-6 md:pb-8" style="--d: 900ms">
         <div class="opacity-40">
           <Marquee
             tone="inverse"
@@ -159,6 +159,30 @@ const description =
     100% {
       transform: scale(3);
       opacity: 0;
+    }
+  }
+
+  /* Escritorio: todo cabe en una pantalla, sea cual sea su alto.
+     Tamaños y espacios escalan con vh (y vw) en vez de píxeles fijos. */
+  @media (min-width: 768px) {
+    .construction__top {
+      padding-top: clamp(1rem, 3.5vh, 2.5rem);
+    }
+    .construction__foot {
+      padding-bottom: clamp(0.5rem, 2vh, 2rem);
+    }
+    :global(.construction h1) {
+      font-size: clamp(2.25rem, min(6.5vw, 10vh), 6rem);
+      margin-top: clamp(0.5rem, 2.5vh, 1.5rem);
+    }
+    :global(.construction .construction__lead) {
+      font-size: clamp(0.95rem, 2.1vh, 1.35rem);
+      line-height: 1.55;
+      margin-top: clamp(0.75rem, 3vh, 2rem);
+      max-width: 44rem;
+    }
+    .construction__cta {
+      margin-top: clamp(1rem, 4vh, 3rem);
     }
   }
 
