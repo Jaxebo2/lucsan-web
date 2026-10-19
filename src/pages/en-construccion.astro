@@ -41,7 +41,18 @@ const description =
   </head>
   <body class="bg-brand-black text-neutral-50 antialiased">
     <section class="construction relative flex min-h-[100svh] flex-col overflow-hidden md:h-[100svh]">
-      <HeroFluid variant="dark" intensity={1} />
+      <HeroFluid variant="dark" intensity={0.5} />
+
+      {/* Velo oscuro: baja el brillo del humo y asegura contraste del texto (lectura nocturna).
+          Más cerrado a la izquierda, donde está el mensaje, y abajo, donde va la cinta. */}
+      <div
+        class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/10"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"
+        aria-hidden="true"
+      ></div>
 
       {/* Barra superior: logo + estado */}
       <header class="construction__rise construction__top relative z-10 flex items-center justify-between px-6 pt-8 md:px-16" style="--d: 0ms">
