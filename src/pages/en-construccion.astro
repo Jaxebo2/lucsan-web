@@ -1,0 +1,183 @@
+---
+/**
+ * En construcción — página provisoria mientras se lanza el sitio completo.
+ *
+ * Standalone (sin Navbar ni Footer) con el humo fluido de marca de fondo.
+ * Se activa para todo el sitio con la variable de build UNDER_CONSTRUCTION=true
+ * (ver astro.config.mjs). Para lanzar el sitio, se quita la variable.
+ */
+import '../styles/global.css';
+import HeroFluid from '../components/fx/HeroFluid.astro';
+import SplitTextReveal from '../components/fx/SplitTextReveal.astro';
+import SmartHover from '../components/fx/SmartHover.astro';
+import Marquee from '../components/ui/Marquee.astro';
+import Button from '../components/ui/Button.astro';
+import Heading from '../components/ui/Heading.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Prose from '../components/ui/Prose.astro';
+
+const year = new Date().getFullYear();
+const title = 'Lucsan Design · Estamos construyendo algo nuevo';
+const description =
+  'Estamos terminando el nuevo sitio de Lucsan Design. Mientras tanto, escríbenos: seguimos trabajando en proyectos de branding, diseño web y marketing digital.';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="Lucsan Design" />
+    <meta name="theme-color" content="#08080c" />
+    <link rel="icon" href="/brand/Simbolo-coral.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/CabinetGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/Switzer-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  </head>
+  <body class="bg-brand-black text-neutral-50 antialiased">
+    <section class="construction relative flex min-h-[100svh] flex-col overflow-hidden">
+      <HeroFluid variant="dark" intensity={1} />
+
+      {/* Barra superior: logo + estado */}
+      <header class="construction__rise relative z-10 flex items-center justify-between px-6 pt-8 md:px-16 md:pt-10" style="--d: 0ms">
+        <img
+          src="/brand/LucsanDesign-horizontal-blanco.svg"
+          alt="Lucsan Design"
+          class="h-6 w-auto md:h-7"
+          width="160"
+          height="28"
+        />
+        <span class="construction__pill inline-flex items-center gap-2.5 whitespace-nowrap rounded-full border border-white/15 bg-black/30 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-50 backdrop-blur-md sm:text-xs sm:tracking-[0.2em]">
+          <span class="construction__dot" aria-hidden="true"></span>
+          <span class="sm:hidden">En construcción</span>
+          <span class="hidden sm:inline">Web en construcción</span>
+        </span>
+      </header>
+
+      {/* Mensaje central */}
+      <main class="relative z-10 flex flex-1 items-center px-6 py-16 md:px-16">
+        <div class="mx-auto w-full max-w-6xl">
+          <div class="construction__rise" style="--d: 150ms">
+            <Eyebrow tone="inverse">Estudio de diseño · Santiago, Chile</Eyebrow>
+          </div>
+
+          <Heading
+            level={1}
+            size="3xl"
+            tone="inverse"
+            splitReveal
+            splitStagger={70}
+            class="mt-6 max-w-4xl"
+          >
+            Diseñamos marcas para otros. Ahora nos toca la nuestra.
+          </Heading>
+
+          <div class="construction__rise" style="--d: 700ms">
+            <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-2xl">
+              Estamos terminando el nuevo sitio de Lucsan Design y queremos que quede a la altura de lo que hacemos.
+              Mientras tanto seguimos trabajando en proyectos de branding, diseño web y marketing digital.
+              Si tienes uno en mente, escríbenos.
+            </Prose>
+
+            <div class="mt-12 flex flex-wrap gap-4">
+              <Button
+                href="mailto:contacto@lucsandesign.com"
+                variant="primary"
+                size="lg"
+                iconRight="ph:arrow-right-bold"
+              >
+                Escríbenos
+              </Button>
+              <Button
+                href="https://instagram.com/lucsandesign"
+                target="_blank"
+                variant="outline"
+                size="lg"
+              >
+                Síguenos en Instagram
+              </Button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Marquee inferior + legal */}
+      <footer class="construction__rise relative z-10 pb-6 md:pb-8" style="--d: 900ms">
+        <div class="opacity-40">
+          <Marquee
+            tone="inverse"
+            size="sm"
+            speed="slow"
+            items={['Branding', 'Diseño web', 'Marketing digital', 'Asesoría estratégica', 'Muy pronto']}
+          />
+        </div>
+        <p class="mt-4 px-6 text-xs text-neutral-500 md:px-16">
+          © {year} Lucsan Design SpA · Chile
+        </p>
+      </footer>
+    </section>
+
+    <SplitTextReveal />
+    <SmartHover />
+  </body>
+</html>
+
+<style>
+  /* Entrada escalonada (sin dependencias de JS) */
+  .construction__rise {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: construction-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes construction-rise {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Punto de estado que "respira" */
+  .construction__dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--color-brand-coral);
+  }
+  .construction__dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--color-brand-coral);
+    animation: construction-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes construction-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    80%,
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .construction__rise {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .construction__dot::after {
+      animation: none;
+    }
+  }
+</style>
