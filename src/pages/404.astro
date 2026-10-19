@@ -1,0 +1,47 @@
+---
+/**
+ * 404 — página no encontrada.
+ *
+ * Con UNDER_CONSTRUCTION=true el middleware reemplaza esta página por
+ * /en-construccion, así que cualquier URL antigua o inexistente muestra el
+ * mensaje de construcción. Con el sitio lanzado, se ve este 404 de marca.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Heading from '../components/ui/Heading.astro';
+import Prose from '../components/ui/Prose.astro';
+import Button from '../components/ui/Button.astro';
+import HeroFluid from '../components/fx/HeroFluid.astro';
+---
+
+<BaseLayout
+  title="Página no encontrada · Lucsan Design"
+  description="La página que buscas no existe o cambió de dirección."
+>
+  <Section surface="inverse" spacing="none" class="relative flex min-h-[100svh] items-center overflow-hidden">
+    <HeroFluid variant="dark" intensity={0.5} />
+    <div
+      class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/10"
+      aria-hidden="true"
+    >
+    </div>
+
+    <Container class="relative z-10 py-32">
+      <Eyebrow tone="inverse">Error 404</Eyebrow>
+      <Heading level={1} size="3xl" tone="inverse" class="mt-6 max-w-4xl">
+        Esta página no existe.
+      </Heading>
+      <Prose tone="inverse-secondary" size="xl" class="mt-8 max-w-2xl">
+        Puede que el enlace esté desactualizado o que la página haya cambiado de dirección.
+        Volvamos al inicio.
+      </Prose>
+      <div class="mt-12 flex flex-wrap gap-4">
+        <Button href="/" variant="primary" size="lg" iconRight="ph:arrow-right-bold">
+          Ir al inicio
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
