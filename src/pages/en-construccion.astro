@@ -175,13 +175,13 @@ const description =
 
   /* Movil: la barra flotante del navegador (iOS Safari) tapa el borde inferior.
      Se deja espacio abajo para que la cinta quede visible, y se acelera
-     (el valor inline del Marquee se sobreescribe con !important). */
+     (el valor inline del Marquee se sobreescribe con !important). 60s en escritorio, 9s en móvil. */
   @media (max-width: 767px) {
     .construction__foot {
       padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
     }
     .construction :global(.marquee) {
-      --marquee-duration: 28s !important;
+      --marquee-duration: 9s !important;
     }
     /* Textos algo menores para que todo quepa sin scroll en pantallas de ~800px */
     :global(.construction h1) {
