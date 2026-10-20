@@ -260,15 +260,18 @@ Mientras OS no publique el formulario, la web usa un componente con la interfaz 
 ## Entrega por fases
 
 1. **Esquema y plantilla de landing** con un formulario simulado, metadatos y datos estructurados con intención local (SEO local para
-   Chile), y la landing de **Branding** completa, con el caso de Sports en página completa y las tarjetas de los
-   demás. El resto de los casos completos llega en la fase 3 (llamado mío).
+   Chile), y la landing de **Branding** completa. La sección de casos no muestra nada hasta que lleguen los
+   proyectos, que van al final (decidido).
 2. **Diseño web** y **Estrategia** (más el servicio oculto).
-3. **Casos** (3 completos y 8 tarjetas) y "Sobre nosotros".
-4. **Conectar los formularios reales** cuando OS los publique, y el diagnóstico.
-5. **Consentimiento de cookies y píxeles** (con el ciclo 1b de OS) y, si hace falta, una versión corta
+3. **Sobre nosotros.**
+4. **Conectar los formularios reales** cuando OS los publique, y el diagnóstico. **Todos los formularios de
+   la web se reemplazan por los de Lucsan OS,** incluido el de `/contacto` (decidido).
+5. **Aviso de cookies pequeño y solicitud de consentimiento para Meta** (decidido). El aviso es obligatorio
+   antes de lanzar. Después, los píxeles (con el ciclo 1b de OS) y, si hace falta, una versión corta
    para anuncios. **Las campañas de Meta no se lanzan antes de esta fase,** porque sin píxel Meta no
    optimiza. El SEO de Google corre desde el lanzamiento (llamado mío).
-6. **Preparar el lanzamiento:** reescribir la home, revisar los sectores, retirar los datos de ejemplo
+6. **Casos** (3 completos y 8 tarjetas), que se dejan para el final (decidido).
+7. **Preparar el lanzamiento:** reescribir la home, revisar los sectores, retirar los datos de ejemplo
    (Acme Corp y las fotos de Unsplash), confirmar o retirar las cifras de la home, y revisar móvil y
    rendimiento. También el SEO local: perfil de Google, datos estructurados verificados y Search Console.
 
@@ -281,6 +284,13 @@ a desplegar, después de revisar móvil, rendimiento, textos y que cada dato sea
   secuencia lógica, y se lanza al final. Hasta entonces sigue la página de construcción, sin lista de
   rutas permitidas.
 - **Mercado:** todo el mundo hispanohablante (ver arriba).
+- **Se espera a Lucsan OS (decidido):** el lanzamiento no sale con un formulario de respaldo. Hasta que
+  OS publique los formularios, la web avanza con el formulario simulado en todo lo que no depende de él.
+- **Un solo origen de formularios (decidido):** todos se reemplazan por los de OS, incluido el de contacto.
+- **Cookies y consentimiento (decidido):** aviso pequeño en la web y solicitud de consentimiento para Meta.
+  Nada de marketing se carga antes de que el visitante acepte.
+- **Proyectos al final (decidido):** los casos y las tarjetas se trabajan al terminar lo demás. Mientras
+  tanto, las landings no dependen de que exista ningún caso.
 
 ## Pendientes de Lucio (no bloquean el diseño)
 
