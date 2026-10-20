@@ -80,7 +80,8 @@ Hoy cada servicio es una ficha informativa y el formulario de contacto no alimen
   moneda local se muestra solo donde haya tipo de cambio mantenido (Lucsan OS hoy maneja CLP, USD y EUR).
 - **Textos:** sin referencias fiscales de un solo país. Hoy las preguntas frecuentes dicen "+ IVA", que
   es una referencia chilena.
-- **Titulares:** sin "en Chile" ni referencias a un solo país.
+- **Titulares (H1):** sin "en Chile" ni referencias a un solo país. Lo local va en los títulos de
+  página, las metadescripciones, Contacto y los datos estructurados (ver SEO local para Chile).
 - **Llamadas:** la herramienta de agenda debe mostrar la hora en la zona del visitante.
 - **Formularios:** el país admite cualquiera y el teléfono lleva código de país. El RGPD ya está
   contemplado en OS para residentes de la Unión Europea.
@@ -158,7 +159,8 @@ redactan a partir de los briefs y Lucio los valida (llamado mío).
 - **Duoc UC:** solo se afirma el hecho ("charlas y talleres en programas de Duoc UC Viña del Mar y
   Valparaíso"). Mostrar su marca o logo exige su permiso.
 - **Formación:** una sola línea, "Formación en diseño y branding en Chile y España", más detalle en
-  "Sobre nosotros". Se describe el diplomado de la UDD tal cual, sin "casi magíster". Lucio duda de
+  "Sobre nosotros". El magíster (LABASAD, Escuela Superior de Arte y Diseño de Barcelona) y el diplomado de la UDD están
+  terminados desde hace un par de años, y se describen como tales, con el nombre de cada institución. Lucio duda de
   incluirla: el estudio lleva la voz y la trayectoria aparece de forma discreta (llamado mío).
 - **Metodología (decidido en espíritu):** frase simple y concreta, por ejemplo "Metodologías de branding
   probadas en Chile y el mundo, aplicadas a negocios de todos los tamaños", más las fases. Los autores
@@ -223,6 +225,23 @@ Mientras OS no publique el formulario, la web usa un componente con la interfaz 
 - **SEO:** una palabra clave principal por landing (ya existe el campo `keyword`), títulos y metadatos
   propios, enlaces entre landings y casos. Los 20 sectores se revisan antes de indexarlos, porque podrían
   competir como páginas parecidas (no verificado).
+- **SEO local para Chile (decidido que va en el plan; el detalle es llamado mío).** Se suma al mercado
+  mundial: el sitio sigue siendo `lang="es"` general, y Chile se refuerza con señales locales.
+  - **Perfil de Google (Google Business Profile)** del estudio, con una categoría de agencia de
+    branding o diseño. Con dirección pública, o como negocio sin local con área de servicio. Lucio decide.
+  - **Nombre, dirección o área y teléfono idénticos** en la web, el perfil de Google, las redes y los
+    directorios chilenos.
+  - **Datos estructurados** de tipo `ProfessionalService` con Chile como área de servicio (y la dirección
+    si es pública), junto a los esquemas que ya existen en `src/lib/seo.ts`.
+  - **Palabras clave locales en los títulos de página y metadescripciones** de las landings (por ejemplo
+    "Agencia de branding en Santiago, Chile"), con el H1 neutro. Menciones naturales de Chile y Santiago
+    en Contacto, Sobre nosotros y el pie.
+  - **Evidencia local:** la charla en el Palacio Rioja y los programas de Duoc UC Viña del Mar y
+    Valparaíso respaldan la presencia en la región de Valparaíso, además de Santiago.
+  - **Reseñas en Google** de clientes chilenos, pedidas después del lanzamiento. Son opcionales y no
+    reemplazan los testimonios de la web.
+  - **Google Search Console y mapa del sitio** desde el día del lanzamiento.
+  - **Sin páginas por ciudad** por ahora, para no crear páginas casi idénticas. Se evalúa con datos.
 - **Consentimiento:** ningún píxel de Meta o TikTok se instala sin aviso de cookies y consentimiento.
   Depende del ciclo 1b de OS.
 - **Datos personales:** nada en la URL, y el aviso de privacidad vive en el formulario.
@@ -240,7 +259,8 @@ Mientras OS no publique el formulario, la web usa un componente con la interfaz 
 
 ## Entrega por fases
 
-1. **Esquema y plantilla de landing** con un formulario simulado, y la landing de **Branding** completa, con el caso de Sports en página completa y las tarjetas de los
+1. **Esquema y plantilla de landing** con un formulario simulado, metadatos y datos estructurados con intención local (SEO local para
+   Chile), y la landing de **Branding** completa, con el caso de Sports en página completa y las tarjetas de los
    demás. El resto de los casos completos llega en la fase 3 (llamado mío).
 2. **Diseño web** y **Estrategia** (más el servicio oculto).
 3. **Casos** (3 completos y 8 tarjetas) y "Sobre nosotros".
@@ -250,7 +270,7 @@ Mientras OS no publique el formulario, la web usa un componente con la interfaz 
    optimiza. El SEO de Google corre desde el lanzamiento (llamado mío).
 6. **Preparar el lanzamiento:** reescribir la home, revisar los sectores, retirar los datos de ejemplo
    (Acme Corp y las fotos de Unsplash), confirmar o retirar las cifras de la home, y revisar móvil y
-   rendimiento.
+   rendimiento. También el SEO local: perfil de Google, datos estructurados verificados y Search Console.
 
 La web **sigue en construcción** hasta lanzar. Lanzar es quitar `UNDER_CONSTRUCTION` en Vercel y volver
 a desplegar, después de revisar móvil, rendimiento, textos y que cada dato sea verificable.
@@ -266,7 +286,10 @@ a desplegar, después de revisar móvil, rendimiento, textos y que cada dato sea
 
 - Autorización de uso de marca y de la grabación de la charla (Duoc UC), y permiso de quienes aparecen.
 - Autorización de Elektroservice, si se quiere recuperar.
-- Nombre exacto de la institución del magíster y si el diplomado de la UDD está terminado.
+- Nombre exacto de los programas (magíster en LABASAD y diplomado en la UDD) y el año de término, si se
+  quieren citar.
+- Para el perfil de Google: dirección pública (o área de servicio), teléfono, horario y el nombre del
+  estudio tal como debe figurar en todas partes.
 - Sector de cada proyecto (el esquema usa una lista de 20) y el texto base de los tres casos completos.
 - Umbrales por servicio y los precios de Estrategia, para el "rate card".
 - Dónde están los briefs, presentaciones y fotos de cada proyecto. Los textos los redacta el agente web
