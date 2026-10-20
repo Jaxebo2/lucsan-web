@@ -14,7 +14,7 @@
 
 Lucsan Design es un estudio de diseño (Chile) que vende **Branding**, **Diseño web** y **Estrategia**.
 Lucio puede atender **máximo 3 proyectos a la vez**, así que no busca volumen de leads sino leads
-**calificados**. Su sitio, `lucsandesign.com` (Astro, proyecto aparte), tendrá una landing por servicio
+**calificados**. Su mercado es **todo el mundo hispanohablante**, esté donde esté. Su sitio, `lucsandesign.com` (Astro, proyecto aparte), tendrá una landing por servicio
 que capta tráfico de Google y de campañas de Meta.
 
 Las landings **no tienen formularios propios**. Insertan los formularios de Lucsan OS con el script
@@ -147,10 +147,12 @@ Tramos por encima del piso (**propuesta**, editables): para Branding, 3.000 a 6.
 más de 12.000. Siempre una opción **"Aún no tengo definido el presupuesto"**: continúa, y el lead queda
 marcado para **revisión manual** (propuesta).
 
-**Montos en moneda local.** El visitante debe ver cada opción en USD y su equivalente aproximado en su
-moneda (por ejemplo "Menos de USD 3.000, unos $2.800.000 CLP"). Hace falta una tabla de tipos de cambio
-mantenida a mano por Lucio (propuesta: así no depende de un servicio externo) y la lista de países.
-Ambas, pendientes.
+**Montos y monedas (el mercado es mundial).** El visitante ve cada opción en USD, que es la referencia
+universal, y su equivalente aproximado en su moneda cuando haya tipo de cambio (por ejemplo "Menos de USD
+3.000, unos $2.800.000 CLP"). OS hoy maneja CLP, USD y EUR: para otras monedas se muestra solo USD, y la
+lista se amplía con el tiempo. Hace falta una tabla de tipos de cambio mantenida a mano por Lucio
+(propuesta: así no depende de un servicio externo). El campo de país admite **cualquier país** y el
+teléfono, el código de país.
 
 **Mensaje del final "no califica"** (borrador, para pulir con Lucio):
 > Gracias por contarnos tu proyecto. Por ahora los proyectos de {servicio} parten desde {monto mínimo en
@@ -198,7 +200,8 @@ Cada punto indica por qué hace falta y una dirección posible (decide el agente
 5. **Varias instancias en la misma página.** La landing inserta el mismo formulario dos veces. El script
    de inserción, el ajuste de altura, los mensajes entre el iframe y la página, Turnstile y el límite de
    envíos deben funcionar con **más de una instancia**, sin pisarse. En móvil la landing carga solo una instancia,
-   de forma diferida; el soporte para carga diferida también es parte del punto. Un envío desde una instancia no debe
+   de forma diferida, y un botón cerca del inicio (más una barra fija) salta directo a ella; el soporte
+   para carga diferida también es parte del punto. Un envío desde una instancia no debe
    disparar a la otra.
 6. **Posición de la instancia como dato de atribución** (opcional): saber si convirtió el formulario de
    arriba o el de abajo. Dirección: un atributo del script (`data-position`) que se guarde en `attribution`.
@@ -230,13 +233,16 @@ Cada punto indica por qué hace falta y una dirección posible (decide el agente
 7. Los textos están en español neutro con tuteo, sin argentinismos ni guiones largos.
 8. Sin PII en URL, eventos ni almacenamiento del navegador de la landing.
 9. Funciona bien en móvil: etiquetas visibles, errores junto al campo, zonas táctiles de 44 px.
+10. El campo de país admite cualquier país y el teléfono acepta código de país.
 
 ## 7. Pendientes de Lucio que bloquean partes de esto
 
 - Pisos y tramos de **Estrategia**, y confirmar los tramos propuestos de los demás.
-- **Lista de países** y **tipos de cambio** para mostrar montos en moneda local.
+- **Tipos de cambio** para mostrar montos en moneda local (países: todos), y qué monedas, además de CLP,
+  USD y EUR, se quieren soportar primero.
 - **Enlace de agenda** para la llamada de descubrimiento (en la carpeta de referencias hay un banner de
-  Zcal; confirmar si es la herramienta) y el **plazo de respuesta** que se promete.
+  Zcal; confirmar si es la herramienta) y el **plazo de respuesta** que se promete. La herramienta debe mostrar la hora en la zona del visitante,
+  porque el mercado es mundial.
 - **Autorización de Duoc UC** para ofrecer la grabación de la charla en el final "no califica".
 - Revisar el texto del final "no califica" y las orientaciones del diagnóstico.
 

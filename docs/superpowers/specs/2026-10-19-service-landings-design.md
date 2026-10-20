@@ -68,9 +68,26 @@ Hoy cada servicio es una ficha informativa y el formulario de contacto no alimen
 - **Capacidad:** máximo 3 clientes al mismo tiempo.
 - **Ejecución de campañas:** hoy se hace poco y no es rentable. Podría ser una línea recurrente futura
   con personal dedicado.
-- **Alcance geográfico:** Chile y otros países de Latinoamérica. Español neutro, tuteo.
+- **Alcance geográfico (decidido):** todo el mundo hispanohablante, sin importar dónde viva el cliente
+  (Latinoamérica, Europa, Estados Unidos, Asia, etc.). Español neutro con tuteo. Lucsan Design sigue siendo
+  un estudio con base en Santiago, Chile.
 - **Precios:** no se publican precios ni cotizaciones. El filtro lo hace solo el formulario, y su única
   cifra visible es el piso de la pregunta de presupuesto y del final "no califica".
+
+### Qué implica un mercado hispanohablante mundial (decidido el alcance, el resto llamado mío)
+
+- **Moneda:** el dólar es la referencia universal en todo el sitio y los formularios. El equivalente en
+  moneda local se muestra solo donde haya tipo de cambio mantenido (Lucsan OS hoy maneja CLP, USD y EUR).
+- **Textos:** sin referencias fiscales de un solo país. Hoy las preguntas frecuentes dicen "+ IVA", que
+  es una referencia chilena.
+- **Titulares:** sin "en Chile" ni referencias a un solo país.
+- **Llamadas:** la herramienta de agenda debe mostrar la hora en la zona del visitante.
+- **Formularios:** el país admite cualquiera y el teléfono lleva código de país. El RGPD ya está
+  contemplado en OS para residentes de la Unión Europea.
+- **Cómo se llega a cada país:** el posicionamiento en Google competirá con mercados grandes de habla
+  hispana, así que se espera como un complemento. La vía principal para llegar fuera de Chile son los
+  anuncios segmentados por país, con una landing neutra. El sitio usa `lang="es"` general, sin versiones
+  por país por ahora.
 
 ## Servicios
 
@@ -103,9 +120,9 @@ lo llena de inmediato; quien necesita entender más baja, se informa y lo encuen
 9. **Preguntas y objeciones:** plazos, proceso, qué pasa si el proyecto no encaja. Sin precios.
 10. **Formulario final.**
 
-En móvil, el botón del hero (una barra de CTA fija) lleva al formulario final, y solo se carga esa
-instancia, de forma diferida, para cuidar la carga y evitar dos Turnstile (llamado mío). En escritorio van
-las dos instancias. Los titulares parten de problemas reales del cliente y no de "ofrecemos
+En móvil, un **botón cerca del inicio** (más una barra de CTA fija) lleva de inmediato al formulario
+final, para que el lead no tenga que bajar (decidido). Solo se carga esa instancia, de forma diferida,
+para cuidar la carga y evitar dos Turnstile (llamado mío). En escritorio van las dos instancias. Los titulares parten de problemas reales del cliente y no de "ofrecemos
 servicios profesionales de...". El orden de escritura de las landings es Branding, Diseño web y Estrategia.
 
 ## Casos y prueba social
@@ -231,16 +248,19 @@ Mientras OS no publique el formulario, la web usa un componente con la interfaz 
 5. **Consentimiento de cookies y píxeles** (con el ciclo 1b de OS) y, si hace falta, una versión corta
    para anuncios. **Las campañas de Meta no se lanzan antes de esta fase,** porque sin píxel Meta no
    optimiza. El SEO de Google corre desde el lanzamiento (llamado mío).
+6. **Preparar el lanzamiento:** reescribir la home, revisar los sectores, retirar los datos de ejemplo
+   (Acme Corp y las fotos de Unsplash), confirmar o retirar las cifras de la home, y revisar móvil y
+   rendimiento.
 
 La web **sigue en construcción** hasta lanzar. Lanzar es quitar `UNDER_CONSTRUCTION` en Vercel y volver
 a desplegar, después de revisar móvil, rendimiento, textos y que cada dato sea verificable.
 
-## Decisiones abiertas de Lucio (cambian lo que se construye)
+## Decisiones de lanzamiento (decididas)
 
-- **Lanzamiento parcial o completo.** Si se publican solo las landings terminadas (Branding y Diseño web),
-  con el resto del sitio aún en construcción, o todo el sitio a la vez. Lo parcial exige una lista de rutas
-  permitidas en el middleware.
-- **Mercado principal para Google:** solo Chile o varios países. Cambia palabras clave, textos y monedas.
+- **Lanzamiento único:** todo el sitio se publica junto, no por partes. Se construye por pasos, en
+  secuencia lógica, y se lanza al final. Hasta entonces sigue la página de construcción, sin lista de
+  rutas permitidas.
+- **Mercado:** todo el mundo hispanohablante (ver arriba).
 
 ## Pendientes de Lucio (no bloquean el diseño)
 
@@ -251,6 +271,7 @@ a desplegar, después de revisar móvil, rendimiento, textos y que cada dato sea
 - Umbrales por servicio y los precios de Estrategia, para el "rate card".
 - Dónde están los briefs, presentaciones y fotos de cada proyecto. Los textos los redacta el agente web
   a partir de ellos y Lucio los valida.
+- Herramienta de agenda para las llamadas, que muestre la hora en la zona del visitante.
 - Confirmar las cifras de la home ("5 años", "20 sectores", "+30 marcas", "100%") o retirarlas.
 
 ## Queda al constructor
